@@ -1,0 +1,30 @@
+{% extends 'miapp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Lista de Facturación
+{% endblock title %}
+    
+{% block content %}
+<main role="main" class="container">
+    {% if datosfacturacion_list %}      
+        <div class="list-group">            
+        {% for factura in datosfacturacion_list %}
+            <div class="card">
+              <h5 class="card-header">ID: {{ factura.idDatosFacturacion }} /{{ factura.calle }} / {{ factura.altura }} / {{ factura.piso }} </h5>
+            </div>
+        {% endfor %}
+	</div>
+    {% else %}
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{% static 'miapp/img/pochoclos.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Facturacion</h5>
+          <p class="card-text">Sin Datos de Facturacion ingresados en la Base de Datos del sitio, por favor regrese cuando hayan datos en la Base de Datos</p>
+          <a href="{% url 'home' %}" class="btn btn-primary">Inicio</a>
+        </div>
+    </div>
+    {% endif %}
+</main>
+{% endblock content %}
+    

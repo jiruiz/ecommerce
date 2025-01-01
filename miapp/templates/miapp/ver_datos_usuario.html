@@ -1,0 +1,166 @@
+{% extends 'miapp/base.html' %}
+{% load static%}
+{% block title %}Datos Personales{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google Pay -->
+    <script src="https://pay.google.com/gp/p/js/pay.js"></script>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'%}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/css/adminlte.min.css'%}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<main role="main" class="container">
+    <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+             
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{% url 'home'%}">Home</a></li>
+                
+                <li class="breadcrumb-item active">Mis Datos</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+    <div class="row mb-5 mt-3 main-content">
+        
+        <div class="col-md-6">
+            
+            <div class="section-title mb-3">
+                <h3 class="font-weight-bold text-dark">Datos Personales:</h3>
+            </div>
+            <div class="section-content">
+                <table class="table table-bordered">
+                    <tr>
+                        <th class="bg-light">Nombre:</th>
+                        <td>{{ usuario.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Apellido:</th>
+                        <td>{{ usuario.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Correo:</th>
+                        <td>{{ usuario.email }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Teléfono:</th>
+                        <td>{{ datos_personales.telefono }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Clase Fiscal:</th>
+                        <td>{{ datos_personales.get_claseFiscalTipo_display }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Número de Documento:</th>
+                        <td>{{ datos_personales.numeroDocumento }}</td>
+                    </tr>
+                </table>
+                <div class="text-center">
+                    <a href="{% url 'datospersonales-update' pk=datos_personales.idDatosPersonales %}" class="btn btn-primary">Editar Datos Personales</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="section-title mb-3">
+                <h3 class="font-weight-bold text-dark">Datos de Facturación:</h3>
+            </div>
+            <div class="section-content">
+                <table class="table table-bordered">
+                    <tr>
+                        <th class="bg-light">Calle:</th>
+                        <td>{{ datos_facturacion.calle }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Altura:</th>
+                        <td>{{ datos_facturacion.altura }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Piso:</th>
+                        <td>{{ datos_facturacion.piso }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Departamento:</th>
+                        <td>{{ datos_facturacion.departamento }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Código Postal:</th>
+                        <td>{{ datos_facturacion.codigoPostal }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Localidad:</th>
+                        <td>{{ datos_facturacion.localidad }}</td>
+                    </tr>
+    
+                </table>
+                <div class="text-center">
+                    <a href="{% url 'datosfacturacion-update' pk=datos_facturacion.idDatosFacturacion %}" class="btn btn-primary">Editar Datos de Facturación</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+<style>
+    .section-title {
+        background-color: #FFCC00
+        ;
+        color: white;
+        padding: 10px;
+        border-radius: 5px 5px 0 0;
+        text-align: center;
+    }
+
+    .section-content {
+        border: 1px solid #007bff;
+        border-top: none;
+        padding: 20px;
+        border-radius: 0 0 5px 5px;
+    }
+
+    .table th,
+    .table td {
+        font-size: 16px;
+    }
+
+    .table th.bg-light {
+        background-color: #f8f9fa;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+</style>
+{% endblock %}

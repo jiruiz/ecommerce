@@ -1,0 +1,302 @@
+{% extends 'miapp/base.html' %}
+{% load static %}
+{% block title %}Factura{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>AdminLTE 3 | DataTables</title>
+    
+      <!-- Google Font: Source Sans Pro -->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+      <!-- Font Awesome -->
+      <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/fontawesome-free/css/all.min.css' %}">
+      <!-- DataTables -->
+      <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
+      <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'%}">
+      <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'%}">
+      <!-- Theme style -->
+      <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/css/adminlte.min.css'%}">
+      </head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper ml-auto">
+<!-- Site wrapper -->
+<div class="wrapper">
+    
+    <div class="content-wrapper ml-auto">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>
+                            <a href="{% url 'ver_compras' %}" style="text-decoration: none; color: inherit;">
+                                <i class="fas fa-user"></i> {{ usuario.username }}
+                            </a>
+                        </h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{% url 'home'%}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'ver_compras'%}">Mis Compras</a></li>
+                            <li class="breadcrumb-item active">Factura #00006-00000{{compra.idCompra}}</li>
+                          </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- Resto del contenido -->
+
+
+
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="callout callout-info">
+              <h5><i class="fas fa-info"></i> Nota:</h5>
+              Esta página ha sido mejorada para su impresión. Haga clic en el botón de impresión en la parte inferior de la factura para probarla.
+
+            </div>
+
+
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                    <h4>
+                        <i class="fas fa-globe"></i> Factura Electronica 
+                        <small class="float-right">Date: {{ fecha_actual|date:"D d M Y H:i" }}</small>
+
+                    </h4>
+                </div>
+                
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  De
+                  <address>
+                    <strong>Electronic House SRL</strong><br>
+                    Av Rivadavia 600<br>
+                    Buenos Aires, CABA <br>
+                    Telefono: (54) 4965-5432<br>
+                    Email: info@Ehouse.com
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                    Para
+                    <address>
+                        <strong>{{ user.first_name }} {{ user.last_name }}</strong><br>
+                        {{ datos_facturacion.calle }} - {{ datos_facturacion.altura }} - Piso {{ datos_facturacion.piso }} <br>
+                        
+                        Dpto: {{ datos_facturacion.departamento }}<br>
+                        Código Postal:{{ datos_facturacion.codigoPostal }}<br>
+                        Localidad: {{ datos_facturacion.localidad }}<br>
+                        Phone: {{ datos_personales.telefono }}<br>
+                        Email: {{user.email }}<br>
+                        Clase Fiscal: {{datos_personales.claseFiscalTipo}}
+                    </address>
+                     
+                </div>
+                
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  <b>Facura Nro #00006-00000{{compra.idCompra}}</b><br>
+                  <br>
+                  <b>ID Orden: </b>{{compra.idCompra}}<br>
+                  <b>Fecha de Emision:</b> {{compra.fecha|date:"d/m/y" }}<br>
+                  <b>Account:</b> 968-34567
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Cantidad</th>
+                      <th>Articulo</th>
+                      <th>Precio Por Unidad</th>
+                      <th>IVA discriminado</th>
+                      <th>Articulo Sin IVA</th>
+                      <th>Total</th>
+                    </tr>
+                    </thead>
+                    <!-- Modifica tu tabla para mostrar el subtotal de cada artículo -->
+                    <tbody>
+                      {% for articulo_compra in articulos_compra %}
+                        <tr>
+                         
+                         
+                          
+                          {% if datos_personales.claseFiscalTipo == "Responsable Inscripto" %}
+                            <td>{{ articulo_compra.cantidad }}</td>
+                            <td>{{ articulo_compra.articulo.nombre }}</td>
+                            <td>$ {{ articulo_compra.articulo.precio|floatformat:2 }}</td> 
+                            <td>$ {{ articulo_compra.iva|floatformat:2 }}</td>
+                            <td>$ {{ articulo_compra.subtotal_sin_iva|floatformat:2 }}</td>
+                            
+                            <td>$ {{ articulo_compra.subtotal|floatformat:2}}</td>
+                            
+                          {% else %}
+                            <td>{{ articulo_compra.cantidad }}</td>
+                            <td>{{ articulo_compra.articulo.nombre }}</td>
+                            <td>$ {{ articulo_compra.articulo.precio|floatformat:2 }}</td> 
+                            <td>$ 0,00</td>
+                            <td>$ 0,00</td>
+                            <td>$ {{ articulo_compra.subtotal|floatformat:2}}</td>
+                          {% endif %}
+                        </tr>
+                      {% empty %}
+                        <tr>
+                          <td colspan="6">No hay artículos en la compra.</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+
+                    
+                  </table>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-6">
+                  <p class="lead">Payment Methods:</p>
+                  <img src="{% static 'miapp/lib/adminlte-master/img/credit/visa.png'%}" alt="Visa">
+                  <img src="{% static 'miapp/lib/adminlte-master/img/credit/mastercard.png'%}" alt="Mastercard">
+                  <img src="{% static 'miapp/lib/adminlte-master/img/credit/american-express.png'%}" alt="American Express">
+                  <img src="{% static 'miapp/lib/adminlte-master/img/credit/paypal2.png'%}  " alt="Paypal">
+
+                  <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem
+                    plugg
+                    dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+                  </p>
+                </div>
+                <!-- /.col -->
+                <div class="col-6">
+                  <p class="lead">Amount Due 2/22/2014</p>
+
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tr>
+                        <th style="width:50%">Subtotal:</th>
+                        <td>
+                          {% if articulos_compra %}
+                           $ {{ compra.monto_total|floatformat:2 }}
+                          {% else %}
+                           $ 0
+                          {% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        {% if datos_personales.claseFiscalTipo == "Responsable Inscripto" %}
+                          <th>IVA DISCRIMINADO - (21%)</th>
+                          <td>
+                            $ {{ articulos_compra.0.iva|floatformat:2 }}
+                          </td>
+                        {% else %}
+                          <th>IVA INCLUIDO - (21%)</th>
+                          <td>{{datos_personales.claseFiscalTipo}}</td>
+                        {% endif %}
+                      </tr>
+                      <tr>
+                        <th>Envío:</th>
+                        <td>$ 0,00</td>
+                      </tr>
+                      <tr>
+                        <th>Total:</th>
+                        <td>$ {{ compra.monto_total|floatformat:2 }}</td>
+                      </tr>
+                    </table>
+                  </div>  
+                  </div>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- this row will not appear when printing -->
+              <div class="row no-print">
+                <div class="col-12">
+                  <a href="factura_print" rel="noopener" id="printButton" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                  
+                </div>
+              </div>
+            </div>
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+ 
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{% static 'miapp/lib/adminlte-master/plugins/jquery/jquery.min.js'%}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'miapp/lib/adminlte-master/plugins/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'miapp/lib/adminlte-master/js/adminlte.min.js'%}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'miapp/lib/adminlte-master/js/demo.js'%}"></script>
+<style>
+    @media print {
+        /* Estilos para la impresión */
+        body {
+          visibility: hidden;
+        }
+        .invoice, .invoice * {
+          visibility: visible;
+        }
+        .invoice {
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+      }
+      
+</style>
+<!-- Page specific script -->
+<!-- Page specific script -->
+<!-- Page specific script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var printButton = document.getElementById("printButton");
+  
+      if (printButton) {
+        printButton.addEventListener("click", function() {
+          window.print();
+        });
+      }
+    });
+  </script>
+  
+  
+  
+</body>
+</html>
+
+{% endblock content%}

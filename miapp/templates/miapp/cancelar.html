@@ -1,0 +1,13 @@
+{% extends 'miapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Compra Cancelada</h1>
+    
+    <!-- Agrega aquí un mensaje para informar al usuario que la compra ha sido cancelada -->
+    
+    <p>La compra ha sido cancelada con éxito.</p>
+    
+    <a href="{% url 'ver_carrito' %}">Volver al carrito</a>
+</div>
+{% endblock %}

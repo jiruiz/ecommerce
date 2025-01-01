@@ -1,0 +1,31 @@
+{% extends 'miapp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Lista de Datos Personales
+{% endblock title %}
+    
+{% block content %}
+<main role="main" class="container">
+    {% if datospersonales_list %}      
+        <div class="list-group">            
+        {% for dato in datospersonales_list %}
+            <div class="card">
+              <h5 class="card-header">ID: {{ dato.idDatosPersonales }} / Compra: {{ dato.nombre }} / {{ dato.apellido }} / {{ dato.correo }} / {{ dato.telefono }}</h5>
+            </div>
+        {% endfor %}
+	</div>
+    {% else %}
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{% static 'miapp/img/pochoclos.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Datos Personales</h5>
+          <p class="card-text">Sin Datos Personales ingresados en la Base de Datos del sitio, por favor regrese cuando hayan datos en la Base de Datos</p>
+          <a href="{% url 'home' %}" class="btn btn-primary">Inicio</a>
+        </div>
+    </div>
+    {% endif %}
+</main>
+{% endblock content %}
+    
+    

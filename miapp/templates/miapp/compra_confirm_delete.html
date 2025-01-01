@@ -1,0 +1,74 @@
+{% extends 'miapp/base.html' %}
+{% load static %}
+{%block title %}Eliminar Articulo{% endblock %}
+{%block content %}
+
+<main role="main">
+  <div class="container">
+      <div class="row mb-7 mt-3">
+          <form class="confirmation-form" method="post">
+              {% csrf_token %}
+              <p class="confirmation-message">¡ADVERTENCIA! Está a punto de eliminar la compra "{{ object }}". Esta acción es irreversible.</p>
+              <input class="btn-confirm btn-danger" type="submit" value="Confirmar Eliminación">
+              <!-- Utiliza la etiqueta <a> para crear un enlace -->
+              <a style="background-color: blue;" href="{% url 'compras' %}" class="btn-confirm btn-success btn-volver">Volver</a>
+          </form>
+
+          
+          
+      </div>
+  </div>
+</main>
+
+
+<style>
+  .btn-confirm {
+    padding: 10px 20px;  /* Ajusta estos valores según tus necesidades */
+}
+
+.btn-volver {
+    /* Puedes agregar estilos adicionales para el botón Volver si es necesario */
+}
+  /* Estilos para el formulario de confirmación */
+.confirmation-form {
+  max-width: 400px; /* Ancho máximo del formulario */
+  margin: 0 auto; /* Centrar el formulario horizontalmente */
+  background-color: #f8f9fa; /* Color de fondo del formulario */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra del formulario */
+}
+
+/* Estilos para el texto de la confirmación */
+.confirmation-form p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.confirmation-message {
+  background-color: #f8d7da; /* Fondo rojo claro para el mensaje de advertencia */
+  color: #721c24; /* Color de texto oscuro para mayor contraste */
+  border: 1px solid #f5c6cb; /* Borde rojo más oscuro */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 15px; /* Espaciado interno */
+  font-size: 18px; /* Tamaño de fuente */
+  font-weight: bold; /* Texto en negrita para mayor énfasis */
+}
+
+
+
+.btn-confirm {
+  background-color: #dc3545; /* Rojo, color de fondo del botón */
+  color: #fff; /* Color del texto del botón */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+}
+
+.btn-confirm:hover {
+  background-color: #bd2130; /* Cambio de color al pasar el mouse sobre el botón */
+}
+
+</style>
+{%endblock%}

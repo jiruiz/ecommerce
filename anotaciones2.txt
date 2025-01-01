@@ -1,0 +1,236 @@
+/**
+ * Owl Carousel v2.3.3
+ * Copyright 2013-2018 David Deutsch
+ * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
+ */
+.owl-carousel,.owl-carousel .owl-item{-webkit-tap-highlight-color:transparent;position:relative}.owl-carousel{display:none;width:100%;z-index:1}.owl-carousel .owl-stage{position:relative;-ms-touch-action:pan-Y;touch-action:manipulation;-moz-backface-visibility:hidden}.owl-carousel .owl-stage:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}.owl-carousel .owl-stage-outer{position:relative;overflow:hidden;-webkit-transform:translate3d(0,0,0)}.owl-carousel .owl-item,.owl-carousel .owl-wrapper{-webkit-backface-visibility:hidden;-moz-backface-visibility:hidden;-ms-backface-visibility:hidden;-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);-ms-transform:translate3d(0,0,0)}.owl-carousel .owl-item{min-height:1px;float:left;-webkit-backface-visibility:hidden;-webkit-touch-callout:none}.owl-carousel .owl-item img{display:block;width:100%}.owl-carousel .owl-dots.disabled,.owl-carousel .owl-nav.disabled{display:none}.no-js .owl-carousel,.owl-carousel.owl-loaded{display:block}.owl-carousel .owl-dot,.owl-carousel .owl-nav .owl-next,.owl-carousel .owl-nav .owl-prev{cursor:pointer;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.owl-carousel .owl-nav button.owl-next,.owl-carousel .owl-nav button.owl-prev,.owl-carousel button.owl-dot{background:0 0;color:inherit;border:none;padding:0!important;font:inherit}.owl-carousel.owl-loading{opacity:0;display:block}.owl-carousel.owl-hidden{opacity:0}.owl-carousel.owl-refresh .owl-item{visibility:hidden}.owl-carousel.owl-drag .owl-item{-ms-touch-action:none;touch-action:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.owl-carousel.owl-grab{cursor:move;cursor:grab}.owl-carousel.owl-rtl{direction:rtl}.owl-carousel.owl-rtl .owl-item{float:right}.owl-carousel .animated{animation-duration:1s;animation-fill-mode:both}.owl-carousel .owl-animated-in{z-index:0}.owl-carousel .owl-animated-out{z-index:1}.owl-carousel .fadeOut{animation-name:fadeOut}@keyframes fadeOut{0%{opacity:1}100%{opacity:0}}.owl-height{transition:height .5s ease-in-out}.owl-carousel .owl-item .owl-lazy{opacity:0;transition:opacity .4s ease}.owl-carousel .owl-item img.owl-lazy{transform-style:preserve-3d}.owl-carousel .owl-video-wrapper{position:relative;height:100%;background:#000}.owl-carousel .owl-video-play-icon{position:absolute;height:80px;width:80px;left:50%;top:50%;margin-left:-40px;margin-top:-40px;background:url(owl.video.play.png) no-repeat;cursor:pointer;z-index:1;-webkit-backface-visibility:hidden;transition:transform .1s ease}.owl-carousel .owl-video-play-icon:hover{-ms-transform:scale(1.3,1.3);transform:scale(1.3,1.3)}.owl-carousel .owl-video-playing .owl-video-play-icon,.owl-carousel .owl-video-playing .owl-video-tn{display:none}.owl-carousel .owl-video-tn{opacity:0;height:100%;background-position:center center;background-repeat:no-repeat;background-size:contain;transition:opacity .4s ease}.owl-carousel .owl-video-frame{position:relative;z-index:1;height:100%;width:100%}
+
+<body>
+    {% if request.user.is_staff %}
+    {% include 'miapp/includes/miapp_menu.html' %}
+    {% else %}
+    <!-- jewellery section start -->
+    <div class="jewellery_section">
+        <div class="container">
+            <div id="jewellery_main_slider" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for chunk in articulos|slice:"0:3" %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="container">
+                            <h1 class="fashion_taital">E-House Accesorios</h1>
+                            <div class="fashion_section_2">
+                                <div class="row">
+                                    {% for articulo in chunk %}
+                                    <div class="col-lg-4 col-sm-4">
+                                        <div class="box_main">
+                                            <h4 class="shirt_text">{{ articulo.nombre }}</h4>
+                                            <p class="price_text">Precio <span style="color: #262626;">$ {{ articulo.precio|floatformat:"0" }}</span></p>
+                                            <div class="jewellery_img">
+                                                {% if articulo.image %}
+                                                <img src="{{ articulo.image.url }}" alt="{{ articulo.nombre }}">
+                                                {% else %}
+                                                <img src="{% static 'miapp/images/neklesh-img.png' %}" alt="No Articulos">
+                                                {% endif %}
+                                            </div>
+                                            <div class="btn_main">
+                                                <div class="buy_bt"><a href="{% url 'agregar_al_carrito' articulo.id %}" class="add-to-cart-btn" data-articulo-id="{{ articulo.id }}">Comprar</a></div>
+                                                <div class="seemore_bt"><a href="{% url 'articulo-detail' pk=articulo.id %}">Ver</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- jewellery section end -->
+
+    <!-- Botones del carrusel fuera de la sección .jewellery_section -->
+    <div class="carousel-buttons">
+        <a class="carousel-control-prev" href="#jewellery_main_slider" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <div class="additional-content">
+            <p>Deslízate aquí</p>
+        </div>
+        <a class="carousel-control-next" href="#jewellery_main_slider" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</body>
+
+
+
+ <!-- scripts -->
+    <script src="{% static 'miapp/js/jquery.min.js' %}"></script>
+    <script src="{% static 'miapp/js/popper.min.js' %}"></script>
+    <script src="{% static 'miapp/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'miapp/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'miapp/js/jquery.mCustomScrollbar.js' %}"></script>
+    <script src="{% static 'miapp/js/jquery-3.0.0.min.js' %}"></script>
+    <script src="{% static 'miapp/js/plugins.js' %}"></script>
+    <!-- Custom scripts -->
+    <script src="{% static 'miapp/js/custom.js' %}"></script>
+    <script src="{% static 'miapp/js/script.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+    <script>
+        window.addEventListener("load", function () {
+            var loader = document.getElementById("loader-container");
+            loader.style.display = "none";
+        });
+
+        window.addEventListener('scroll', function () {
+            var scrollPosition = window.scrollY;
+            var carouselButtons = document.querySelector('.carousel-buttons');
+            var additionalContent = document.querySelector('.additional-content');
+
+            if (scrollPosition > 100) {
+                carouselButtons.style.display = 'block';
+                additionalContent.style.display = 'block';
+            } else {
+                carouselButtons.style.display = 'none';
+                additionalContent.style.display = 'none';
+            }
+        });
+    </script>
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;
+    }
+
+    .jewellery_section {
+        margin-top: 50px;
+        padding-bottom: 80px;
+        position: relative;
+    }
+
+    .carousel-buttons {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #FFCC00;
+        padding: 10px;
+        text-align: center;
+        z-index: 9999;
+        width: 100%;
+        max-height: 20px;
+        display: none;
+    }
+
+    .carousel-buttons a {
+        color: #fff;
+        margin: 0 10px;
+    }
+
+    .additional-content {
+        margin: -30px;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        color: black;
+    }
+
+    .box_main {
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+
+    .jewellery_img img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+</style>
+
+
+
+ window.addEventListener("load", function () {
+            var loader = document.getElementById("loader-container");
+            loader.style.display = "none";
+        });
+
+        window.addEventListener('scroll', function () {
+            var scrollPosition = window.scrollY;
+            var carouselButtons = document.querySelector('.carousel-buttons');
+            var additionalContent = document.querySelector('.additional-content');
+
+            if (scrollPosition > 80) {
+                carouselButtons.style.display = 'block';
+                additionalContent.style.display = 'block';
+            } else {
+                carouselButtons.style.display = 'none';
+                additionalContent.style.display = 'none';
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<main role="main" class="container">
+    <div class="row mb-5 mt-3 justify-content-center">
+        <div class="login-form card p-4">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <h2 class="text-center mb-4">Modificar Compra</h2>
+                <div class="form-group">
+                    <label for="{{ form.monto.id_for_label }}" class="form-label">Monto</label>
+                    {{ form.monto }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.monto_total.id_for_label }}" class="form-label">Monto Total</label>
+                    {{ form.monto_total }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.usuario.id_for_label }}" class="form-label">Usuario</label>
+                    {{ form.usuario }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Artículos</label>
+                    {{ form.articulos }}
+                </div>
+                <div class="text-center mt-4">
+                    <input type="submit" value="Modificar Compra" class="btn btn-primary btn-block">
+                </div>
+            </form>
+        </div>
+    </div>
+</main>

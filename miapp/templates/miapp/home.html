@@ -1,0 +1,392 @@
+{% extends 'miapp/base.html' %}
+
+{% include 'miapp/includes/miapp_menu.html' %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<head>{% load static %}  
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | DataTables</title>
+  
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'%}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/css/adminlte.min.css'%}">
+</head>
+<body>
+   
+{% if not request.user.is_staff %}    
+
+
+
+ 
+    <div class="banner_bg_main">
+        <!-- banner section start/////////////////////parte de VAMOS A COMENZAR A -->
+        <div class="banner_section layout_padding">
+            <div class="container">
+                <div id="my_slider" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    
+                                    <h1 class="banner_taital orange_text">VAMOS A COMENZAR <br>MIRA LOS MEJORES PRODUCTOS</h1>
+                                    <div class="buynow_bt"><a href="{% url 'articulos' %}">Comprar</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h1 class="banner_taital orange_text">ARMA A TU ESTILO <br>CON LOS MEJORES COMPONENTES</h1>
+                                    <div class="buynow_bt"><a href="{% url 'componentes' %}">Comprar</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h1 class="banner_taital orange_text">CONSTRUÍ<br>CON LOS MEJORES ACCESORIOS</h1>
+                                    <div class="buynow_bt"><a href="{% url 'accesorios' %}">Comprar</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#my_slider" role="button" data-slide="prev">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a class="carousel-control-next" href="#my_slider" role="button" data-slide="next">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- banner section end /////////////////////parte de VAMOS A COMENZAR A COMPRAR -->
+    </div>
+{% endif %}   
+<!-- jewellery section start -->
+<div class="jewellery_section">
+    <div class="container">
+        <!-- Contenido del carrusel -->
+        <div id="jewellery_main_slider" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                {% for chunk in articulos|slice:"0:3" %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <div class="container">
+                        <section class="content-header">
+                            <div class="container-fluid">
+                              <div class="row mb-2">
+                                <div class="col-sm-6">
+                                  
+                                </div>
+                                <div class="col-sm-6">
+                                  <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="{% url 'home'%}">Home</a></li>
+                                    <li class="breadcrumb-item active">Articulos</li>
+                                  </ol>
+                                </div>
+                              </div>
+                            </div><!-- /.container-fluid -->
+                          </section>
+                        
+                          <div class="fashion_section_2">
+                            <div class="row">
+                                {% for articulo in chunk %}
+                                
+                                <div class="col-lg-4 col-sm-4">
+                                    <div class="box_main">
+                                        {% if request.user.is_staff %}
+                                        <div class="card-body">
+                                            <a href="{% url 'articulo-update' articulo.id %}" class="btn btn-sm btn-primary">Editar</a>
+                                            <a href="{% url 'articulo-delete' articulo.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        <h4 class="shirt_text">{{ articulo.nombre }}</h4>
+                                        <p class="price_text">Precio <span style="color: #262626;">$ {{ articulo.precio|floatformat:"0" }}</span></p>
+                                        
+                                        {% if articulo.stock > 0 %}
+                                            <div class="jewellery_img">
+                                                {% if articulo.image %}
+                                                    <img src="{{ articulo.image.url }}" alt="{{ articulo.nombre }}">
+                                                {% else %}
+                                                    <img src="{% static 'miapp/images/neklesh-img.png' %}" alt="No Articulos">
+                                                {% endif %}
+                                            </div>
+                                        {% else %}
+                                            <p style="color: red;">Sin stock disponible</p>
+                                            <div class="jewellery_img">
+                                                {% if articulo.image %}
+                                                    <img src="{{ articulo.image.url }}" alt="{{ articulo.nombre }}">
+                                                {% else %}
+                                                    <img src="{% static 'miapp/images/neklesh-img.png' %}" alt="No Articulos">
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        
+                                        <div class="mt-4">
+                                            {% if articulo.stock > 0 %}
+                                                {% if user.is_authenticated %}
+                                                    <a href="{% url 'agregar_al_carrito' articulo.id %}" class="btn btn-primary btn-lg btn-flat d-inline-block">
+                                                        <i class="fas fa-cart-plus fa-lg mr-2"></i> Add to Cart
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{% url 'ver_carrito' %}" class="btn btn-primary btn-lg btn-flat d-inline-block">
+                                                        <i class="fas fa-cart-plus fa-lg mr-2"></i> Add to Cart
+                                                    </a>
+                                                {% endif %}
+                                                
+                                                <a href="{% url 'articulo-detail' pk=articulo.id %}" class="btn btn-default btn-lg btn-flat d-inline-block">
+                                                    <i class="fas fa-eye fa-lg mr-2"></i> Ver
+                                                </a>
+                                            {% else %}
+                                                <button class="btn btn-secondary btn-lg btn-flat d-inline-block" disabled>
+                                                    <i class="fas fa-cart-plus fa-lg mr-2"></i> Sin stock
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Fin del contenido del carrusel -->
+    </div>
+
+    <!-- Descripciones del carrusel -->
+    <div id="jewellery_main_slider" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+                <div class="carousel-caption d-none d-md-block">
+                    <p>Descripción del primer slide.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="carousel-caption d-none d-md-block">
+                    <p>Descripción del segundo slide.</p>
+                </div>
+            </div>
+            
+            <!-- Slide 3 -->
+            <div class="carousel-item">
+                <div class="carousel-caption d-none d-md-block">
+                    <p>Descripción del tercer slide.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Controles de navegación -->
+        <a class="carousel-control-prev" href="#jewellery_main_slider" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#jewellery_main_slider" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+
+</body>
+
+
+<!-- En home.html, asegúrate de cargar estos scripts -->
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    /* También, asegúrate de que no hay márgenes o rellenos no deseados en elementos específicos */
+    .banner_bg_main {
+        margin: 0;
+        padding: 0;
+        background-image: url('{% static 'miapp/images/eco.png' %}');
+        background-size: cover;
+        background-position: center;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .jewellery_img img {
+        max-width: 100%;
+        height: 100%;
+    }
+    
+    .box_main {
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    
+    .jewellery_img img {
+        width: 100%;
+        height: 300px;
+        object-fit: contain;
+    }
+    
+    /* Estilos para el loader */
+    #loader-container {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+    
+    .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .jewellery_section {
+        
+        padding-bottom: 80px; /* Agrega espacio en la parte inferior de .jewellery_section para evitar superposiciones */
+        position: relative;
+    }
+    
+    .carousel-buttons {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #FFCC00;
+        padding: 10px;
+        text-align: center;
+        z-index: 9999;
+        width: 100%; /* Ajusta el ancho del contenedor principal */
+        max-height: 20px; /* Establece un ancho máximo para evitar que se haga demasiado ancho en pantallas grandes */
+        display: none;  
+    }
+
+    .carousel-buttons a {
+        color: #fff;
+        margin: 0 10px; /* Espaciado entre los botones */
+    }
+
+    .additional-content {
+        margin: -30px; /* Espaciado superior e inferior del contenido adicional */
+        
+    }
+    .carousel-control-next-icon {
+        color: black;
+    }
+    /* Estilos para pantallas medianas y grandes */
+  @media (min-width: 768px) {
+    .content-wrapper {
+        margin: 0;
+    }
+
+    .product-image-thumb img {
+        width: 100px;
+        margin-bottom: 20px;
+    }
+}
+
+/* Estilos para pantallas grandes */
+@media (min-width: 992px) {
+    .content-wrapper {
+        padding: 40px;
+    }
+
+    .product-image-thumb img {
+        width: 120px;
+    }
+}
+/* styles.css */
+
+body, html {
+  margin: 0;
+  height: 100%;
+}
+
+
+.content-wrapper {
+  flex-grow: 1; /* Permite que el contenido crezca y ocupe todo el espacio disponible */
+  margin: 0;
+  padding: 20px;
+  max-height: calc(100vh - 100px); /* Ajusta la altura máxima según la altura del footer */
+  overflow-y: auto; /* Agrega desplazamiento vertical si el contenido excede la altura máxima */
+}
+
+.footer {
+  background-color: #f8f9fa;
+  padding: 10px;
+  text-align: center;
+  flex-shrink: 0; /* Evita que el footer se contraiga cuando el contenido es demasiado grande */
+}
+
+.orange_text {
+    color: orange;
+}
+
+
+</style>
+
+<script src="{% static 'miapp/js/jquery.min.js' %}"></script>
+<script src="{% static 'miapp/js/popper.min.js' %}"></script>
+<script src="{% static 'miapp/js/bootstrap.bundle.min.js' %}"></script>
+
+<script>
+    window.addEventListener("load", function () {
+        
+        var loader = document.getElementById("loader-container");
+        // Oculta el loader cuando la página se carga completamente
+        loader.style.display = "none";
+    });
+    window.addEventListener('scroll', function() {
+        var scrollPosition = window.scrollY;
+        var carouselButtons = document.querySelector('.carousel-buttons');
+        var additionalContent = document.querySelector('.additional-content-container');
+        
+        if (scrollPosition > 100) { // Cambia este valor según la posición del scroll en la que deseas que aparezcan los elementos
+            carouselButtons.style.display = 'block';
+            additionalContent.style.display = 'block';
+        } else {
+            carouselButtons.style.display = 'none';
+            additionalContent.style.display = 'none';
+        }
+    });
+    
+    
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,15 @@
+{% extends 'miapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Página de Pago</h1>
+    
+    <!-- Agrega aquí el contenido y el formulario de pago, como información de tarjeta, dirección de envío, etc. -->
+    
+    <form method="post" action="#">
+        {% csrf_token %}
+        <!-- Agrega aquí los campos del formulario de pago -->
+        <button type="submit">Pagar</button>
+    </form>
+</div>
+{% endblock %}

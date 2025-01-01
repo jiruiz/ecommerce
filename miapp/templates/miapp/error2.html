@@ -1,0 +1,12 @@
+{% extends 'miapp/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="alert alert-success" role="alert">
+            La compra se ha realizado con éxito. ¡Gracias por tu compra!
+        </div>
+
+        <p><a href="{% url 'home' %}">Volver a la página de inicio</a></p>
+    </div>
+{% endblock %}

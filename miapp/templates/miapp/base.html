@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <!-- Meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %}</title>
+        
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="{% static 'miapp/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'miapp/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'miapp/css/responsive.css' %}">
+        <link rel="stylesheet" href="{% static 'miapp/fontawesome/css/all.min.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+        <link rel="icon" href="{% static 'miapp/images/fevicon.png' %}" type="image/gif" />
+        
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    
+        <!-- Inline Styles -->
+        <style>
+            .navbar {
+                background-color: #FFCC00;
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 9999;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 20px;
+            }
+    
+            .centered-logo {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+    
+            .centered-logo img {
+                width: 40px;
+                height: auto;
+            }
+    
+            body, div, .container {
+                margin: 0;
+                padding: 0;
+                font-size: 16px;
+            }
+        </style>
+    </head>
+    
+
+
+
+   <body class="hold-transition sidebar-mini">
+      
+      <!-- banner bg main start -->
+
+<!-- header top section start -->
+<div class="container">
+    <div class="header_section_top">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="custom_menu">
+                    <ul>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'articulos' %}">Articulos</a></li>
+                        <li><a href="{% url 'componentes' %}">Componentes de PC</a></li>
+                        <li><a href="{% url 'accesorios' %}">Accessorios</a></li>
+                        <li><a href="{% url 'computacion' %}">Computacion</a></li>
+                        {% if request.user.is_staff %}
+                            <li><p>---</p></li>
+                            <li><a href="{% url 'vista_admin' %}">Panel Administrador</a></li>
+                        {% else %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- header top section end -->
+
+<!-- logo section start -->
+<div class="logo_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- Logo content can be added here if needed -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- logo section end -->
+
+<!-- header section start -->
+<div class="header_section">
+    <div class="container">
+        <div class="containt_main" style="display: flex; align-items: center; justify-content: space-between;">
+            
+            <!-- Sidebar menu -->
+            <div class="sidenav" id="mySidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'articulos' %}">Articulos</a></li>
+                    <li><a href="{% url 'componentes' %}">Componentes</a></li>
+                    <li><a href="{% url 'accesorios' %}">Accessorios</a></li>
+                    <li><a href="{% url 'computacion' %}">Computacion</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'perfil' %}">Mi Perfil</a></li>
+                        <li><a href="{% url 'verDatosUsuario' %}">Datos Personales</a></li>
+                    {% else %}
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Toggle icon for sidenav -->
+            <span style="display: flex; align-items: center;" class="toggle_icon" onclick="openNav()">
+                <img src="/static/miapp/images/toggle-icon2.png" alt="Ícono de alternar menú" style="width: 24px; height: 24px;">
+            </span>
+
+            <!-- Dropdown for categories -->
+            <div class="dropdown">
+                <button style="background-color: #FFCC00; color: black; font-size: 14px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Categorias
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{% url 'articulos' %}">Articulos</a>
+                    <a class="dropdown-item" href="{% url 'componentes' %}">Componentes</a>
+                    <a class="dropdown-item" href="{% url 'accesorios' %}">Accessorios</a>
+                    <a class="dropdown-item" href="{% url 'computacion' %}">Computacion</a>
+                </div>
+            </div>
+
+            <!-- Search bar -->
+            <div class="main">
+                <form action="{% url 'search' %}" method="get" style="display: flex; align-items: center;">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="nombre" placeholder="Buscar Articulo">
+                        <div class="input-group-append">
+                            <button title="buscar" class="btn btn-secondary" type="submit" style="background-color: #f26522; border-color:#f26522">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Header box with login and cart -->
+            <div class="header_box">
+                <div class="login_menu">
+                    <ul>
+                        <li class="nav-item">
+                            <a href="{% url 'ver_carrito' %}" class="nav-link" style="color: #000; text-decoration: none; display: flex; align-items: center;">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span class="padding_10" style="margin-top: 6px; color: #000;">Carrito</span>
+                                {% if cantidad_en_carrito > 0 %}
+                                    <span class="badge badge-danger" style="position: relative; top: -10px; left: -5px;">{{ cantidad_en_carrito }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        {% if request.user.is_authenticated %}
+                            <li>
+                                <div class="dropdown" style="display:flex;">
+                                    <button style="margin-top: 2px;" class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-user" aria-hidden="true"></i> <!-- Ícono de cuenta -->
+                                        <span style="color: #000;">{{ request.user.username }}</span>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                        <a class="dropdown-item" href="{% url 'perfil' %}" style="color: #000;">
+                                            <i class="fa fa-user-circle" aria-hidden="true"></i> Mi Perfil
+                                        </a>
+                                        <a class="dropdown-item" href="{% url 'verDatosUsuario' %}" style="color: #000;">
+                                            <i class="fa fa-address-card" aria-hidden="true"></i> Mis Datos Personales
+                                        </a>
+                                        <a class="dropdown-item" href="{% url 'ver_compras' %}" style="color: #000;">
+                                            <i class="fa fa-shopping-bag" aria-hidden="true"></i> Mis Compras
+                                        </a>
+                                        <a class="dropdown-item" href="{% url 'cambiar_clave' request.user.id %}" style="color: #000;">
+                                            <i class="fa fa-key" aria-hidden="true"></i> Cambiar Clave
+                                        </a>
+                                        <a class="dropdown-item" href="{% url 'logout' %}" style="color: #000;">
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a class="nav-link" href="{% url 'login' %}" style="color: #000; text-decoration: none; display: flex; align-items: center;">
+                                    <i class="fa fa-user" aria-hidden="true"></i> <!-- Ícono de cuenta -->
+                                    <span class="padding_10" style="margin-top: -2px; color: #000;">Login</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- header section end -->
+
+        
+      
+      <!-- banner bg main end -->
+      
+      
+      {% block content %}
+      
+
+      {% endblock %}
+
+      <!-- footer section start -->
+      <div class="footer_section layout_padding">
+         <div class="container">
+            
+            <div class="centered-logo">
+               <a href="{% url 'home' %}">
+                   <img alt="logo" src="{% static 'miapp/images/12.png' %}">
+               </a>
+               
+                <p class="lead">Metodos de Pago:</p>
+                <img src="{% static 'miapp/lib/adminlte-master/img/credit/visa.png'%}" alt="Visa">
+                <img src="{% static 'miapp/lib/adminlte-master/img/credit/mastercard.png'%}" alt="Mastercard">
+                <img src="{% static 'miapp/lib/adminlte-master/img/credit/american-express.png'%}" alt="American Express">
+                <img src="{% static 'miapp/lib/adminlte-master/img/credit/paypal2.png'%}  " alt="Paypal">
+
+               
+             
+              <!-- /.col -->
+           </div>
+           
+            
+            
+            <div class="footer_menu">
+               <ul>
+                  <li><a href="{% url 'home' %}">Home</a></li>
+                  <li><a href="{% url 'articulos' %}">Articulos</a></li>
+                  <li><a href="#">Componentes de PC</a></li>
+                  <li><a href="#">Accessorios</a></li>
+                  <li><a href="#">Contacto</a></li>
+                  {% if request.user.is_staff %}
+                  <li><a href="{% url 'articulo-create' %}">[CREAR ARTICULO]</a></li>
+                  {% else %}
+                  {% endif %}
+               </ul>
+            </div>
+            <div class="location_main">Solicite ayuda al siguiente número de telefono : <a href="#">+1 1800 1200 1200</a></div>
+         </div>
+      </div>
+      <!-- footer section end -->
+
+
+      <!---------------------------------------pie de la pagina para la base------------------------------------------->
+      <!-- copyright section start -->
+      <div class="copyright_section">
+         <div class="container">
+            <p class="copyright_text">© 2023 Todos los derechos reservados. Diseñado por<a href="https://html.design"> Juan Ruiz y Esteban Ramirez</a></p>
+         </div>
+      </div>
+   </body>
+      <!-- copyright section end -->
+      <!-- Javascript files-->
+   <!-- Asegúrate de que estas rutas reflejen la ubicación de tus archivos JavaScript en la carpeta miapp/ -->
+   <!-- Cargar jQuery y Bootstrap JavaScript desde archivos estáticos -->
+   <script src="{% static 'jquery/jquery-3.5.1.slim.min.js' %}"></script>
+   <script src="{% static 'popperjs/popper.min.js' %}"></script>
+   <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'miapp/js/jquery.min.js' %}"></script>
+   <script src="{% static 'miapp/js/popper.min.js' %}"></script>
+   <script src="{% static 'miapp/js/bootstrap.bundle.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'miapp/js/jquery-3.0.1.min.js' %}"></script>
+   <script src="{% static 'miapp/js/plugin.js' %}"></script>
+   <!-- sidebar -->
+   <script src="{% static 'miapp/js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+   <script src="{% static 'miapp/js/custom.js' %}"></script>
+   <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+   <!-- jQuery -->
+    <script src="{% static 'miapp/lib/adminlte-master/plugins/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'miapp/lib/adminlte-master/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'miapp/lib/adminlte-master/js/adminlte.min.js' %}"></script>
+
+   <script>
+      function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+      }
+      
+      function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+      }
+      
+   </script>
+   <script>
+      $(document).ready(function () {
+        // Inicializar el botón de categorías como un menú desplegable
+        $('.dropdown-toggle').dropdown();
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        // Inicializar el botón de lenguaje como un menú desplegable
+        $('#languageDropdown').dropdown();
+      });
+    </script>
+
+   
+</html>

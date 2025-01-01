@@ -1,0 +1,43 @@
+{% extends 'miapp/base.html' %}
+{% block content %}
+<div class="container">
+    <h1>Carrito de Compras</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Precio unitario</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item_data in carrito %}
+            <tr>
+                <td>{{ item_data.item.producto.nombre }}</td>
+                <td>${{ item_data.item.producto.precio }}</td>
+                <td>{{ item_data.item.cantidad }}</td>
+                <td>${{ item_data.subtotal }}</td>
+                <td>
+                    {% if item_data.item.id %}
+                    <form class="d-inline" method="post" action="{% url 'eliminar' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Eliminar</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            
+
+            
+            <tr>
+                <td colspan="3"></td>
+                <td><strong>Total:</strong></td>
+                <td><strong>${{ total }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

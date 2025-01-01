@@ -1,0 +1,130 @@
+{% extends 'miapp/base1.html' %}
+
+{% block title %}Agregar Artículos{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    
+</head>
+
+<body>
+    <main role="main">
+        <div class="form-container">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'miapp/includes/miapp_menu.html' %}
+
+                <div class="form-group">
+                    <span class="form-label">Nombre:</span>
+                    {{ form.nombre }}
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Precio:</span>
+                    {{ form.precio }}
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Stock:</span>
+                    {{ form.stock }}
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Descripción:</span>
+                    {{ form.descripcion }}
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Imagen 1:</span>
+                    {{ form.image }}
+                    {% if form.image.value %}
+                    <img class="img-thumbnail mt-2" src="{{ form.image.value.url }}" alt="Imagen del Artículo">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Imagen 2:</span>
+                    {{ form.image2 }}
+                    {% if form.image2.value %}
+                    <img class="img-thumbnail mt-2" src="{{ form.image.value.url }}" alt="Imagen del Artículo">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Imagen 3:</span>
+                    {{ form.image3 }}
+                    {% if form.image3.value %}
+                    <img class="img-thumbnail mt-2" src="{{ form.image.value.url }}" alt="Imagen del Artículo">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Imagen 4:</span>
+                    {{ form.image4 }}
+                    {% if form.image4.value %}
+                    <img class="img-thumbnail mt-2" src="{{ form.image.value.url }}" alt="Imagen del Artículo">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <span class="form-label">Tipo de Categoría:</span>
+                    {{ form.tipoCategoria }}
+                </div>
+                
+                <button type="submit" class="form-button">Agregar Artículo</button>
+            </form>
+        </div>
+    </main>
+</body>
+<style>
+    body {
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .form-container {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-input {
+        width: calc(100% - 20px);
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .form-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .form-button:hover {
+        background-color: #45a049;
+    }
+
+    .img-thumbnail {
+        max-width: 164px;
+        max-height: 96px;
+    }
+</style>
+</html>
+{% endblock content %}

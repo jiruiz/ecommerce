@@ -1,0 +1,222 @@
+{% extends 'miapp/base.html' %}
+{% load static %}
+{% block title %}Factura{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/bootstrap.min.css' %}">
+      <!-- Cargar Bootstrap CSS desde archivos estáticos -->
+      <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/style.css' %}">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="{% static 'miapp/css/responsive.css' %}">
+      <!-- fevicon -->
+      <link rel="icon" href="{% static 'miapp/images/fevicon.png' %}" type="image/gif" />
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="{% static 'miapp/css/jquery.mCustomScrollbar.min.css' %}">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <!-- fonts -->
+      <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+      <!-- font awesome -->
+      <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- Agrega FontAwesome aquí -->
+      <link rel="stylesheet" href="{% static 'miapp/fontawesome/css/all.min.css' %}">
+      <!--  -->
+      <!-- owl stylesheets -->
+      <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Poppins:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'miapp/css/owl.carousel.min.css' %}">
+      <link rel="stylesheet" href="{% static 'miapp/css/owl.theme.default.min.css' %}">
+      <link rel="stylesheet" href="{% static 'path/to/styles.css' %}">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <!-- En el bloque <head> de tu plantilla base -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/css/adminlte.min.css">
+      <!-- También puedes incluir Bootstrap si es necesario -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+      <!-- Al final del bloque <body> de tu plantilla base, antes del cierre de </body> -->
+      <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/js/adminlte.min.js"></script>
+      <!-- También puedes incluir Bootstrap si es necesario -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="wrapper">
+  <!-- Main content -->
+  <section class="invoice">
+    <!-- title row -->
+    <div class="row">
+      <div class="col-12">
+        <h2 class="page-header">
+          <i class="fas fa-globe"></i> AdminLTE, Inc.
+          <small class="float-right">Date: 2/10/2014</small>
+        </h2>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- info row -->
+    <div class="row invoice-info">
+      <div class="col-sm-4 invoice-col">
+        From
+        <address>
+          <strong>Admin, Inc.</strong><br>
+          795 Folsom Ave, Suite 600<br>
+          San Francisco, CA 94107<br>
+          Phone: (804) 123-5432<br>
+          Email: info@almasaeedstudio.com
+        </address>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-4 invoice-col">
+        To
+        <address>
+          <strong>John Doe</strong><br>
+          795 Folsom Ave, Suite 600<br>
+          San Francisco, CA 94107<br>
+          Phone: (555) 539-1037<br>
+          Email: john.doe@example.com
+        </address>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-4 invoice-col">
+        <b>Invoice #007612</b><br>
+        <br>
+        <b>Order ID:</b> 4F3S8J<br>
+        <b>Payment Due:</b> 2/22/2014<br>
+        <b>Account:</b> 968-34567
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <!-- Table row -->
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Qty</th>
+            <th>Product</th>
+            <th>Serial #</th>
+            <th>Description</th>
+            <th>Subtotal</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>1</td>
+            <td>Call of Duty</td>
+            <td>455-981-221</td>
+            <td>El snort testosterone trophy driving gloves handsome</td>
+            <td>$64.50</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Need for Speed IV</td>
+            <td>247-925-726</td>
+            <td>Wes Anderson umami biodiesel</td>
+            <td>$50.00</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Monsters DVD</td>
+            <td>735-845-642</td>
+            <td>Terry Richardson helvetica tousled street art master</td>
+            <td>$10.70</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Grown Ups Blue Ray</td>
+            <td>422-568-642</td>
+            <td>Tousled lomo letterpress</td>
+            <td>$25.99</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+      <!-- accepted payments column -->
+      <div class="col-6">
+        <p class="lead">Payment Methods:</p>
+        <img src="../../dist/img/credit/visa.png" alt="Visa">
+        <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
+        <img src="../../dist/img/credit/american-express.png" alt="American Express">
+        <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
+
+        <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+          Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr
+          jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+        </p>
+      </div>
+      <!-- /.col -->
+      <div class="col-6">
+        <p class="lead">Amount Due 2/22/2014</p>
+
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <th style="width:50%">Subtotal:</th>
+              <td>$250.30</td>
+            </tr>
+            <tr>
+              <th>Tax (9.3%)</th>
+              <td>$10.34</td>
+            </tr>
+            <tr>
+              <th>Shipping:</th>
+              <td>$5.80</td>
+            </tr>
+            <tr>
+              <th>Total:</th>
+              <td>$265.24</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- ./wrapper -->
+<!-- Page specific script -->
+<!-- Page specific script -->
+<script>
+    window.onload = function() {
+      window.print();
+    };
+  </script>
+  
+</body>
+</html>
+
+{% endblock content%}

@@ -1,0 +1,168 @@
+{% extends 'miapp/base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Articulos</title>
+  
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'%}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/css/adminlte.min.css'%}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <!-- jewellery section start -->
+    <div class="jewellery_section">
+        <div class="container">
+            <section class="content-header">
+                <div class="container-fluid">
+                  <div class="row mb-2">
+                    <div class="col-sm-6">
+                     
+                    </div>
+                    <div class="col-sm-6">
+                      <ol class="breadcrumb float-sm-right">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{% url 'home'%}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'articulos'%}">Articulos</a></li>
+                            <li class="breadcrumb-item active">Accesorios</li>
+                          </ol>
+                      </ol>
+                    </div>
+                  </div>
+                </div><!-- /.container-fluid -->
+              </section>
+            <div class="row">
+                {% for articulo in accesorios %}
+                                        
+                <div class="col-lg-4 col-sm-4">
+                    <div class="box_main">
+                        {% if request.user.is_staff %}
+                        <div class="card-body">
+                            <a href="{% url 'articulo-update' articulo.id %}" class="btn btn-sm btn-primary">Editar</a>
+                            <a href="{% url 'articulo-delete' articulo.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                        </div>
+                        {% endif %}
+                        
+                        <h4 class="shirt_text">{{ articulo.nombre }}</h4>
+                        <p class="price_text">Precio <span style="color: #262626;">$ {{ articulo.precio|floatformat:"0" }}</span></p>
+                        
+                        {% if articulo.stock > 0 %}
+                            <div class="jewellery_img">
+                                {% if articulo.image %}
+                                    <img src="{{ articulo.image.url }}" alt="{{ articulo.nombre }}">
+                                {% else %}
+                                    <img src="{% static 'miapp/images/neklesh-img.png' %}" alt="No Articulos">
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <p style="color: red;">Sin stock disponible</p>
+                            <div class="jewellery_img">
+                                {% if articulo.image %}
+                                    <a href="{% url 'articulo-detail' pk=articulo.id %}">
+                                        <img src="{{ articulo.image.url }}" alt="{{ articulo.nombre }}">
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'articulo-detail' pk=articulo.id %}">
+                                        <img src="{% static 'miapp/images/neklesh-img.png' %}" alt="No Articulos">
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="mt-4">
+                            {% if articulo.stock > 0 %}
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'agregar_al_carrito' articulo.id %}" class="btn btn-primary btn-lg btn-flat d-inline-block">
+                                        <i class="fas fa-cart-plus fa-lg mr-2"></i> Add to Cart
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'ver_carrito' %}" class="btn btn-primary btn-lg btn-flat d-inline-block">
+                                        <i class="fas fa-cart-plus fa-lg mr-2"></i> Add to Cart
+                                    </a>
+                                {% endif %}
+                                
+                                <a href="{% url 'articulo-detail' pk=articulo.id %}" class="btn btn-default btn-lg btn-flat d-inline-block">
+                                    <i class="fas fa-eye fa-lg mr-2"></i> Ver
+                                </a>
+                            {% else %}
+                                <button class="btn btn-secondary btn-lg btn-flat d-inline-block" disabled>
+                                    <i class="fas fa-cart-plus fa-lg mr-2"></i> Sin stock
+                                </button>
+                            {% endif %}
+                        </div>
+                        
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+    </div>
+</body>
+<style>
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .jewellery_section {
+        margin-top: 0px;
+        padding-bottom: 80px; /* Agrega espacio en la parte inferior de .jewellery_section para evitar superposiciones */
+        position: relative;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    /* También, asegúrate de que no hay márgenes o rellenos no deseados en elementos específicos */
+    .banner_bg_main {
+        margin: 0;
+        padding: 0;
+        background-image: url('{% static 'miapp/images/eco.png' %}');
+        background-size: cover;
+        background-position: center;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .jewellery_img img {
+        max-width: 100%;
+        height: 100%;
+    }
+    
+    .box_main {
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    
+    .jewellery_img img {
+        width: 100%;
+        height: 300px;
+        object-fit: contain;
+    }
+    
+</style>
+</html>
+{% endblock content %}

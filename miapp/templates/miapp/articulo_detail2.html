@@ -1,0 +1,19 @@
+{% extends 'miapp/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <img src="{{ object.image.url }}" alt="{{ object.nombre }}" class="img-fluid">    
+      <a href="{% url 'agregar_al_carrito' articulo.id %}" class="btn btn-primary">Comprar</a>
+    </div>
+    
+    <div class="col-md-6">
+      <h1>{{ object.nombre }}</h1>
+      <p>Precio: ${{ object.precio }}</p>
+      <p>Descripción: {{ object.descripcion|safe }}</p>
+      
+    </div>
+  </div>
+</div>
+{% endblock %}

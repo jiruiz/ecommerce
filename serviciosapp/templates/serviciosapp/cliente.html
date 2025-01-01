@@ -1,0 +1,118 @@
+
+{% extends 'miapp/base2.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+  
+</head>
+
+ 
+  <body class="hold-transition sidebar-mini" >
+  
+<div class="wrapper">
+  <!-- Navbar -->
+  
+  <!-- /.navbar -->
+
+ 
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper ">
+    <!-- Content Header (Page header) -->
+    
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">DataTable with default features</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <!-- Table content goes here -->
+                <thead>
+                    <tr>
+                        <th>ID Cliente</th>
+                        <th>Creado</th>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <!-- Agrega más columnas según los campos de tu modelo Compra si es necesario -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cliente in cliente_list  %}
+                        <tr>
+                            <td>{{ cliente.idCliente }}</td>
+                            <td>{{ cliente.created }}</td>
+                            <td>{{ cliente.nombre }}</td>
+                            <td>{{ cliente.telefono }}</td>
+                            <td>{{ cliente.correo}}</td> <!-- Accede al nombre de usuario del usuario asociado a la compra -->
+                            <!-- Agrega más campos según los campos de tu modelo Compra si es necesario -->
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">No hay compras disponibles.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+  <!-- /.content-wrapper -->
+  
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+
+
+<!-- Page specific script -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+</body>
+</html>
+
+{% endblock content%}
+

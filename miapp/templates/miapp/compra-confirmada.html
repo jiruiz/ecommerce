@@ -1,0 +1,106 @@
+{% extends 'miapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    {% load static %}
+   
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/bootstrap.min.css' %}">
+    <!-- Cargar Bootstrap CSS desde archivos estáticos -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <!-- style css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/style.css' %}">
+    <!-- Responsive-->
+    <link rel="stylesheet" href="{% static 'miapp/css/responsive.css' %}">
+    <!-- fevicon -->
+    <link rel="icon" href="{% static 'miapp/images/fevicon.png' %}" type="image/gif" />
+    <!-- Scrollbar Custom CSS -->
+    <link rel="stylesheet" href="{% static 'miapp/css/jquery.mCustomScrollbar.min.css' %}">
+    <!-- Tweaks for older IEs-->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- font awesome -->
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Agrega FontAwesome aquí -->
+    <link rel="stylesheet" href="{% static 'miapp/fontawesome/css/all.min.css' %}">
+    <!--  -->
+    <!-- owl stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Poppins:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'miapp/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'miapp/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'path/to/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- En el bloque <head> de tu plantilla base -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/css/adminlte.min.css">
+    <!-- También puedes incluir Bootstrap si es necesario -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Al final del bloque <body> de tu plantilla base, antes del cierre de </body> -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/js/adminlte.min.js"></script>
+    <!-- También puedes incluir Bootstrap si es necesario -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<div class="container mt-5">
+    <h1 class="text-center mb-4" style="background-color: #FFCC00; color: black; padding: 10px; border-radius: 5px;">Confirmación de Compra</h1>
+    
+    <div class="card" style="border: 1px solid #FFCC00; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <div class="card-body">
+            <h5 class="card-title">Detalles de tu compra:</h5>
+
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID de Compra</th>
+                        <th>Fecha</th>
+                        <th>Artículos</th>
+                        <th>Monto Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ compra.id }}</td>  <!-- Usa el atributo 'id' en lugar de 'idCompra' -->
+                        <td>{{ compra.fecha }}</td>
+                        <td>
+                            {% if compra.articulos.exists %}  <!-- Verifica si hay artículos antes de iterar -->
+                                {% for articulo in compra.articulos.all %}
+                                    {{ articulo.nombre }}
+                                    <!-- Puedes acceder a otros campos del artículo si los necesitas -->
+                                    <br>
+                                {% endfor %}
+                            {% else %}
+                                No hay artículos en esta compra.
+                            {% endif %}
+                        </td>
+                        <td>${{ compra.monto_total|floatformat:2 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="card-text"><strong>Total de la compra:</strong> ${{ compra.monto_total|floatformat:2 }}</p>
+
+            <p class="card-text">Gracias por tu compra. Recibirás una confirmación por correo electrónico pronto.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

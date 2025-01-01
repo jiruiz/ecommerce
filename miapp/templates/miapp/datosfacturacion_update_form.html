@@ -1,0 +1,173 @@
+{% extends 'miapp/base.html' %}
+{% load static %} 
+{% block title %}Modificar Datos de Facturación{% endblock %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos Facturacion</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/bootstrap.min.css' %}">
+      <!-- Cargar Bootstrap CSS desde archivos estáticos -->
+      <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/style.css' %}">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="{% static 'miapp/css/responsive.css' %}">
+      <!-- fevicon -->
+      <link rel="icon" href="{% static 'miapp/images/fevicon.png' %}" type="image/gif" />
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="{% static 'miapp/css/jquery.mCustomScrollbar.min.css' %}">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <!-- fonts -->
+      <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+      <!-- font awesome -->
+      <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- Agrega FontAwesome aquí -->
+      <link rel="stylesheet" href="{% static 'miapp/fontawesome/css/all.min.css' %}">
+      <!--  -->
+      <!-- owl stylesheets -->
+      <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Poppins:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'miapp/css/owl.carousel.min.css' %}">
+      <link rel="stylesheet" href="{% static 'miapp/css/owl.theme.default.min.css' %}">
+      <link rel="stylesheet" href="{% static 'path/to/styles.css' %}">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      
+      <!-- También puedes incluir Bootstrap si es necesario -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      <body>
+<main role="main" class="container">
+    <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+             
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="{% url 'home'%}">Home</a></li>
+                
+                <li class="breadcrumb-item"><a href="{% url 'verDatosUsuario'%}">Mis Datos</a></li>
+                <li class="breadcrumb-item active">Modificación de Datos</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+    <div class="row mb-5 mt-3 justify-content-center">
+        {% if 'ok' in request.GET %}
+            <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+                <h5 style="color:green;">Modificación Exitosa!</h5>
+                <a style="background-color:#00f300; color:black;" href="{% url 'verDatosUsuario' %}" class="btn btn-secondary">
+                    Haz clic aquí para ver los cambios
+                </a>
+            </div>
+        {% else %}
+        <div class="login-form card p-4">
+            <form action="" method="post" enctype='multipart/form-data'>
+                {% csrf_token %}
+                <h2 class="text-center mb-4"><strong>Datos de Facturacion</strong></h2>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.calle.id_for_label }}" class="form-label">Calle</label>
+                        {{ form.calle }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.altura.id_for_label }}" class="form-label">Altura</label>
+                        {{ form.altura }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.piso.id_for_label }}" class="form-label">Piso</label>
+                        {{ form.piso }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.departamento.id_for_label }}" class="form-label">Departamento</label>
+                        {{ form.departamento }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.codigoPostal.id_for_label }}" class="form-label">Codigo Postal</label>
+                        {{ form.codigoPostal }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="{{ form.localidad.id_for_label }}" class="form-label">Localidad</label>
+                        {{ form.localidad }}
+                    </div>
+                </div>
+                <!-- Agrega más campos de formulario de la misma manera -->
+                <div class="text-center mt-4">
+                    <input type="submit" href="{% url 'verDatosUsuario' %}" class="btn btn-primary btn-block" value="Modificar Datos Personales" />
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</main>
+</body>
+<style>
+    .login-form {
+        max-width: 600px;
+        margin: 0 auto;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-form .form-group {
+        margin-bottom: 20px;
+    }
+
+    .login-form .form-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .login-form input[type="text"],
+    .login-form input[type="password"],
+    .login-form select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .login-form input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .login-form input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
+
+{% endblock content %}

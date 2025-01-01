@@ -1,0 +1,551 @@
+         <!-- banner section start/////////////////////parte de VAMOS A COMENZAR A -->
+         <div class="banner_section layout_padding">
+            <div class="container">
+               <div id="my_slider" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                     <div class="carousel-item active">
+                        <div class="row">
+                           <div class="col-sm-12">
+                              <h1 class="banner_taital">VAMOS A COMENZAR <br>TUS COMPRAS FAVORITAS</h1>
+                              <div class="buynow_bt"><a href="#">Comprar</a></div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="carousel-item">
+                        <div class="row">
+                           <div class="col-sm-12">
+                              <h1 class="banner_taital">Get Start <br>Your favriot shoping</h1>
+                              <div class="buynow_bt"><a href="#">Comprar</a></div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="carousel-item">
+                        <div class="row">
+                           <div class="col-sm-12">
+                              <h1 class="banner_taital">Get Start <br>Your favriot shoping</h1>
+                              <div class="buynow_bt"><a href="#">Comprar</a></div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <a class="carousel-control-prev" href="#my_slider" role="button" data-slide="prev">
+                  <i class="fa fa-angle-left"></i>
+                  </a>
+                  <a class="carousel-control-next" href="#my_slider" role="button" data-slide="next">
+                  <i class="fa fa-angle-right"></i>
+                  </a>
+               </div>
+            </div>
+         </div>
+         <!-- banner section end /////////////////////parte de VAMOS A COMENZAR A COMPRAR -->
+         
+
+mi base es la siguiente: 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      {% load static %}
+     
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>{% block title %}{% endblock %}</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/bootstrap.min.css' %}">
+      <!-- Cargar Bootstrap CSS desde archivos estáticos -->
+      <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/style.css' %}">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="{% static 'miapp/css/responsive.css' %}">
+      <!-- fevicon -->
+      <link rel="icon" href="{% static 'miapp/images/fevicon.png' %}" type="image/gif" />
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="{% static 'miapp/css/jquery.mCustomScrollbar.min.css' %}">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <!-- fonts -->
+      <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+      <!-- font awesome -->
+      <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- Agrega FontAwesome aquí -->
+      <link rel="stylesheet" href="{% static 'miapp/fontawesome/css/all.min.css' %}">
+      <!--  -->
+      <!-- owl stylesheets -->
+      <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Poppins:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'miapp/css/owl.carousel.min.css' %}">
+      <link rel="stylesheet" href="{% static 'miapp/css/owl.theme.default.min.css' %}">
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+   </head>
+
+
+
+   <body>
+      <!-- banner bg main start -->
+      <div class="banner_bg_main" style="background-image: url('{% static 'miapp/images/eco.png' %}'); background-size: cover; background-position: center; height: 100vh;">
+
+         <!-- header top section start -->
+         <div class="container">
+            <div class="header_section_top">
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="custom_menu">
+                        <ul>
+                           <li><a href="#">Los más vendidos</a></li>
+                           <li><a href="#">Ideas de regalo</a></li>
+                           <li><a href="#">Nuevos lanzamientos</a></li>
+                           <li><a href="#">Especiales de hoy</a></li>
+                           <li><a href="#">Servicio al Cliente</a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- header top section start -->
+         <!-- logo section start -->
+         <div class="logo_section">
+            <div class="container">
+               <div class="row">
+                  <div class="col-sm-12">
+                      
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- logo section end -->
+         <!-- header section start -->
+         <div class="header_section">
+            <div class="container">
+               <div class="containt_main">
+                  <div id="mySidenav" class="sidenav">
+                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                     <a href="index.html">Home</a>
+                     <a href="fashion.html">Fashion</a>
+                     <a href="electronic.html">Electronic</a>
+                     <a href="jewellery.html">Jewellery</a>
+                  </div>
+                  <span class="toggle_icon" onclick="openNav()"><img src="{% static 'miapp/images/toggle-icon.png' %}"></span>
+                  <div class="dropdown">
+                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorias</button>
+                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{% url 'articulos' %}">Articulos</a>
+                        <a class="dropdown-item" href="#">Opcion 2</a>
+                        <a class="dropdown-item" href="#">Opcion 3</a>
+                     </div>
+                  </div>
+                  
+                  <div class="main">
+                     <!-- Another variation with a button -->
+                     <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Buscar Articulo">
+                        <div class="input-group-append">
+                           <button class="btn btn-secondary" type="button" style="background-color: #f26522; border-color:#f26522 ">
+                           <i class="fa fa-search"></i>
+                           </button>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="header_box">
+                     <!-- Tu botón de lenguaje -->
+                     <div class="lang_box">
+                        <a href="#" title="Language" class="nav-link dropdown-toggle" id="languageDropdown" data-toggle="dropdown" aria-expanded="true">
+                           <img src="{% static 'miapp/images/flag-uk.png' %}" alt="flag" class="mr-2" title="United Kingdom"> English <i class="fa fa-angle-down ml-2" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                           <a href="#" class="dropdown-item">
+                              <img src="{% static 'miapp/images/flag-france.png' %}" class="mr-2" alt="flag">
+                              French
+                           </a>
+                           <!-- Agrega más opciones de idioma aquí si es necesario -->
+                        </div>
+                     </div>
+                     <div class="login_menu">
+                        <ul>
+                           <li>
+                              <a href="{% url 'ver_carrito' %}">
+                                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                 <span class="padding_10">Carrito</span>
+                              </a>
+                           </li>
+                           <li>
+                              <a class="nav-link" href="{% if request.user.is_authenticated %}{% url 'logout' %}{% else %}{% url 'login' %}{% endif %}">
+                                 <i class="fa fa-user" aria-hidden="true"></i>
+                                 <span class="padding_10">
+                                    {% if request.user.is_authenticated %}Logout{% else %}Login{% endif %}
+                                 </span>
+                              </a>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+                  
+               </div>
+            </div>
+         </div>
+         <!-- header section end -->
+         <!-- banner section start/////////////////////parte de VAMOS A COMENZAR A -->
+         <div class="banner_section layout_padding">
+            <div class="container">
+               <div id="my_slider" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                     <div class="carousel-item active">
+                        <div class="row">
+                           <div class="col-sm-12">
+                              <h1 class="banner_taital">VAMOS A COMENZAR <br>TUS COMPRAS FAVORITAS</h1>
+                              <div class="buynow_bt"><a href="#">Comprar</a></div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="carousel-item">
+                        <div class="row">
+                           <div class="col-sm-12">
+                              <h1 class="banner_taital">Get Start <br>Your favriot shoping</h1>
+                              <div class="buynow_bt"><a href="#">Comprar</a></div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="carousel-item">
+                        <div class="row">
+                           <div class="col-sm-12">
+                              <h1 class="banner_taital">Get Start <br>Your favriot shoping</h1>
+                              <div class="buynow_bt"><a href="#">Comprar</a></div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <a class="carousel-control-prev" href="#my_slider" role="button" data-slide="prev">
+                  <i class="fa fa-angle-left"></i>
+                  </a>
+                  <a class="carousel-control-next" href="#my_slider" role="button" data-slide="next">
+                  <i class="fa fa-angle-right"></i>
+                  </a>
+               </div>
+            </div>
+         </div>
+         <!-- banner section end /////////////////////parte de VAMOS A COMENZAR A COMPRAR -->
+         
+      </div>
+      <!-- banner bg main end -->
+      
+      
+      {% block content %}
+
+
+      {% endblock %}
+
+      <!-- footer section start -->
+      <div class="footer_section layout_padding">
+         <div class="container">
+            <div class="footer_logo"><a href="{% url 'home' %}"><img src="{% static 'footer-logo.png' %}"></a></div>
+            <div class="input_bt">
+               <input type="text" class="mail_bt" placeholder="Your Email" name="Your Email">
+               <span class="subscribe_bt" id="basic-addon2"><a href="#">Subscribe</a></span>
+            </div>
+            <div class="footer_menu">
+               <ul>
+                  <li><a href="#">Best Sellers</a></li>
+                  <li><a href="#">Gift Ideas</a></li>
+                  <li><a href="#">New Releases</a></li>
+                  <li><a href="#">Today's Deals</a></li>
+                  <li><a href="#">Customer Service</a></li>
+               </ul>
+            </div>
+            <div class="location_main">Help Line  Number : <a href="#">+1 1800 1200 1200</a></div>
+         </div>
+      </div>
+      <!-- footer section end -->
+
+
+      <!---------------------------------------pie de la pagina para la base------------------------------------------->
+      <!-- copyright section start -->
+      <div class="copyright_section">
+         <div class="container">
+            <p class="copyright_text">© 2023 Todos los derechos reservados. Diseñado por<a href="https://html.design"> Juan Ruiz y Esteban Ramirez</a></p>
+         </div>
+      </div>
+      <!-- copyright section end -->
+      <!-- Javascript files-->
+   <!-- Asegúrate de que estas rutas reflejen la ubicación de tus archivos JavaScript en la carpeta miapp/ -->
+   <!-- Cargar jQuery y Bootstrap JavaScript desde archivos estáticos -->
+   <script src="{% static 'jquery/jquery-3.5.1.slim.min.js' %}"></script>
+   <script src="{% static 'popperjs/popper.min.js' %}"></script>
+   <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'miapp/js/jquery.min.js' %}"></script>
+   <script src="{% static 'miapp/js/popper.min.js' %}"></script>
+   <script src="{% static 'miapp/js/bootstrap.bundle.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'miapp/js/jquery-3.0.1.min.js' %}"></script>
+   <script src="{% static 'miapp/js/plugin.js' %}"></script>
+   <!-- sidebar -->
+   <script src="{% static 'miapp/js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+   <script src="{% static 'miapp/js/custom.js' %}"></script>
+   <script>
+      function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+      }
+      
+      function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+      }
+      
+   </script>
+   <script>
+      $(document).ready(function () {
+        // Inicializar el botón de categorías como un menú desplegable
+        $('.dropdown-toggle').dropdown();
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        // Inicializar el botón de lenguaje como un menú desplegable
+        $('#languageDropdown').dropdown();
+      });
+    </script>
+
+   </body>
+</html>
+
+--------------------------------------------------------------------------
+---------------------------------------------------------------------------
+------------------------------------------------------------------------------
+from django.db import models
+from django.contrib.auth.models import User
+
+class DatosPersonales(models.Model):
+    idDatosPersonales = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100)
+    correo = models.EmailField()
+    telefono = models.CharField(max_length=20)
+    CLASE = [
+    ("Consumidor Final", "Consumidor Final"),
+    ("Monotributo", "Monotributo"),
+    ("Responsable Inscripto", "Responsable Inscripto"),
+    ("Excento", "Excento")
+    ]
+
+    claseFiscalTipo = models.CharField(max_length=30, choices=CLASE)
+
+    numeroDocumento = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.nombre}"    
+
+
+    class Meta:
+        verbose_name= "Dato Personal"
+        verbose_name_plural = "Datos Personales"
+        ordering = ["nombre", "claseFiscalTipo"]
+
+class DatosFacturacion(models.Model):
+    idDatosFacturacion = models.AutoField(primary_key=True)
+    calle = models.CharField(max_length=100)
+    altura = models.CharField(max_length=10)
+    piso = models.CharField(max_length=10, blank=True)
+    departamento = models.CharField(max_length=10, blank=True)
+    codigoPostal = models.CharField(max_length=10)
+    localidad = models.CharField(max_length=100)
+    def __str__(self):
+        return f"{self.calle}"
+    class Meta:
+        verbose_name= "Dato Facturacion"
+        verbose_name_plural = "Datos de Facturación"
+
+class Comprobante(models.Model):
+    idComprobante = models.AutoField(primary_key=True)
+    numeroComprobante = models.CharField(max_length=20, verbose_name="Número de Comprobante")
+    fechaEmision = models.DateField()
+    # Otros campos relacionados con la factura
+    def __str__(self):
+        return f"{self.numeroComprobante}"
+    class Meta:
+        verbose_name= "Comprobante"
+        verbose_name_plural = "Comprobantes"
+
+class Usuario(models.Model):
+    idUsuario = models.AutoField(primary_key=True)
+    datosPersonales = models.OneToOneField(DatosPersonales, on_delete=models.CASCADE)
+    datosFacturacion = models.OneToOneField(DatosFacturacion, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"{self.idUsuario}"
+
+
+
+    class Meta:
+        verbose_name= "Usuarios"
+        verbose_name_plural = "Usuarios"
+
+class Articulo(models.Model):
+    nombre = models.CharField(max_length=100)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    descripcion = models.TextField()
+    image = models.ImageField(upload_to="articulos", null=True, blank=True, verbose_name="Ilustración")
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = "Artículo"
+        verbose_name_plural = "Artículos"
+
+
+
+class Compra(models.Model):
+    idCompra = models.AutoField(primary_key=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    articulos = models.ManyToManyField(Articulo, through='ArticuloCompra')  # Esto establece la relación
+
+    def __str__(self):
+        return f"Compra #{self.idCompra}"
+
+    class Meta:
+        verbose_name = "Compra"
+        verbose_name_plural = "Compras"
+
+
+
+
+
+class ArticuloCompra(models.Model):
+    compra = models.ForeignKey(Compra, on_delete=models.CASCADE)
+    articulo = models.ForeignKey(Articulo, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)  # Puedes ajustar esto según tus necesidades
+
+    def __str__(self):
+        return f"{self.cantidad}u. x {self.articulo.nombre}"
+
+    class Meta:
+        verbose_name = "Artículo en Compra"
+        verbose_name_plural = "Artículos en Compras"
+
+
+class ItemCarrito(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Asociado a un usuario autenticado
+    articulo = models.ForeignKey(Articulo, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+
+    def precio_total(self):
+        return self.cantidad * self.articulo.precio
+
+    def __str__(self):
+        return f"{self.cantidad} x {self.articulo.nombre}"
+
+
+
+
+
+
+////////////////////
+
+
+{% extends 'miapp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Lista de Compras
+{% endblock title %}
+    
+{% block content %}
+<main class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            {% if compras %}
+                <div id="comprasCarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for com in compras %}
+                            {% if forloop.counter0|divisibleby:3 %}
+                                {% if forloop.counter0 != 0 %}
+                                    </div>
+                                {% endif %}
+                                {% if forloop.counter0 == 0 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                {% else %}
+                                    <div class="carousel-item">
+                                {% endif %}
+                            {% endif %}
+                            <div class="card mb-3" style="background-color: #f8d7da; border: 1px solid #dc3545;">
+                                <div class="card-header" style="background-color: orange; color: white;">
+                                    <h5 class="card-title mb-0">ID: {{ com.idCompra }}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text"><strong>Compra:</strong> {{ com.fecha }}</p>
+                                    <p class="card-text"><strong>Monto:</strong> ${{ com.monto }}</p>
+                                    <p class="card-text"><strong>Usuario:</strong> {{ com.usuario }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#comprasCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#comprasCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            {% else %}
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{% static 'miapp/img/pochoclos.jpg' %}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Compras</h5>
+                        <p class="card-text">Sin compras ingresadas en la Base de Datos del sitio. Por favor, regrese cuando haya datos en la Base de Datos.</p>
+                        <a href="{% url 'home' %}" class="btn btn-primary">Inicio</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+
+<!-- JavaScript de Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 50px; /* Ajusta el ancho de los botones según tu preferencia */
+        height: 50px; /* Ajusta la altura de los botones según tu preferencia */
+        font-size: 24px; /* Ajusta el tamaño del ícono según tu preferencia */
+        background-color: #FFCC00; /* Color de fondo de los botones */
+        border-radius: 50%; /* Forma redondeada de los botones */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white; /* Color del ícono */
+        position: absolute; /* Asegura que los botones estén posicionados sobre el carrusel */
+        top: 50%; /* Alinea los botones en el centro vertical */
+        transform: translateY(-50%);
+        z-index: 1; /* Coloca los botones sobre el carrusel */
+    }
+
+    .carousel-control-prev {
+        left: 50px; /* Ajusta la posición horizontal del botón de anterior según tu preferencia */
+    }
+
+    .carousel-control-next {
+        right: 20px; /* Ajusta la posición horizontal del botón de siguiente según tu preferencia */
+    }
+    #comprasCarousel {
+        margin-top: 50px;
+        padding-bottom: 80px; /* Agrega espacio en la parte inferior de .jewellery_section para evitar superposiciones */
+        position: relative;
+    }
+</style>
+
+{% endblock content %}

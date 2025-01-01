@@ -1,0 +1,112 @@
+{% extends 'miapp/base.html' %}
+
+{% block content %}
+    
+<!DOCTYPE html>
+<html lang="en">
+    <head>{% load static %}   </head>
+    <body>
+        <div class="container mt-5">
+            <div class="row">
+              <div class="col-md-9 mx-auto">
+                {% if request.user.is_staff %}
+                {% include 'miapp/includes/miapp_menu.html' %}
+                  {% if 'ok' in request.GET %}
+                    <div class="alert alert-success" role="alert">
+                      Artículo modificado correctamente. <a href="{% url 'articulos' %}">Haz clic aquí para ver la lista de artículos.</a>
+                    </div>
+                  {% endif %}
+          
+                  <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      {{ form.nombre.label_tag }}
+                      {{ form.nombre }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.precio.label_tag }}
+                      {{ form.precio }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.descripcion.label_tag }}
+                      {{ form.descripcion }}
+                    </div>
+                    <div class="form-group">
+                      {{ form.image.label_tag }}
+                      {{ form.image }}
+                      {% if form.image.value %}
+                        <img class="img-thumbnail mt-2" src="{{ form.image.value.url }}" width="164" height="96" alt="Imagen del Artículo">
+                      {% endif %}
+                    </div>
+                    <div class="form-group">
+                      {{ form.tipoCategoria.label_tag }}
+                      {{ form.tipoCategoria }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Modificar Artículo</button>
+                  </form>
+                {% else %}
+                  <div class="alert alert-danger" role="alert">
+                    No estás autorizado para acceder a esta sección.
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </body>
+          <style>
+            /* Estilos CSS Personalizados */
+          .form-group {
+            margin-bottom: 20px;
+          }
+          form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+          body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+          }
+          
+          .img-thumbnail {
+            max-width: 100px;
+            max-height: 100px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+          }
+          
+          .img-thumbnail.loaded {
+            opacity: 1;
+          }
+          .btn-primary {
+            background-color: #007bff;
+            background-image: linear-gradient(to bottom, #007bff, #0056b3);
+            border-color: #007bff;
+          }
+          
+          .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+          }
+          .alert {
+            border-radius: 0;
+          }
+          
+          .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+          }
+          
+          .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+          }
+          
+          </style>
+</html>    
+
+{% endblock content %}

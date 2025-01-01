@@ -1,0 +1,37 @@
+{% extends 'miapp/base.html' %}
+
+
+{% block container %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout de Mercado Pago</title>
+
+    <!-- SDK MercadoPago.js -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+</head>
+<body>
+    <h1>Checkout de Mercado Pago</h1>
+
+    <!-- Contenedor para el botón de pago -->
+    <div id="wallet_container"></div>
+
+    <script>
+        // Inicializa el SDK de Mercado Pago con tu clave pública
+        const mp = new MercadoPago('APP_USR-4c309bfa-1189-49a3-8d01-57b84c851ca1');
+        const bricksBuilder = mp.bricks();
+
+        // Inicializa el checkout desde la preferencia (reemplaza con tu ID de preferencia)
+        mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: "ID_DE_TU_PREFERENCIA",
+            },
+        });
+    </script>
+</body>
+</html>
+
+
+{% endblock %}

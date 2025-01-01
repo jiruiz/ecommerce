@@ -1,0 +1,141 @@
+{% extends 'miapp/base1.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <div class="content-wrapper">
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header p-2">
+                  <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#stock">Stock Articulos disponibles</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#por_usuario">Cantidad Compras por usuario</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#mas_vendido">Articulos Mas vendido</a></li>
+                  </ul>
+                </div>
+                <div class="card-body">
+                  <div class="tab-content">
+                    <div id="stock" class="tab-pane active">
+                      <!-- Contenido de la tabla de Stock -->
+                      <div class="card">
+                        <div class="card-header">
+                          <h3 class="card-title">Tabla de Stock de Artículos</h3>
+                        </div>
+                        <div class="card-body">
+                          <table id="stockTable" class="table table-bordered table-striped">
+                            <thead>
+                              <tr>
+                                <th>Articulo</th>
+                                <th>Cantidad</th>
+                                <!-- Agrega más columnas según los campos de tu modelo Articulo si es necesario -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for articulo in articulos %}
+                              <tr>
+                                <td>{{ articulo.nombre }}</td>
+                                <td>{{ articulo.stock }}</td>
+                                <!-- Agrega más celdas según los campos de tu modelo Articulo si es necesario -->
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="por_usuario" class="tab-pane">
+                      <!-- Contenido de la tabla de Compras por Usuario -->
+                      <div class="card">
+                        <div class="card-header">
+                          <h3 class="card-title">Tabla de Compras por Usuario</h3>
+                        </div>
+                        <div class="card-body">
+                          <table id="comprasTable" class="table table-bordered table-striped">
+                            <thead>
+                              <tr>
+                                <th>Usuario</th>
+                                <th>Cantidad Compras</th>
+                                <!-- Agrega más columnas según los campos de tu modelo Compra si es necesario -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for usuario in compras_por_usuario %}
+                              <tr>
+                                <td>{{ usuario.username }}</td>
+                                <td>{{ usuario.total_compras }}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="mas_vendido" class="tab-pane">
+                      <!-- Contenido de la tabla de Artículos más Comprados -->
+                      <div class="card">
+                        <div class="card-header">
+                          <h3 class="card-title">Tabla de Artículos más Comprados</h3>
+                        </div>
+                        <div class="card-body">
+                          <table id="articulosMasCompradosTable" class="table table-bordered table-striped">
+                            <thead>
+                              <tr>
+                                <th>Articulo</th>
+                                <th>Total de Compras</th>
+                                <!-- Agrega más columnas según los campos de tu modelo Articulo si es necesario -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for compra in articulo_mas_comprado %}
+                              <tr>
+                                <td>{{ compra.articulos__nombre }}</td>
+                                <td>{{ compra.total_compras }}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Agrega los scripts necesarios para DataTables -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.1.1/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.print.min.js"></script>
+
+  <!-- Inicialización de DataTables para todas las tablas -->
+  <script>
+    $(document).ready(function () {
+      // Inicializa DataTables para todas las tablas
+      $('.table').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+      });
+    });
+  </script>
+</body>
+</html>
+
+{% endblock content%}

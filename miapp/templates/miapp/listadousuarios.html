@@ -1,0 +1,207 @@
+{% extends 'miapp/base1.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuarios</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>{% block title %}{% endblock %}</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/bootstrap.min.css' %}">
+      <!-- Cargar Bootstrap CSS desde archivos estáticos -->
+      <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/style.css' %}">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="{% static 'miapp/css/responsive.css' %}">
+      <!-- fevicon -->
+      <link rel="icon" href="{% static 'miapp/images/fevicon.png' %}" type="image/gif" />
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="{% static 'miapp/css/jquery.mCustomScrollbar.min.css' %}">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <!-- fonts -->
+      <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+      <!-- font awesome -->
+      <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- Agrega FontAwesome aquí -->
+      <link rel="stylesheet" href="{% static 'miapp/fontawesome/css/all.min.css' %}">
+      <!--  -->
+      <!-- owl stylesheets -->
+      <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Poppins:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'miapp/css/owl.carousel.min.css' %}">
+      <link rel="stylesheet" href="{% static 'miapp/css/owl.theme.default.min.css' %}">
+      <link rel="stylesheet" href="{% static 'path/to/styles.css' %}">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      
+      <!-- También puedes incluir Bootstrap si es necesario -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        .user-list {
+            margin-top: 20px;
+        }
+
+        .user-card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+
+        .user-card h5 {
+            color: #007bff;
+        }
+
+        .user-card p {
+            margin-bottom: 5px;
+        }
+
+        .no-users-message {
+            margin-top: 20px;
+        }
+        
+        .user-details {
+            list-style: none;
+            padding: 0;
+        }
+
+        .user-details li {
+            margin-bottom: 10px;
+        }
+
+        .edit-field {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-5">Lista de Usuarios</h1>
+
+        {% for usuario in usuarios %}
+        <div class="user-card">
+            <h5>{{ usuario.username }}</h5>
+            <ul class="user-details">
+                <li><strong>Nombre:</strong> <span class="user-field">{{ usuario.first_name }}</span><input type="text" class="edit-field form-control"></li>
+                <li><strong>Apellido:</strong> <span class="user-field">{{ usuario.last_name }}</span><input type="text" class="edit-field form-control"></li>
+                <li><strong>Correo electrónico:</strong> <span class="user-field">{{ usuario.email }}</span><input type="text" class="edit-field form-control"></li>
+                <li><strong>Superusuario:</strong> {% if usuario.is_superuser %} Sí {% else %} No {% endif %}</li>
+                <li><strong>Personal de staff:</strong> {% if usuario.is_staff %} Sí {% else %} No {% endif %}</li>
+                <li><strong>Fecha de nacimiento:</strong> {{ usuario.date_of_birth }}</li>
+                <li><strong>Último inicio de sesión:</strong> {{ usuario.last_login }}</li>
+                <!-- Otros campos del modelo User que quieras mostrar -->
+            </ul>
+            <button class="btn btn-primary edit-btn" data-user-id="{{ usuario.id }}">Editar</button>
+
+        </div>
+        {% empty %}
+            <div class="no-users-message alert alert-warning">
+                No hay usuarios disponibles.
+            </div>
+        {% endfor %}
+        
+    </div>
+    <script>
+        const editButtons = document.querySelectorAll('.edit-btn');
+        const csrf_token = "{{ csrf_token }}";
+    
+        editButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const userDetails = button.parentElement;
+                const editFields = userDetails.querySelectorAll('.edit-field');
+                const userFields = userDetails.querySelectorAll('.user-field');
+                const userId = button.getAttribute('data-user-id');
+    
+                if (button.textContent === 'Editar') {
+                    editFields.forEach((field, index) => {
+                        field.value = userFields[index].textContent.trim();
+                        field.style.display = 'block';
+                        userFields[index].style.display = 'none';
+                    });
+    
+                    button.textContent = 'Guardar';
+                } else {
+                    const data = {
+                        first_name: editFields[0].value,
+                        last_name: editFields[1].value,
+                        email: editFields[2].value,
+                    };
+    
+                    fetch(`/guardar_usuario/${userId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrf_token // Asegúrate de obtener el valor del token CSRF en tu plantilla
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        console.log(result.mensaje); // Muestra el mensaje del servidor en la consola
+                        editFields.forEach((field, index) => {
+                            userFields[index].textContent = field.value;
+                            field.style.display = 'none';
+                            userFields[index].style.display = 'block';
+                        });
+                        button.textContent = 'Editar';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                }
+            });
+        });
+    </script>
+    
+    <script>
+        function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        }
+        
+     </script>
+     <script>
+        $(document).ready(function () {
+          // Inicializar el botón de categorías como un menú desplegable
+          $('.dropdown-toggle').dropdown();
+        });
+      </script>
+      <script>
+        $(document).ready(function () {
+          // Inicializar el botón de lenguaje como un menú desplegable
+          $('#languageDropdown').dropdown();
+        });
+      </script>
+  
+</body>
+
+</html>
+{% endblock content%}

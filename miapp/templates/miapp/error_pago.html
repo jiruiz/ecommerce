@@ -1,0 +1,12 @@
+{% extends 'miapp/base.html' %}
+{% block content %}
+<div class="container">
+    <h1>Error en el Pago</h1>
+    
+    <p>Hubo un error al procesar tu pago. Por favor, verifica que la información de pago sea correcta e intenta nuevamente.</p>
+
+    <p>Si el problema persiste, comunícate con nuestro equipo de soporte para obtener ayuda.</p>
+
+    <a href="{% url 'home' %}" class="btn btn-primary">Volver a la Página de Inicio</a>
+</div>
+{% endblock %}

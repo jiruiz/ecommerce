@@ -1,0 +1,123 @@
+{% extends 'miapp/base.html' %}
+
+{% block content %}
+    
+<!DOCTYPE html>
+<html lang="en">
+    <head>{% load static %}   </head>
+    <body>
+        <div class="container mt-5">
+            <div class="row">
+              <div class="col-md-9 mx-auto">
+                {% if request.user.is_staff %}
+                
+                {% if 'ok' in request.GET %}
+                <div class="alert alert-success" role="alert">
+                    Compra modificada correctamente. <a href="{% url 'compras' %}"  class="visited-link">Haz clic aquí para ver la lista de Publicaciones.</a>
+                </div>
+                {% endif %}
+          
+                  <main role="main" class="container">
+                    <div class="row mb-5 mt-3 justify-content-center">
+                        <div class="login-form card p-4">
+                            <form action="" method="post" enctype='multipart/form-data'>
+                                {% csrf_token %}
+                                <h2 class="text-center mb-4"><strong>Datos de Facturación</strong></h2>
+                              
+                                <div class="form-group">
+                                    <label for="{{ form.monto.id_for_label }}" class="form-label">Monto</label>
+                                    {{ form.monto }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.monto_total.id_for_label }}" class="form-label">Monto Total</label>
+                                    {{ form.monto_total }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.usuario.id_for_label }}" class="form-label">Usuario</label>
+                                    {{ form.usuario }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.articulos.id_for_label }}" class="form-label">Artículos</label>
+                                    {{ form.articulos }}
+                                </div>
+                                <div class="text-center mt-4">
+                                    <input type="submit" href="{% url 'verDatosUsuario' %}" class="btn btn-primary btn-block" value="Modificar Datos Personales" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </main>
+                {% else %}
+                  <div class="alert alert-danger" role="alert">
+                    No estás autorizado para acceder a esta sección.
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </body>
+        <style>
+          body {
+              background-color: #f9f9f9;
+              margin: 0;
+              padding: 0;
+             
+          }
+  
+          .form-container {
+              max-width: 700px;
+              
+              padding: 20px;
+              background-color: #ffffff;
+              border-radius: 10px;
+              box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+          }
+  
+          .form-group {
+              margin-bottom: 20px;
+          }
+  
+          .form-label {
+              display: block;
+              font-weight: bold;
+              margin-bottom: 5px;
+          }
+  
+          .form-input {
+              width: calc(100% - 20px);
+              padding: 10px;
+              font-size: 16px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              box-sizing: border-box;
+          }
+  
+          .form-button {
+              background-color: #4CAF50;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              cursor: pointer;
+              border-radius: 5px;
+          }
+  
+          .form-button:hover {
+              background-color: #45a049;
+          }
+  
+          .img-thumbnail {
+              max-width: 164px;
+              max-height: 96px;
+          }
+          .visited-link:visited  {
+            color: #FFFF00; /* Cambia el color a rojo cuando el enlace ha sido visitado */
+          }
+          
+          .visited-link:hover  {
+            color: #0000CD; /* Cambia el color a rojo cuando el enlace ha sido visitado */
+          }
+        
+      </style>
+</html>    
+
+{% endblock content %}

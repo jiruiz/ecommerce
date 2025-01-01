@@ -1,0 +1,199 @@
+{% extends 'miapp/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    
+    
+    <div class="container">
+        <h1 style="text-align: center;">Datos de su Comprda</h1>
+    
+        
+        
+        <div class="user-details">
+            <h2 class="user-title">Datos del Comprador</h2>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td><strong>Nombre:</strong> {{ user.first_name }} {{ user.last_name }}</td>
+                        <td><strong>Email:</strong> {{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Username:</strong> {{ user.username }}</td>
+                        <td><strong>Fecha de Registro:</strong> {{ user.date_joined|date:"F d, Y" }}</td>
+                    </tr>
+                    <!-- Otros detalles del usuario que desees mostrar -->
+                    <tr>
+                        <td><strong>Dirección:</strong> {{ user_profile.direccion }}</td>
+                        <td><strong>Teléfono:</strong> {{ user_profile.telefono }}</td>
+                    </tr>
+                    <!-- Otros detalles personales que desees mostrar -->
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- Resto de tu contenido -->
+    </div>
+    
+
+    {% if user.is_authenticated %}
+        <!-- Contenido del carrito para usuarios autenticados -->
+        <div class="col-md-12">
+            <div class="user-details">
+                <h2 class="user-title">Articulos a Preparar</h2>
+                <div class="custom-cart-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio unitario</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in carrito %}
+                            <tr>
+                                <td>{{ item.articulo.nombre }}</td>
+                                <td>${{ item.articulo.precio }}</td>
+                                <td>{{ item.cantidad }}</td>
+                                <td>${{ item.precio_total }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="3"></td>
+                                <td><strong>Total:</strong></td>
+                                <td><strong>${{ total_carrito }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de Datos de Facturación -->
+        <div class="col-md-12">
+            <div class="billing-details">
+                <h2>Formulario de Datos de Facturación</h2>
+                <div class="custom-form">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <table>
+                            {{ form.as_table }}
+                        </table>
+                        <input type="submit" class="btn btn-primary" value="Grabar Datos" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Botones -->
+        <div class="text-center">
+            {% if carrito %}
+            <a href="{% url 'datos_facturacion' %}" class="btn btn-primary">Ir a Pagar</a>
+            <a href="{% url 'cancelar' %}" class="btn btn-danger">Cancelar Compra</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <!-- Mensaje para usuarios no autenticados -->
+        <p>Debe iniciar sesión para ver su carrito de compras.</p>
+        <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a>
+    {% endif %}
+</div>
+<style>
+    /* Estilo para la sección de Datos del Usuario */
+    .user-details {
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+    }
+
+    .user-title {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .user-info p {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    /* Estilo adicional para resaltar el nombre del usuario */
+    .user-info p strong {
+        color: #f26522;
+    }
+    /* Estilo para la tabla del carrito */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Estilo para la sección de formulario de datos de facturación */
+.col-md-12 form {
+    background-color: #f8f8f8;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+/* Estilo para los botones del formulario */
+.col-md-12 form .btn-primary {
+    background-color: #f26522;
+    border-color: #f26522;
+}
+
+.col-md-12 form .btn-primary:hover {
+    background-color: #e15500;
+    border-color: #e15500;
+}
+
+/* Estilo para el botón "Cancelar Compra" */
+.col-md-12 .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.col-md-12 .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+/* Estilo para la tabla del carrito */
+.custom-cart-table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.custom-cart-table th,
+.custom-cart-table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+/* Estilo para el contenedor del formulario de Datos de Facturación */
+.billing-details {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+/* Estilo para el formulario en sí */
+.custom-form {
+    /* Estilos adicionales para el formulario, como colores, márgenes, etc. */
+}
+
+</style>
+{% endblock %}

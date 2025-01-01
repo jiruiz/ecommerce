@@ -1,0 +1,342 @@
+
+{% extends 'miapp/base1.html' %}
+
+
+
+{% block content %}
+    
+<!DOCTYPE html>
+<html lang="en">
+    <head>{% load static %}   </head>
+    <body class="hold-transition sidebar-mini" >
+        
+        {% if request.user.is_staff %}
+        
+        {% endif %}
+        <!-- jewellery section start -->
+        <div class="jewellery_section" >
+            <div class="container">
+                <div id="jewellery_main_slider" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for compra_con_articulos in compras_con_articulos %}
+                            {% if forloop.counter0|divisibleby:100 %}
+                                {% if forloop.counter0 != 0 %}
+                                    </div>
+                                {% endif %}
+                                {% if forloop.counter0 == 0 %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                {% else %}
+                                    <div class="carousel-item">
+                                {% endif %}
+                            {% endif %}
+                           
+                            <div class="card mb-3 shadow-sm">
+                                <div class="card-header bg-orange text-white">
+                                    <h5 class="card-title"><strong>Factura: </strong>00006-00000{{ compra_con_articulos.compra.idCompra }}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text"><strong>Usuario:</strong> {{ compra_con_articulos.compra.usuario }}</p>
+                                    <p class="card-text"><strong>Fecha de Compra:</strong> {{ compra_con_articulos.compra.fecha | date:"F d, Y H:i" }}</p>
+                                    <p class="card-text"><strong>Monto Pagado:</strong> ${{ compra_con_articulos.compra.monto }}</p>
+                            
+                                    <p class="card-text"><strong>Artículos:</strong><br>
+                                        {% for articulo in compra_con_articulos.articulos %}
+                                            {{ articulo.nombre }}<br>
+                                        {% empty %}
+                                            No hay artículos en esta compra.
+                                        {% endfor %}
+                                    </p>
+                            
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#detalleCompraModal{{ compra_con_articulos.compra.idCompra }}">
+                                                Ver Detalles
+                                            </button>
+                                            
+                                            <!-- Botón "Editar" para abrir el segundo modal -->
+                                            <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#updateModal{{ compra_con_articulos.compra.idCompra }}">
+                                                Editar
+                                            </button>
+                                        
+                                            <!-- Botón "Eliminar" (sigue siendo un botón) -->
+                                            <a href="{% url 'compra-delete' compra_con_articulos.compra.idCompra %}" class="btn btn-sm btn-danger">Eliminar</a>
+                                            
+                                        </div>
+                                        <table> 
+                                           
+                                          <td>
+                                            <a href="{% url 'factura' pk=compra_con_articulos.compra.idCompra %}" class="btn btn-default btn-lg btn-flat d-inline-block">
+                                                <i class="fas fa-eye fa-lg mr-2"></i> Factura
+                                              </a></table>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <!-- Modal de Actualización para esta compra específica -->
+                            <div class="modal fade" id="updateModal{{ compra_con_articulos.compra.idCompra }}" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateModalLabel">Modificar Compra</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Formulario de actualización para esta compra específica -->
+                                            <form method="post" enctype='multipart/form-data' action="{% url 'compra-update' pk=compra_con_articulos.compra.idCompra %}">
+                                                {% csrf_token %}
+                                                <!-- Agrega campos del formulario de actualización -->
+                                                <div class="form-group">
+                                                    <label for="{{ form.monto.id_for_label }}" class="form-label">Monto</label>
+                                                    {{ form.monto }}
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="{{ form.monto_total.id_for_label }}" class="form-label">Monto Total</label>
+                                                    {{ form.monto_total }}
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="{{ form.usuario.id_for_label }}" class="form-label">Usuario</label>
+                                                    {{ form.usuario }}
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="{{ form.articulos.id_for_label }}" class="form-label">Artículos</label>
+                                                    {{ form.articulos }}
+                                                </div>
+                                                <button type="submit" class="btn btn-primary btn-block" value="Grabar">Grabar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+            <!-- Modal -->
+            {% for compra_con_articulos in compras_con_articulos %}
+            <div class="modal fade" id="detalleCompraModal{{ compra_con_articulos.compra.idCompra }}" tabindex="-1" role="dialog" aria-labelledby="detalleCompraModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-orange text-white">
+                            <h5 class="modal-title" id="detalleCompraModalLabel"><strong>Detalles de la Compra</strong></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Contenido de los detalles de la compra aquí -->
+                            <p><strong>Factura: </strong>00006-00000{{ compra_con_articulos.compra.idCompra }}</p>
+                            <p><strong>Usuario:</strong> {{ compra_con_articulos.compra.usuario }}</p>
+                            <p><strong>Fecha de Compra:</strong> {{ compra_con_articulos.compra.fecha | date:"F d, Y H:i" }}</p>
+                            <p><strong>Monto Pagado:</strong> ${{ compra_con_articulos.compra.monto }}</p>
+            
+                            <p><strong>Artículos:</strong><br>
+                                {% for articulo in compra_con_articulos.articulos %}
+                                    {{ articulo.nombre }}<br>
+                                {% empty %}
+                                    No hay artículos en esta compra.
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+        
+        <!-- aca el que es nuevo que no andaba empieza-->
+        
+        <!-- jewellery section end -->
+    
+        <!-- Botones del carrusel fuera de la sección .jewellery_section -->
+        <!-- Botones del carrusel fuera de la sección .jewellery_section -->
+        <div class="carousel-buttons">
+            <a class="carousel-control-prev" href="#jewellery_main_slider" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <div class="additional-content">
+                <p>Deslízate aquí para ver más </p>
+            </div>
+            <a class="carousel-control-next" href="#jewellery_main_slider" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+    
+    <!-- scripts -->
+    <script src="{% static 'miapp/js/jquery.min.js' %}"></script>
+    <script src="{% static 'miapp/js/popper.min.js' %}"></script>
+    <script src="{% static 'miapp/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'miapp/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'miapp/js/jquery.mCustomScrollbar.js' %}"></script>
+    <script src="{% static 'miapp/js/jquery-3.0.0.min.js' %}"></script>
+    <script src="{% static 'miapp/js/plugins.js' %}"></script>
+    <!-- Custom scripts -->
+    <script src="{% static 'miapp/js/custom.js' %}"></script>
+    <script src="{% static 'miapp/js/script.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+    <script>
+
+        
+        window.addEventListener("load", function () {
+            var loader = document.getElementById("loader-container");
+            loader.style.display = "none";
+        });
+
+        window.addEventListener('scroll', function () {
+            var scrollPosition = window.scrollY;
+            var carouselButtons = document.querySelector('.carousel-buttons');
+            var additionalContent = document.querySelector('.additional-content');
+
+            if (scrollPosition > 80) {
+                carouselButtons.style.display = 'block';
+                additionalContent.style.display = 'block';
+            } else {
+                carouselButtons.style.display = 'none';
+                
+            }
+        });
+    </script>
+    <style>
+        /* Estilos para el modal */
+        .modal {
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo semitransparente del modal */
+        }
+
+        /* Estilos para la capa de fondo oscuro del modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Color negro con opacidad 0.5 */
+            z-index: 1050; /* Asegúrate de que el z-index sea mayor que el z-index del modal */
+            display: none;
+        }
+
+        /* Estilos para mostrar el modal y la capa de fondo oscuro cuando se abre el modal */
+        .modal.show {
+            display: block;
+        }
+
+        .modal.show .modal-backdrop {
+            display: block;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+      
+        .additional-content {
+            margin: -30px; /* Espaciado superior e inferior del contenido adicional */
+            
+        }
+        /* También, asegúrate de que no hay márgenes o rellenos no deseados en elementos específicos */
+        .banner_bg_main {
+            margin: 0;
+            padding: 0;
+            background-image: url('{% static 'miapp/images/eco.png' %}');
+            background-size: cover;
+            background-position: center;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .jewellery_img img {
+            max-width: 100%;
+            height: 100%;
+        }
+        
+        .box_main {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        
+        .jewellery_img img {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+        }
+        
+        /* Estilos para el loader */
+        #loader-container {
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+        
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    
+        .jewellery_section {
+            margin-top: 50px;
+            padding-bottom: 80px; /* Agrega espacio en la parte inferior de .jewellery_section para evitar superposiciones */
+            position: relative;
+        }
+        
+        .carousel-buttons {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #FFCC00;
+            padding: 10px;
+            text-align: center;
+            z-index: 9999;
+            width: 100%; /* Ajusta el ancho del contenedor principal */
+            max-height: 20px; /* Establece un ancho máximo para evitar que se haga demasiado ancho en pantallas grandes */
+            display: none;  
+        }
+    
+        .carousel-buttons a {
+            color: #fff;
+            margin: 0 10px; /* Espaciado entre los botones */
+        }
+    
+        .additional-content {
+            margin: -10px; /* Espaciado superior e inferior del contenido adicional */
+            
+        }
+        .carousel-control-next-icon {
+            color: black;
+        }
+    
+    </style>
+    </body>
+</html>
+{% endblock content %}

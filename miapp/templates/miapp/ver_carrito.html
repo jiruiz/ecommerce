@@ -1,0 +1,199 @@
+{% extends 'miapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Articulos</title>
+    <!-- Google Pay -->
+    <script src="https://pay.google.com/gp/p/js/pay.js"></script>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'%}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/css/adminlte.min.css'%}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="section-title mb-3" style="background-color: #FFCC00; color: black;  border-radius: 5px; text-align: center;">
+        <h1 class="font-weight-bold text-dark">Carrito de Compras</h1>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="section-content" style="border: 1px solid #FFCC00; border-top: none; border-radius: 0 0 5px 5px;">
+        {% if cantidad_en_carrito > 0 %}
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio unitario</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in carrito %}
+                    <tr>
+                        <td>{{ item.articulo.nombre }}</td>
+                        <td>${{ item.articulo.precio }}</td>
+                        <td>
+                            <form class="d-inline" method="post" action="{% url 'disminuir' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-secondary btn-sm">-</button>
+                            </form>
+                            
+                            {{ item.cantidad }}
+                            
+                            <form class="d-inline" method="post" action="{% url 'aumentar' item.id %}">
+                                {% csrf_token %}
+                                {% with nueva_cantidad=item.cantidad|add:1 %}
+                                    {% if item.articulo.stock >= nueva_cantidad %}
+                                        <button type="submit" class="btn btn-secondary btn-sm">+</button>
+                                    {% else %}
+                                        <span class="text-danger">Maximo Stock Disponible</span>
+                                    {% endif %}
+                                {% endwith %}
+                            </form>
+                        </td>
+                        <td>${{ item.precio_total }}</td>
+                        <td>
+                            <form class="d-inline" method="post" action="{% url 'eliminar' item.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            
+            <tfoot>
+                <tr>
+                    <td colspan="3"></td>
+                    <td><strong>Total:</strong></td>
+                    <td><strong>${{ total_carrito }}</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+        <div id="google-pay-button"></div>
+
+            <!-- Botón de PayPal y formulario de confirmación -->
+            <div id="paypal-button-container"></div>
+            <form id="checkout-form" method="post" action="{% url 'confirmacion' %}" class="mt-4">
+                {% csrf_token %}
+                <input type="hidden" name="usuario_id" value="{{ request.user.id }}">
+                <input type="hidden" name="total_carrito" value="{{ total_carrito|floatformat:2 }}">
+                <button type="submit" class="btn btn-primary" style="display: none;">Confirmar Compra</button>
+            </form>
+        {% else %}
+            <p class="mt-3">No hay elementos en el carrito.</p>
+        {% endif %}
+        </div>
+    {% else %}
+    <p class="mt-3">Debe iniciar sesión para ver su carrito de compras.</p>
+    <a href="{% url 'login' %}" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Iniciar Sesión</a>
+    {% endif %}
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=ATlD7DEoG5bCpYXUBFoWHDqlR1pxnJEcT68q-qPSyEVzZef6cgRc5pYuIkhC4dgYlIDM9fyxgtr6hAzF"></script>
+<script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '{{ total_carrito|stringformat:".2f" }}'
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                return fetch("{% url 'confirmacion' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(details)
+                });
+            }).then(function(response) {
+                if (response.ok) {
+                    window.location.href = "{% url 'confirmacion' %}";
+                } else {
+                    console.error('Error al procesar el pago');
+                }
+                console.log('Contenido del formulario:', new FormData(document.getElementById('checkout-form')));
+                document.getElementById('checkout-form').submit();
+            });
+        }
+    }).render('#paypal-button-container').then(function() {
+        console.log('Valor total del carrito:', total_carrito);
+        console.log('Botón de PayPal renderizado correctamente');
+    }).catch(function(error) {
+        console.error('Error al renderizar el botón de PayPal:', error);
+    });
+</script>
+<script>
+    // Configuración de Google Pay
+    const googlePayClient = new google.payments.api.PaymentsClient({
+      environment: 'TEST', // Cambiar a 'PRODUCTION' en producción
+    });
+  
+    const paymentDataRequest = {
+      apiVersion: 2,
+      apiVersionMinor: 0,
+      allowedPaymentMethods: [{
+        type: 'CARD',
+        parameters: {
+          allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+          allowedCardNetworks: ['VISA', 'MASTERCARD']
+        },
+        tokenizationSpecification: {
+          type: 'PAYMENT_GATEWAY',
+          parameters: {
+            gateway: 'example',
+            gatewayMerchantId: 'exampleGatewayMerchantId'
+          }
+        }
+      }],
+      merchantInfo: {
+        merchantId: '12345678901234567890', // Reemplazar con tu ID de comerciante
+        merchantName: 'Tu tienda'
+      },
+      transactionInfo: {
+        totalPriceStatus: 'FINAL',
+        totalPriceLabel: 'Total',
+        totalPrice: '123.45', // Precio total
+        currencyCode: 'USD' // Código de moneda
+      },
+    };
+  
+    const button = googlePayClient.createButton({
+      onClick: () => {
+        googlePayClient.loadPaymentData(paymentDataRequest);
+      }
+    });
+  
+    document.getElementById('google-pay-button').appendChild(button);
+  </script>
+  
+
+{% endblock %}
+</body>
+</html>

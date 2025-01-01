@@ -1,0 +1,17 @@
+{% extends 'miapp/base1.html' %}
+{% load static %}
+{%block title %}Eliminar Articulo{% endblock %}
+{%block content %}
+{% include 'miapp/includes/miapp_menu.html' %}
+<main role="main">
+  <div class="container">
+    <div class="row mb-5 mt-3">
+      <form method="post">{% csrf_token %}
+        <p>Esta seguro que quiere eliminar el articulo "{{ object }}"?</p>
+        {% comment %} {{ form }} {% endcomment %}
+        <input type="submit" value="Confirmar">
+      </form>
+    </div>
+  </div>
+</main>
+{%endblock%}

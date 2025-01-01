@@ -1,0 +1,49 @@
+{% extends 'miapp/base.html' %}
+
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        {% load static %}
+        <!-- Incluye los enlaces a Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <!-- Fin de los enlaces a Bootstrap -->
+    </head>
+
+    <body>
+        {% if compra %}
+            <h2>Detalle de la Compra</h2>
+            <p>Número de Orden: {{ compra.id }}</p>
+            <p>Monto Total: ${{ compra.monto_total }}</p>
+            
+            <!-- Mostrar los datos de facturación -->
+            {% if compra.factura %}
+                <h3>Datos de Facturación</h3>
+                <p>Número de Factura: {{ compra.factura.idFactura }}</p>
+                <p>Fecha de Facturación: {{ compra.factura.created }}</p>
+                <!-- Agrega más campos según tu modelo Factura si es necesario -->
+
+                <!-- Datos de la empresa -->
+                <h3>Datos de la Empresa</h3>
+                <p>Nombre: {{ compra.factura.datosFacturacion.nombre_empresa }}</p>
+                <p>RUC: {{ compra.factura.datosFacturacion.ruc_empresa }}</p>
+                <!-- Agrega más campos según tu modelo DatosFacturacion si es necesario -->
+
+                <!-- Datos del Usuario -->
+                <h3>Datos del Usuario</h3>
+                <p>Nombre: {{ compra.factura.datosFacturacion.user.username }}</p>
+                <p>Correo Electrónico: {{ compra.factura.datosFacturacion.user.email }}</p>
+                <!-- Agrega más campos según tu modelo DatosFacturacion si es necesario -->
+            {% else %}
+                <p>La factura aún no ha sido generada.</p>
+            {% endif %}
+        {% else %}
+            <p>No se ha realizado ninguna compra.</p>
+        {% endif %}
+        <!-- ... (resto del código) -->
+    </body>
+    </html>
+{% endblock content %}

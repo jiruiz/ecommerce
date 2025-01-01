@@ -1,0 +1,30 @@
+{% extends 'miapp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Lista de Usuarios
+{% endblock title %}
+    
+{% block content %}
+<main role="main" class="container">
+    {% if usuarios %}      
+        <div class="list-group">            
+        {% for usu in usuarios %}
+            <div class="card">
+              <h5 class="card-header">ID: {{ usu.idUsuario }} /{{ usu.datosPersonales }} </h5>
+            </div>
+        {% endfor %}
+	</div>
+    {% else %}
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{% static 'miapp/img/pochoclos.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">Compras</h5>
+          <p class="card-text">Sin generos ingresados en la Base de Datos del sitio, por favor regrese cuando hayan datos en la Base de Datos</p>
+          <a href="{% url 'home' %}" class="btn btn-primary">Inicio</a>
+        </div>
+    </div>
+    {% endif %}
+</main>
+{% endblock content %}
+    

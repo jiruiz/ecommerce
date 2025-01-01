@@ -1,0 +1,359 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      {% load static %}
+     
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>{% block title %}{% endblock %}</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/bootstrap.min.css' %}">
+      <!-- Cargar Bootstrap CSS desde archivos estáticos -->
+      <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="{% static 'miapp/css/style.css' %}">
+      <!-- Responsive-->
+      <link rel="stylesheet" href="{% static 'miapp/css/responsive.css' %}">
+      <!-- fevicon -->
+      <link rel="icon" href="{% static 'miapp/images/fevicon.png' %}" type="image/gif" />
+      <!-- Scrollbar Custom CSS -->
+      <link rel="stylesheet" href="{% static 'miapp/css/jquery.mCustomScrollbar.min.css' %}">
+      <!-- Tweaks for older IEs-->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <!-- fonts -->
+      <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+      <!-- font awesome -->
+      <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <!-- Agrega FontAwesome aquí -->
+      <link rel="stylesheet" href="{% static 'miapp/fontawesome/css/all.min.css' %}">
+      <!--  -->
+      <!-- owl stylesheets -->
+      <link href="https://fonts.googleapis.com/css?family=Great+Vibes|Poppins:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'miapp/css/owl.carousel.min.css' %}">
+      <link rel="stylesheet" href="{% static 'miapp/css/owl.theme.default.min.css' %}">
+      <link rel="stylesheet" href="{% static 'path/to/styles.css' %}">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <!-- En el bloque <head> de tu plantilla base -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/css/adminlte.min.css">
+      <!-- También puedes incluir Bootstrap si es necesario -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+      <!-- Al final del bloque <body> de tu plantilla base, antes del cierre de </body> -->
+      <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1.0/dist/js/adminlte.min.js"></script>
+      <!-- También puedes incluir Bootstrap si es necesario -->
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+      <style>
+         .navbar {
+            background-color: #FFCC00;
+            width: 100%;
+            z-index: 9999;
+            position: fixed;
+            top: 0;
+            display: flex; /* Usa flexbox para alinear elementos en la barra de navegación */
+            justify-content: space-between; /* Espacia los elementos en la barra de navegación */
+            align-items: center; /* Centra verticalmente los elementos en la barra de navegación */
+            padding: 0 20px; /* Añade un poco de espacio alrededor de los elementos de la barra de navegación */
+        }
+        .centered-logo {
+         text-align: center;
+         margin-bottom: 20px; /* Ajusta el margen inferior según tus necesidades */
+     }
+     
+     .centered-logo img {
+         width: 40px; /* Ajusta el tamaño de la imagen según tus necesidades */
+         height: auto;
+     }
+     
+        
+         body {
+            margin: 0;
+            padding:0;
+            font-size: 16px;
+         }
+         
+         /* Otros estilos específicos de la barra de navegación */
+         /* ... */
+     </style>
+
+     
+   </head>
+
+
+
+   <body>
+      
+      <!-- banner bg main start -->
+         
+
+         <!-- header top section start -->
+         <div class="container">
+            <div class="header_section_top">
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="custom_menu">
+                        <ul>
+                           <li><a href="{% url 'home' %}">Home</a></li>
+                           <li><a href="{% url 'articulos' %}">Articulos</a></li>
+                           <li><a href="#">Componentes de PC</a></li>
+                           <li><a href="#">Accessorios</a></li>
+                           <li><a href="#">Contacto</a></li>
+                           {% if request.user.is_staff %}
+                           <li><a href="{% url 'articulo-create' %}">[CREAR ARTICULO]</a></li>
+                           <li><a href="{% url 'compras' %}">Compras</a></li>
+                           <li><a href="{% url 'listausuarios' %}">Usuarios</a></li>
+                           <li><a href="{% url 'vista_admin' %}">Admin</a></li>
+                           {% else %}
+                           {% endif %}
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- header top section start -->
+
+         <!-- logo section start -->
+         <div class="logo_section">
+            <div class="container">
+               <div class="row">
+                  <div class="col-sm-12">
+                      
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- logo section end -->
+         <div class="header_section">
+            <div class="container">
+                <div class="containt_main" style="display: flex; align-items: center; justify-content: space-between;">
+                  <div class="sidenav" id="mySidenav">
+                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                     <ul>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'articulos' %}">Articulos</a></li>
+                        <li><a href="#">Componentes de PC</a></li>
+                        <li><a href="#">Accessorios</a></li>
+                        <li><a href="#">Contacto</a></li>
+                        {% if request.user.is_staff %}
+                        <li><a href="{% url 'articulo-create' %}">[CREAR ARTICULO]</a></li>
+                        {% else %}
+                        {% endif %}
+                     </ul>
+                 </div>
+                 
+                 <span style="display: flex; align-items: center;" class="toggle_icon" onclick="openNav()">
+                  <img src="/static/miapp/images/toggle-icon2.png" alt="Ícono de alternar menú" style="width: 24px; height: 24px;">
+
+                  </span>
+              
+              <div class="dropdown">
+                  <button style="background-color: #FFCC00; color: black; font-size: 14px;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Categorias
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="{% url 'articulos' %}">Articulos</a>
+                      {% if user.is_authenticated %}
+                      <a class="dropdown-item" href="{% url 'verDatosUsuario'  %}">Datos Personales</a>
+                      
+                      {% endif %}
+                      <a class="dropdown-item" href="#">Opcion 3</a>
+                  </div>
+              </div>
+
+        
+                    <div class="main">
+                     <form action="{% url 'search' %}" method="get" style="display: flex; align-items: center;">
+                         <div class="input-group">
+                             <input type="text" class="form-control" name="nombre" placeholder="Buscar Articulo">
+                             <div class="input-group-append">
+                                 <button title="buscar" class="btn btn-secondary" type="submit" style="background-color: #f26522; border-color:#f26522">
+                                     <i class="fa fa-search"></i>
+                                 </button>
+                             </div>
+                         </div>
+                     </form>
+                 </div>
+                 
+        
+                    <div class="header_box">
+                     <!--
+                        <div class="lang_box">
+                            <a href="#" title="Language" class="nav-link dropdown-toggle" id="languageDropdown" data-toggle="dropdown" aria-expanded="true">
+                                <img src="{% static 'miapp/images/flag-uk.png' %}" alt="flag" class="mr-2" title="United Kingdom"> English <i class="fa fa-angle-down ml-2" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                                <a href="#" class="dropdown-item">
+                                    <img src="{% static 'miapp/images/flag-france.png' %}" class="mr-2" alt="flag">
+                                    French
+                                </a>
+                               
+                            </div>
+                        </div>
+                        -->
+                        
+                        
+                        <div class="login_menu">
+                           <ul>
+                               <li>
+                                   <a href="{% url 'ver_carrito' %}" style="color: #000; text-decoration: none; display: flex; align-items: center;">
+                                       <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                       <span class="padding_10" style="margin-top: 6px; color: #000;">Carrito</span>
+                                   </a>
+                               </li>
+                               {% if request.user.is_authenticated %}
+                               <li>
+                                 <!---->
+                                   <div class="dropdown" >
+                                       <button style="margin-top: 2px;" class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           <i class="fa fa-user" aria-hidden="true"></i> <!-- Ícono de cuenta -->
+                                           <span style="color: #000;">{{ request.user.username }}</span>
+                                       </button>
+                                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                           <a class="dropdown-item" href="{% url 'registroDatosPersonales' %}" style="color: #000;">Mi Perfil</a>
+                                           <a class="dropdown-item" href="{% url 'verDatosUsuario'  %}" style="color: #000;">Mis Datos Personales</a>
+                                           <a class="dropdown-item" href="#" style="color: #000;">Mis Compras</a>
+                                           <a class="dropdown-item" href="{% url 'cambiar_clave' request.user.id %}" style="color: #000;">Cambiar Clave</a>
+                                           <a class="dropdown-item" href="{% url 'logout' %}" style="color: #000;">
+                                               <i class="fa fa-sign-out" aria-hidden="true"></i> <!-- Ícono de salir -->
+                                               Logout
+                                           </a> <!-- Agregado aquí -->
+                                       </div>
+                                   </div>
+                               </li>
+                               {% else %}
+                               <li>
+                                   <a class="nav-link" href="{% url 'login' %}" style="color: #000; text-decoration: none; display: flex; align-items: center;">
+                                       <i class="fa fa-user" aria-hidden="true"></i> <!-- Ícono de cuenta -->
+                                       <span class="padding_10" style="margin-top: -2px; color: #000;">Login</span>
+
+                                   </a>
+                               </li>
+                               {% endif %}
+                           </ul>
+                       </div>
+                       
+
+
+                      
+                    </div>
+                 
+                    
+        </div>
+            </div>
+           
+        </div>
+        
+         <!-- header section end -->
+         
+        
+      
+      <!-- banner bg main end -->
+      
+      
+      {% block content %}
+      
+
+      {% endblock %}
+
+      <!-- footer section start -->
+      <div class="footer_section layout_padding">
+         <div class="container">
+            <div class="centered-logo">
+               <a href="{% url 'home' %}">
+                   <img alt="logo" src="{% static 'miapp/images/12.png' %}">
+               </a>
+           </div>
+           
+            <div class="input_bt">
+               <input type="text" class="mail_bt" placeholder="Ingrese aqui su correo" name="Your Email">
+               <span class="subscribe_bt" id="basic-addon2"><a href="#">Subscribe</a></span>
+            </div>
+            <div class="footer_menu">
+               <ul>
+                  <li><a href="{% url 'home' %}">Home</a></li>
+                  <li><a href="{% url 'articulos' %}">Articulos</a></li>
+                  <li><a href="#">Componentes de PC</a></li>
+                  <li><a href="#">Accessorios</a></li>
+                  <li><a href="#">Contacto</a></li>
+                  {% if request.user.is_staff %}
+                  <li><a href="{% url 'articulo-create' %}">[CREAR ARTICULO]</a></li>
+                  {% else %}
+                  {% endif %}
+               </ul>
+            </div>
+            <div class="location_main">Solicite ayuda al siguiente número de telefono : <a href="#">+1 1800 1200 1200</a></div>
+         </div>
+      </div>
+      <!-- footer section end -->
+
+
+      <!---------------------------------------pie de la pagina para la base------------------------------------------->
+      <!-- copyright section start -->
+      <div class="copyright_section">
+         <div class="container">
+            <p class="copyright_text">© 2023 Todos los derechos reservados. Diseñado por<a href="https://html.design"> Juan Ruiz y Esteban Ramirez</a></p>
+         </div>
+      </div>
+   </body>
+      <!-- copyright section end -->
+      <!-- Javascript files-->
+   <!-- Asegúrate de que estas rutas reflejen la ubicación de tus archivos JavaScript en la carpeta miapp/ -->
+   <!-- Cargar jQuery y Bootstrap JavaScript desde archivos estáticos -->
+   <script src="{% static 'jquery/jquery-3.5.1.slim.min.js' %}"></script>
+   <script src="{% static 'popperjs/popper.min.js' %}"></script>
+   <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'miapp/js/jquery.min.js' %}"></script>
+   <script src="{% static 'miapp/js/popper.min.js' %}"></script>
+   <script src="{% static 'miapp/js/bootstrap.bundle.min.js' %}"></script>
+   <script src="{% static 'js/bootstrap.min.js' %}"></script>
+   <script src="{% static 'miapp/js/jquery-3.0.1.min.js' %}"></script>
+   <script src="{% static 'miapp/js/plugin.js' %}"></script>
+   <!-- sidebar -->
+   <script src="{% static 'miapp/js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+   <script src="{% static 'miapp/js/custom.js' %}"></script>
+   <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+   <script>
+      function openNav() {
+      document.getElementById("mySidenav").style.width = "250px";
+      }
+      
+      function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+      }
+      
+   </script>
+   <script>
+      $(document).ready(function () {
+        // Inicializar el botón de categorías como un menú desplegable
+        $('.dropdown-toggle').dropdown();
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        // Inicializar el botón de lenguaje como un menú desplegable
+        $('#languageDropdown').dropdown();
+      });
+    </script>
+
+   
+</html>

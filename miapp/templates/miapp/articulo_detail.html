@@ -1,0 +1,162 @@
+{% extends 'miapp/base.html' %}
+
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Detalle de Producto</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/css/adminlte.min.css'%}">
+    <link rel="stylesheet" href="{% static 'miapp/css/styles.css'%}">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper ml-auto">
+    <div class="content-wrapper ml-auto">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Detalle</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{% url 'home'%}">Home</a></li>
+                            <li class="breadcrumb-item active">{{ object.nombre }}</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- Default box -->
+            <div class="card card-solid">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <h3 class="d-inline-block d-sm-none">{{ object.nombre }}</h3>
+                            <div class="col-12 main-product-image">
+                                <img src="{{ object.image.url }}" alt="{{ object.nombre }}" class="img-fluid selected-image">
+                            </div>
+                        
+                           
+                            <div class="col-12 product-image-thumbs">
+                                {% if object.image %}
+                                    <div class="product-image-thumb active"><img src="{{ object.image.url }}" alt="{{ object.nombre }}" class="img-fluid thumb-img"></div>
+                                {% endif %}
+                                {% if object.image2 %}
+                                    <div class="product-image-thumb"><img src="{{ object.image2.url }}" alt="{{ object.nombre }}" class="img-fluid thumb-img"></div>
+                                {% endif %}
+                                {% if object.image3 %}
+                                    <div class="product-image-thumb"><img src="{{ object.image3.url }}" alt="{{ object.nombre }}" class="img-fluid thumb-img"></div>
+                                {% endif %}
+                                {% if object.image4 %}
+                                    <div class="product-image-thumb"><img src="{{ object.image4.url }}" alt="{{ object.nombre }}" class="img-fluid thumb-img"></div>
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 col-sm-6">
+                            <h3 class="my-3">{{ object.nombre }}</h3>
+                            <hr>
+                            <h4></h4>
+                            <div class="bg-gray py-2 px-3 mt-4">
+                                <h2 class="mb-0">$ {{ object.precio }}</h2>
+                                <h4 class="mt-0">$ <small>{{ object.precio }}</small></h4>
+                            </div>
+                            <div class="mt-4">
+                                {% if articulo.stock > 0 %}
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'agregar_al_carrito' articulo.id %}" class="btn btn-primary btn-lg btn-flat d-inline-block">
+                                        <i class="fas fa-cart-plus fa-lg mr-2"></i> Add to Cart
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'ver_carrito' %}" class="btn btn-primary btn-lg btn-flat d-inline-block">
+                                        <i class="fas fa-cart-plus fa-lg mr-2"></i> Add to Cart
+                                    </a>
+                                {% endif %}
+                                
+                                <a href="{% url 'articulo-detail' pk=articulo.id %}" class="btn btn-default btn-lg btn-flat d-inline-block">
+                                    <i class="fas fa-eye fa-lg mr-2"></i> Ver
+                                </a>
+                            {% else %}
+                                <button class="btn btn-secondary btn-lg btn-flat d-inline-block" disabled>
+                                    <i class="fas fa-cart-plus fa-lg mr-2"></i> Sin stock
+                                </button>
+                            {% endif %}
+                                <div class="btn btn-default btn-lg btn-flat">
+                                    <a href="{% url 'articulos' %}" style="text-decoration: none; color: inherit;">
+                                        <i class="fas fa-eye fa-lg mr-2"></i> Ver más artículos
+                                    </a>
+                                </div>
+                            </div>  
+                            <div class="row mt-4">
+                                <nav class="w-100">
+                                    <div class="nav nav-tabs" id="product-tab" role="tablist">
+                                        <a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab" href="#product-desc" role="tab" aria-controls="product-desc" aria-selected="true">Description</a>
+                                    </div>
+                                </nav>
+                                <div class="tab-content p-3" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab">{{ object.descripcion|safe }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="{% static 'miapp/lib/adminlte-master/plugins/jquery/jquery.min.js'%}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'miapp/lib/adminlte-master/plugins/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'miapp/lib/adminlte-master/js/adminlte.min.js'%}"></script>
+<script>
+    $(document).ready(function() {
+        $('.product-image-thumb').on('click', function() {
+            var $image_element = $(this).find('img');
+            $('.main-product-image img').attr('src', $image_element.attr('src'));
+            $('.product-image-thumb.active').removeClass('active');
+            $(this).addClass('active');
+        });
+    });
+</script>
+<style>
+/* En tu archivo de estilos o en la sección de estilos en el head */
+  .thumb-img {
+      max-width: 100px; /* O el tamaño que desees */
+      height: auto;
+  }
+  /* En tu archivo de estilos o en la sección de estilos en el head */
+.selected-image {
+  width: 500px; /* O el tamaño que desees */
+  height: auto; /* Esto mantendrá la proporción original de la imagen */
+}
+
+</style>
+</body>
+</html>
+{% endblock content%}
