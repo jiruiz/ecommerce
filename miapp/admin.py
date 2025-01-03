@@ -54,6 +54,10 @@ class ArticuloCompraAdmin(admin.ModelAdmin):
 class AgregarAdmin(admin.ModelAdmin):
     list_display = ('id','usuario' ,'articulo', 'cantidad')
 
+
+
+
+
 admin.site.register(DatosPersonales, DatosPersonalesAdmin)
 admin.site.register(DatosFacturacion, DatosFacturacionAdmin)
 admin.site.register(Comprobante, ComprobanteAdmin)

@@ -1613,3 +1613,49 @@ class ConfirmacionPago(View):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* CSS para tablas responsivas */
+            /* Estilos para filas de tablas */
+            /* Estilos para las celdas con botones */
+            /* Estilos para las celdas con botones */
+            /*
+            .table-responsive td {
+                display: flex;
+                justify-content: center;  
+                align-items: center;
+            }
+
+            
+            .table-responsive .btn {
+                margin: 5px;  
+                padding: 6px 12px; 
+                font-size: 14px;  
+            }
+
+            @media (max-width: 767px) {
+                .table-responsive td {
+                    flex-direction: column; 
+                    text-align: center;  
+                }
+                
+                .table-responsive .btn {
+                    width: 100%; 
+                    margin: 5px 0;  
+                }
+                
+            }
+            */

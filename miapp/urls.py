@@ -50,7 +50,9 @@ urlpatterns = [
 
     # path('confirmacion/<str:total_carrito>/<int:usuario_id>/', views.ConfirmacionPago.as_view(), name='confirmacion'),
     path('confirmacion/', views.ConfirmacionPago.as_view(), name='confirmacion'),
-    path('ver-datos-usuario/', views.ver_datos_usuario, name='verDatosUsuario'),
+    # path('ver-datos-usuario/', views.ver_datos_usuario, name='verDatosUsuario'),
+    path('ver-datos-usuario/', VerDatosUsuarioView.as_view(), name='ver_datos_usuario'),
+
     path('datospersonales-update/<int:pk>/',  DatosPersonalesUpdate.as_view(), name="datospersonales-update"),
     path('datosfacturacion-update/<int:pk>/',  DatosFactuacionUpdate.as_view(), name="datosfacturacion-update"),
     path('base',  BaseView.as_view(), name="base"),
@@ -71,7 +73,7 @@ urlpatterns = [
     path('ver_compras/', VerComprasView.as_view(), name='ver_compras'),
     path('compra_detail/<int:pk>/', VerCompraDetail.as_view(), name='compra_detail'),
     path('factura/<int:pk>/', FacturaView.as_view(), name='factura'),
-    path('factura/<int:pk>/factura_print/', FacturaPrintView.as_view(), name='factura_print'),
+    # path('factura/<int:pk>/factura_print/', FacturaPrintView.as_view(), name='factura_print'),
     #path('compra-confirmada/', CompraConfirmadaView.as_view(), name='compra-confirmada'),
     path('perfil', PerfilView.as_view(), name='perfil'),
     path('control_stock/', ControlStockView.as_view(), name='control_stock'),

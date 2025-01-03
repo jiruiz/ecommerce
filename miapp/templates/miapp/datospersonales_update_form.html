@@ -66,7 +66,7 @@
         {% if 'ok' in request.GET %}
             <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
                 <h5 style="color:green;">Modificación Exitosa!</h5>
-                <a style="background-color:#00f300; color:black;" href="{% url 'verDatosUsuario' %}" class="btn btn-secondary">
+                <a style="background-color:#00f300; color:black;" href="{% url 'ver_datos_usuario' %}" class="btn btn-secondary">
                     Haz clic aquí para ver los cambios
                 </a>
             </div>
@@ -89,7 +89,7 @@
                 </div>
                 <!-- Agrega más campos de formulario de la misma manera -->
                 <div class="text-center mt-4">
-                    <input type="submit" href="{% url 'verDatosUsuario' %}" class="btn btn-primary btn-block" value="Modificar Datos Personales" />
+                    <input type="submit" href="{% url 'ver_datos_usuario' %}" class="btn btn-primary btn-block" value="Modificar Datos Personales" />
                 </div>
             </form>
         </div>

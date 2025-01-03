@@ -7,27 +7,30 @@
         {% load static %}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Cambiar Contraseña</title>
+        <title>Componentes</title>
       
-        <!-- Google Pay -->
-        <script src="https://pay.google.com/gp/p/js/pay.js"></script>
-      
-        <!-- Google Font: Source Sans Pro -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-        
+    
         <!-- Font Awesome -->
         <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/fontawesome-free/css/all.min.css' %}">
-        
+        <!-- DataTables -->
+        <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
+        <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'%}">
+        <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'%}">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/css/adminlte.min.css'%}">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-      
+    
         <!-- jQuery and Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-      </head>
+    </head>
       
 <body>
+    <div id="loader-container">
+            <div class="loader"></div>
+        </div>
     <!-- jewellery section start -->
     <div class="jewellery_section">
         <div class="container">
@@ -111,17 +114,22 @@
         </div>
     </div>
 </body>
-<style>
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    .jewellery_section {
-        margin-top: 0px;
-        padding-bottom: 80px; /* Agrega espacio en la parte inferior de .jewellery_section para evitar superposiciones */
-        position: relative;
-    }
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AdminLTE -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+<script>
+    window.addEventListener("load", function () {
+        var loader = document.getElementById("loader-container");
+        loader.style.display = "none";
+    });
+
+</script>
+<style>
     body {
         margin: 0;
         padding: 0;
@@ -157,6 +165,69 @@
         object-fit: contain;
     }
     
+    /* Estilos para el loader */
+    #loader-container {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+    
+    .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #3498db;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .jewellery_section {
+        margin-top: 0px;
+        padding-bottom: 80px; /* Agrega espacio en la parte inferior de .jewellery_section para evitar superposiciones */
+        position: relative;
+    }
+    
+    .carousel-buttons {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #FFCC00;
+        padding: 10px;
+        text-align: center;
+        z-index: 9999;
+        width: 100%; /* Ajusta el ancho del contenedor principal */
+        max-height: 20px; /* Establece un ancho máximo para evitar que se haga demasiado ancho en pantallas grandes */
+        display: none;  
+    }
+
+    .carousel-buttons a {
+        color: #fff;
+        margin: 0 10px; /* Espaciado entre los botones */
+    }
+
+    .additional-content {
+        margin: -30px; /* Espaciado superior e inferior del contenido adicional */
+        
+    }
+    .carousel-control-next-icon {
+        color: black;
+    }
+
 </style>
 </html>
 {% endblock content %}

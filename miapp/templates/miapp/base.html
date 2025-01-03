@@ -23,8 +23,9 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
     
-        <!-- Inline Styles -->
+        <!-- Inline Styles 
         <style>
+            
             .navbar {
                 background-color: #FFCC00;
                 position: fixed;
@@ -53,6 +54,89 @@
                 font-size: 16px;
             }
         </style>
+        -->
+
+
+        <style>
+            /* Asegura que todos los elementos usen box-sizing: border-box */
+            * {
+                box-sizing: border-box;
+            }
+        
+            /* Barra de navegación fija en la parte superior */
+            .navbar {
+                background-color: #FFCC00;
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 9999;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px; /* Padding fijo */
+                box-sizing: border-box; /* Incluye el padding en el tamaño total */
+                height: 60px; /* Altura fija */
+                transition: none; /* Elimina cualquier transición que pueda afectar el tamaño */
+            }
+        
+            /* Logo centrado y tamaño fijo */
+            .centered-logo {
+                text-align: center;
+                margin-bottom: 0;
+            }
+        
+            .centered-logo img {
+                width: 40px; /* Tamaño fijo para el logo */
+                height: 40px; /* Asegura que la altura sea igual */
+                object-fit: contain; /* No distorsionar la imagen */
+            }
+        
+            /* Resetea márgenes y padding globalmente */
+            body, div, .container {
+                margin: 0;
+                padding: 0;
+                font-size: 16px;
+            }
+        
+            /* Ajuste para pantallas más pequeñas */
+            @media (max-width: 768px) {
+                .navbar {
+                    padding: 10px 15px; /* Ajusta el padding si es necesario */
+                }
+            }
+            /* CSS para tablas responsivas */
+            /* Estilos para filas de tablas */
+            /* Estilos para las celdas con botones */
+            /* Estilos para las celdas con botones */
+            .table-responsive td {
+                display: flex;
+                justify-content: center;  /* Centra los botones en la celda */
+                align-items: center;
+            }
+
+            /* Asegura que los botones no se desborden */
+            .table-responsive .btn {
+                margin: 5px;  /* Añade margen entre los botones */
+                padding: 6px 12px; /* Tamaño de los botones */
+                font-size: 14px;  /* Ajusta el tamaño del texto de los botones */
+            }
+
+            /* Hacer que los botones se apilen en pantallas pequeñas */
+            @media (max-width: 767px) {
+                .table-responsive td {
+                    flex-direction: column; /* Los botones se apilan uno debajo del otro */
+                    text-align: center;  /* Centra los botones en pantallas pequeñas */
+                }
+
+                .table-responsive .btn {
+                    width: 100%; /* Los botones ocuparán todo el ancho disponible */
+                    margin: 5px 0;  /* Espaciado entre los botones */
+                }
+            }
+
+            
+        </style>
+        
     </head>
     
 
@@ -115,8 +199,7 @@
                     <li><a href="{% url 'computacion' %}">Computacion</a></li>
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'perfil' %}">Mi Perfil</a></li>
-                        <li><a href="{% url 'verDatosUsuario' %}">Datos Personales</a></li>
-                    {% else %}
+                        <li><a href="{% url 'ver_datos_usuario' %}">Datos Personales</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -154,59 +237,64 @@
             </div>
 
             <!-- Header box with login and cart -->
-            <div class="header_box">
-                <div class="login_menu">
-                    <ul>
-                        <li class="nav-item">
-                            <a href="{% url 'ver_carrito' %}" class="nav-link" style="color: #000; text-decoration: none; display: flex; align-items: center;">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                <span class="padding_10" style="margin-top: 6px; color: #000;">Carrito</span>
-                                {% if cantidad_en_carrito > 0 %}
-                                    <span class="badge badge-danger" style="position: relative; top: -10px; left: -5px;">{{ cantidad_en_carrito }}</span>
-                                {% endif %}
+            <div class="header_box" style="display: flex; align-items: center; justify-content: space-between;">
+
+                <div class="login_menu" style="display: flex; align-items: center;">
+
+                    <!-- Carrito -->
+                    <li class="nav-item" style="display: flex; align-items: center; margin-right: 20px;">
+                        <a href="{% url 'ver_carrito' %}" class="nav-link" style="color: #000; text-decoration: none; display: flex; align-items: center;">
+                            <i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 18px;"></i>
+                            <span class="padding_10" style="margin-left: 5px; color: #000;">Carrito</span>
+                            {% if cantidad_en_carrito > 0 %}
+                                <span class="badge badge-danger" style="position: relative; top: -10px; left: -5px; font-size: 14px;">{{ cantidad_en_carrito }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <!-- Usuario -->
+                    {% if request.user.is_authenticated %}
+                        <li style="display: flex; align-items: center;">
+                            <div class="dropdown" style="display: flex;">
+                                <button style="margin-top: 2px;" class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-user" aria-hidden="true" style="font-size: 18px;"></i>
+                                    <span style="color: #000; margin-left: 5px;">{{ request.user.username }}</span>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                    <a class="dropdown-item" href="{% url 'perfil' %}" style="color: #000;">
+                                        <i class="fa fa-user-circle" aria-hidden="true"></i> Mi Perfil
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'ver_datos_usuario' %}" style="color: #000;">
+                                        <i class="fa fa-address-card" aria-hidden="true"></i> Mis Datos Personales
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'ver_compras' %}" style="color: #000;">
+                                        <i class="fa fa-shopping-bag" aria-hidden="true"></i> Mis Compras
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'cambiar_clave' request.user.id %}" style="color: #000;">
+                                        <i class="fa fa-key" aria-hidden="true"></i> Cambiar Clave
+                                    </a>
+                                    <a class="dropdown-item" href="{% url 'logout' %}" style="color: #000;">
+                                        <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li style="display: flex; align-items: center;">
+                            <a class="nav-link" href="{% url 'login' %}" style="color: #000; text-decoration: none; display: flex; align-items: center;">
+                                <i class="fa fa-user" aria-hidden="true" style="font-size: 18px;"></i>
+                                <span class="padding_10" style="margin-left: 5px; color: #000;">Login</span>
                             </a>
                         </li>
-                        {% if request.user.is_authenticated %}
-                            <li>
-                                <div class="dropdown" style="display:flex;">
-                                    <button style="margin-top: 2px;" class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-user" aria-hidden="true"></i> <!-- Ícono de cuenta -->
-                                        <span style="color: #000;">{{ request.user.username }}</span>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                                        <a class="dropdown-item" href="{% url 'perfil' %}" style="color: #000;">
-                                            <i class="fa fa-user-circle" aria-hidden="true"></i> Mi Perfil
-                                        </a>
-                                        <a class="dropdown-item" href="{% url 'verDatosUsuario' %}" style="color: #000;">
-                                            <i class="fa fa-address-card" aria-hidden="true"></i> Mis Datos Personales
-                                        </a>
-                                        <a class="dropdown-item" href="{% url 'ver_compras' %}" style="color: #000;">
-                                            <i class="fa fa-shopping-bag" aria-hidden="true"></i> Mis Compras
-                                        </a>
-                                        <a class="dropdown-item" href="{% url 'cambiar_clave' request.user.id %}" style="color: #000;">
-                                            <i class="fa fa-key" aria-hidden="true"></i> Cambiar Clave
-                                        </a>
-                                        <a class="dropdown-item" href="{% url 'logout' %}" style="color: #000;">
-                                            <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
-                        {% else %}
-                            <li>
-                                <a class="nav-link" href="{% url 'login' %}" style="color: #000; text-decoration: none; display: flex; align-items: center;">
-                                    <i class="fa fa-user" aria-hidden="true"></i> <!-- Ícono de cuenta -->
-                                    <span class="padding_10" style="margin-top: -2px; color: #000;">Login</span>
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
+                    {% endif %}
                 </div>
+
             </div>
         </div>
     </div>
 </div>
 <!-- header section end -->
+
 
         
       

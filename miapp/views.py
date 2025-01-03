@@ -428,7 +428,7 @@ class CrearDatosFacturacionView(LoginRequiredMixin, View):
         # Calcular el total del carrito
         total_carrito = sum(item.precio_total() for item in carrito)
         return render(request, self.template_name, {'form': form, 'carrito': carrito, 'total_carrito': total_carrito})
-    
+
 class CambiarClaveView(View):
     template_name = 'miapp/cambiar_clave.html'
 
@@ -436,13 +436,27 @@ class CambiarClaveView(View):
         # Muestra el formulario para cambiar la contraseña
         usuario = get_user_model().objects.get(id=usuario_id)
         form = CambiarClaveForm()
-        return render(request, self.template_name, {'form': form, 'usuario': usuario})
+
+        # Calcula la cantidad en carrito
+        cantidad_en_carrito = 0
+        if request.user.is_authenticated:
+            cantidad_en_carrito = ItemCarrito.objects.filter(usuario=request.user).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+
+        # Pasa la cantidad en carrito al contexto
+        context = {'form': form, 'usuario': usuario, 'cantidad_en_carrito': cantidad_en_carrito}
+        return render(request, self.template_name, context)
 
     def post(self, request, usuario_id):
         # Procesa el formulario y cambia la contraseña del usuario
         usuario = get_user_model().objects.get(id=usuario_id)
         form = CambiarClaveForm(request.POST)
 
+        # Calcula la cantidad en carrito
+        cantidad_en_carrito = 0
+        if request.user.is_authenticated:
+            cantidad_en_carrito = ItemCarrito.objects.filter(usuario=request.user).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+
+        # Verifica si el formulario es válido
         if form.is_valid():
             nueva_clave = form.cleaned_data['nueva_clave']
             confirmar_clave = form.cleaned_data['confirmar_clave']
@@ -461,7 +475,10 @@ class CambiarClaveView(View):
                 # Las contraseñas no coinciden, muestra un error
                 form.add_error('confirmar_clave', 'Las contraseñas no coinciden.')
 
-        return render(request, self.template_name, {'form': form, 'usuario': usuario})
+        # Pasa la cantidad en carrito al contexto
+        context = {'form': form, 'usuario': usuario, 'cantidad_en_carrito': cantidad_en_carrito}
+        return render(request, self.template_name, context)
+
 
 
 from miapp.models import ItemCarrito  
@@ -614,33 +631,65 @@ class ConfirmacionPago(View):
             # Manejar el error de alguna manera, por ejemplo, redirigir a una página de error
             return render(request, 'miapp/error.html')
 
-def ver_datos_usuario(request):
-    # Verifica si el usuario está autenticado
-    if request.user.is_authenticated:
-        # Obtiene el objeto User asociado al usuario autenticado
-        usuario = User.objects.get(username=request.user.username)
+# def ver_datos_usuario(request):
+#     # Verifica si el usuario está autenticado
+#     if request.user.is_authenticated:
+#         # Obtiene el objeto User asociado al usuario autenticado
+#         usuario = User.objects.get(username=request.user.username)
         
-        # Obtiene el objeto DatosPersonales asociado al usuario
-        datos_personales = DatosPersonales.objects.filter(user=usuario).first()
+#         # Obtiene el objeto DatosPersonales asociado al usuario
+#         datos_personales = DatosPersonales.objects.filter(user=usuario).first()
         
-        # Si no hay datos personales, redirige al usuario a la página de registro o actualización de datos personales
-        if datos_personales is None:
-            return redirect('registroDatosPersonales')
+#         # Si no hay datos personales, redirige al usuario a la página de registro o actualización de datos personales
+#         if datos_personales is None:
+#             return redirect('registroDatosPersonales')
         
-        # Obtiene el objeto DatosFacturacion asociado al usuario
-        datos_facturacion = DatosFacturacion.objects.filter(user=usuario).first()
+#         # Obtiene el objeto DatosFacturacion asociado al usuario
+#         datos_facturacion = DatosFacturacion.objects.filter(user=usuario).first()
         
-        # Renderiza la plantilla y pasa los datos_personales, datos_facturacion y usuario
-        return render(request, 'miapp/ver_datos_usuario.html', {
-            'datos_personales': datos_personales,
-            'datos_facturacion': datos_facturacion,
-            'usuario': usuario,
-        })
-    else:
-        # Redirige al usuario a la página de inicio de sesión si no está autenticado
-        return redirect('login')
+#         # Renderiza la plantilla y pasa los datos_personales, datos_facturacion y usuario
+#         return render(request, 'miapp/ver_datos_usuario.html', {
+#             'datos_personales': datos_personales,
+#             'datos_facturacion': datos_facturacion,
+#             'usuario': usuario,
+#         })
+#     else:
+#         # Redirige al usuario a la página de inicio de sesión si no está autenticado
+#         return redirect('login')
 
+class VerDatosUsuarioView(TemplateView):
+    template_name = 'miapp/ver_datos_usuario.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Verifica si el usuario está autenticado
+        if self.request.user.is_authenticated:
+            # Obtiene el objeto User asociado al usuario autenticado
+            usuario = User.objects.get(username=self.request.user.username)
+            
+            # Obtiene el objeto DatosPersonales asociado al usuario
+            datos_personales = DatosPersonales.objects.filter(user=usuario).first()
+            
+            # Si no hay datos personales, redirige al usuario a la página de registro o actualización de datos personales
+            if datos_personales is None:
+                return redirect('registroDatosPersonales')
+
+            # Obtiene el objeto DatosFacturacion asociado al usuario
+            datos_facturacion = DatosFacturacion.objects.filter(user=usuario).first()
+            cantidad_en_carrito = 0
+            if self.request.user.is_authenticated:
+                cantidad_en_carrito = ItemCarrito.objects.filter(usuario=self.request.user).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+            context['cantidad_en_carrito'] = cantidad_en_carrito  # Pasa la cantidad al contexto
+            # Pasa los datos al contexto
+            context['datos_personales'] = datos_personales
+            context['datos_facturacion'] = datos_facturacion
+            context['usuario'] = usuario
+        else:
+            # Redirige al usuario a la página de inicio de sesión si no está autenticado
+            return redirect('login')
+
+        return context
 
 
 class DatosPersonalesUpdate(LoginRequiredMixin, UpdateView):
@@ -946,9 +995,6 @@ class FacturaView(TemplateView):
         articulos_compra = ArticuloCompra.objects.filter(compra=compra)
 
         # Calcular el subtotal y el 21% para cada artículo
-        # Calcular el subtotal y el 21% para cada artículo
-        # Calcular el subtotal y el 21% para cada artículo
-        # Calcular el subtotal y el 21% para cada artículo
         for articulo in articulos_compra:
             cantidad_decimal = Decimal(articulo.cantidad)
             precio_decimal = Decimal(articulo.articulo.precio)
@@ -990,31 +1036,6 @@ class FacturaView(TemplateView):
 
         return context
 
-
-class FacturaPrintView(TemplateView):
-    model = ArticuloCompra
-    template_name = 'miapp/factura_print.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Obtén la compra
-        compra = Compra.objects.get(pk=self.kwargs['pk'])
-        # Obtén los artículos asociados a la compra
-        articulos_compra = ArticuloCompra.objects.filter(compra=compra)
-        context['articulos_compra'] = articulos_compra
-        # Resto del contexto...
-        return context
-
-
-    def dispatch(self, request, *args, **kwargs):
-        # Verificar si se está solicitando la impresión
-        if request.GET.get('print') != 'yes':
-            # Si la impresión se cancela, redirigir a factura.html
-            return redirect('factura', pk=self.kwargs['pk'])
-
-        return super().dispatch(request, *args, **kwargs)
-    
-
 class CompraConfirmadaView(TemplateView):    
     Model = Compra
     template_name = 'miapp/confirmacionCompra.html'
@@ -1041,7 +1062,10 @@ class PerfilView(LoginRequiredMixin, TemplateView):
 
         # Obtener la cantidad total de compras del usuario
         total_compras = compras.aggregate(total_compras=Sum('articulocompra__cantidad'))['total_compras']
-
+        cantidad_en_carrito = 0
+        if self.request.user.is_authenticated:
+               cantidad_en_carrito = ItemCarrito.objects.filter(usuario=self.request.user).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+        context['cantidad_en_carrito'] = cantidad_en_carrito  # Pasa la cantidad al contexto
         context['datos_personales'] = datos_personales
         context['compras'] = compras
         context['total_compras'] = total_compras

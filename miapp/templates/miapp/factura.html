@@ -232,7 +232,7 @@
               <!-- this row will not appear when printing -->
               <div class="row no-print">
                 <div class="col-12">
-                  <a href="factura_print" rel="noopener" id="printButton" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                  <a href="{% url 'factura' pk=compra.pk %}" rel="noopener" id="printButton"  class="btn btn-default"><i class="fas fa-print"></i> Print</a>
                   
                 </div>
               </div>
@@ -283,15 +283,21 @@
 <!-- Page specific script -->
 <!-- Page specific script -->
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var printButton = document.getElementById("printButton");
+  document.addEventListener("DOMContentLoaded", function() {
+    var printButton = document.getElementById("printButton");
   
-      if (printButton) {
-        printButton.addEventListener("click", function() {
-          window.print();
-        });
-      }
-    });
+    if (printButton) {
+      printButton.addEventListener("click", function() {
+        // Mostrar cuadro de impresión
+        window.print();
+  
+        // Después de que la ventana de impresión se cierre (sin importar si se cancela o no),
+        // podrías realizar alguna acción si es necesario.
+        // Aquí simplemente no se hace nada extra si se cancela.
+      });
+    }
+  });
+  
   </script>
   
   
