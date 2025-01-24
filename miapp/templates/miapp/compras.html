@@ -22,8 +22,7 @@
             <!-- Theme style -->
             <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/css/adminlte.min.css'%}">
         </head>
-    <body class="hold-transition sidebar-mini" >
-        
+        <body class="hold-transition sidebar-mini" >
         {% if request.user.is_staff %}
         
         {% endif %}
@@ -184,6 +183,7 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
+        </body>
 
     
     <!-- scripts -->
@@ -351,6 +351,5 @@
         }
     
     </style>
-    </body>
 </html>
 {% endblock content %}
