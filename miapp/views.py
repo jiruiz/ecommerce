@@ -429,58 +429,32 @@ class CrearDatosFacturacionView(LoginRequiredMixin, View):
         total_carrito = sum(item.precio_total() for item in carrito)
         return render(request, self.template_name, {'form': form, 'carrito': carrito, 'total_carrito': total_carrito})
 
+from django.contrib.auth import get_user_model, login
+from django.shortcuts import render, redirect
+from django.views import View
+from django.contrib.auth.hashers import check_password
+from .forms import CambiarClaveForm
+from .models import ItemCarrito
+from django.db.models import Sum
+
 class CambiarClaveView(View):
-    template_name = 'miapp/cambiar_clave.html'
+    def get(self, request, *args, **kwargs):
+        form = CambiarClaveForm(user=request.user)  # Pasa el usuario al formulario
+        return render(request, 'miapp/cambiar_clave.html', {'form': form})
 
-    def get(self, request, usuario_id):
-        # Muestra el formulario para cambiar la contraseña
-        usuario = get_user_model().objects.get(id=usuario_id)
-        form = CambiarClaveForm()
-
-        # Calcula la cantidad en carrito
-        cantidad_en_carrito = 0
-        if request.user.is_authenticated:
-            cantidad_en_carrito = ItemCarrito.objects.filter(usuario=request.user).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
-
-        # Pasa la cantidad en carrito al contexto
-        context = {'form': form, 'usuario': usuario, 'cantidad_en_carrito': cantidad_en_carrito}
-        return render(request, self.template_name, context)
-
-    def post(self, request, usuario_id):
-        # Procesa el formulario y cambia la contraseña del usuario
-        usuario = get_user_model().objects.get(id=usuario_id)
-        form = CambiarClaveForm(request.POST)
-
-        # Calcula la cantidad en carrito
-        cantidad_en_carrito = 0
-        if request.user.is_authenticated:
-            cantidad_en_carrito = ItemCarrito.objects.filter(usuario=request.user).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
-
-        # Verifica si el formulario es válido
+    def post(self, request, *args, **kwargs):
+        form = CambiarClaveForm(request.POST, user=request.user)  # También pasa el usuario en el POST
         if form.is_valid():
+            # Lógica para cambiar la contraseña
             nueva_clave = form.cleaned_data['nueva_clave']
-            confirmar_clave = form.cleaned_data['confirmar_clave']
+            usuario = request.user
+            usuario.set_password(nueva_clave)
+            usuario.save()  # Guarda el nuevo valor de la contraseña
+            return redirect('home')  # Redirige después de cambiar la contraseña
+        return render(request, 'miapp/cambiar_clave.html', {'form': form})
+    
 
-            if nueva_clave == confirmar_clave:
-                # Cambia la contraseña del usuario
-                usuario.set_password(nueva_clave)
-                usuario.save()
-
-                # Inicia sesión nuevamente para evitar que el usuario se desloguee
-                login(request, usuario)
-
-                # Redirige a una página de éxito o a donde desees
-                return redirect('home')
-            else:
-                # Las contraseñas no coinciden, muestra un error
-                form.add_error('confirmar_clave', 'Las contraseñas no coinciden.')
-
-        # Pasa la cantidad en carrito al contexto
-        context = {'form': form, 'usuario': usuario, 'cantidad_en_carrito': cantidad_en_carrito}
-        return render(request, self.template_name, context)
-
-
-
+    
 from miapp.models import ItemCarrito  
 
 class iniciarPagoView(View):
@@ -696,10 +670,32 @@ class DatosPersonalesUpdate(LoginRequiredMixin, UpdateView):
     model = DatosPersonales
     form_class = DatosPersonalesForm
     template_name_suffix = "_update_form"
-    
+
     def get_success_url(self):
+        # Redirige a la misma página con el mensaje de éxito
         return reverse_lazy('datospersonales-update', kwargs={'pk': self.object.pk}) + '?ok'
+
+    def form_valid(self, form):
+        # Guarda los datos del formulario en el modelo `DatosPersonales`
+        response = super().form_valid(form)
+
+        # Actualiza los datos del usuario asociado
+        user = self.object.user  # Relación OneToOneField con User
+        user.first_name = form.cleaned_data.get('nombre')  # Asegúrate de que el campo 'nombre' está en el formulario
+        user.last_name = form.cleaned_data.get('apellido')
+        user.email = form.cleaned_data.get('correo')
+        user.save()  # Faltaba llamar al método save()
+
+        return response
+
+    def get_context_data(self, **kwargs):
+        # Agrega el usuario al contexto de la plantilla
+        context = super().get_context_data(**kwargs)
+        context['usuario'] = self.request.user
+        return context
     
+
+
 class DatosFactuacionUpdate(LoginRequiredMixin, UpdateView):
     model = DatosFacturacion
     form_class = DatosFacturacionForm
@@ -717,6 +713,13 @@ class ArticuloDelete(LoginRequiredMixin, DeleteView):
 
 class BaseView(TemplateView):
     template_name = 'miapp/base.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Obtener los artículos de cada compra
+        cantidad_en_carrito = 0
+        if self.request.user.is_authenticated:
+            cantidad_en_carrito = ItemCarrito.objects.filter(usuario=self.request.user).aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+        context['cantidad_en_carrito'] = cantidad_en_carrito  # Pasa la cantidad al contexto
 
 
 

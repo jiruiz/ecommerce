@@ -29,11 +29,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+    
 <div class="container mt-5">
+    
     <div class="section-title mb-3" style="background-color: #FFCC00; color: black;  border-radius: 5px; text-align: center;">
         <h1 class="font-weight-bold text-dark">Carrito de Compras</h1>
+            
     </div>
-
+    
     {% if user.is_authenticated %}
     <div class="section-content" style="border: 1px solid #FFCC00; border-top: none; border-radius: 0 0 5px 5px;">
         {% if cantidad_en_carrito > 0 %}
@@ -109,7 +112,7 @@
     <a href="{% url 'login' %}" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Iniciar Sesión</a>
     {% endif %}
 </div>
-
+ 
 <script src="https://www.paypal.com/sdk/js?client-id=ATlD7DEoG5bCpYXUBFoWHDqlR1pxnJEcT68q-qPSyEVzZef6cgRc5pYuIkhC4dgYlIDM9fyxgtr6hAzF"></script>
 <script>
     paypal.Buttons({

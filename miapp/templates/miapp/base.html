@@ -59,9 +59,7 @@
 
         <style>
             /* Asegura que todos los elementos usen box-sizing: border-box */
-            * {
-                box-sizing: border-box;
-            }
+            
         
             /* Barra de navegación fija en la parte superior */
             .navbar {
@@ -91,12 +89,7 @@
                 object-fit: contain; /* No distorsionar la imagen */
             }
         
-            /* Resetea márgenes y padding globalmente */
-            body, div, .container {
-                margin: 0;
-                padding: 0;
-                font-size: 16px;
-            }
+            
         
             /* Ajuste para pantallas más pequeñas */
             @media (max-width: 768px) {
@@ -153,15 +146,13 @@
             <div class="col-sm-12">
                 <div class="custom_menu">
                     <ul>
-                        <li><a href="{% url 'home' %}">Home</a></li>
-                        <li><a href="{% url 'articulos' %}">Articulos</a></li>
-                        <li><a href="{% url 'componentes' %}">Componentes de PC</a></li>
-                        <li><a href="{% url 'accesorios' %}">Accessorios</a></li>
-                        <li><a href="{% url 'computacion' %}">Computacion</a></li>
+                        <li><a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a></li>
+                        <li><a href="{% url 'articulos' %}"><i class="fa fa-box"></i> Articulos</a></li>
+                        <li><a href="{% url 'componentes' %}"><i class="fa fa-cogs"></i> Componentes de PC</a></li>
+                        <li><a href="{% url 'accesorios' %}"><i class="fa fa-headphones"></i> Accesorios</a></li>
+                        <li><a href="{% url 'computacion' %}"><i class="fa fa-laptop"></i> Computacion</a></li>
                         {% if request.user.is_staff %}
-                            <li><p>---</p></li>
-                            <li><a href="{% url 'vista_admin' %}">Panel Administrador</a></li>
-                        {% else %}
+                            <li><a href="{% url 'vista_admin' %}"><i class="fa fa-user-shield"></i> Panel Administrador</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -192,14 +183,14 @@
             <div class="sidenav" id="mySidenav">
                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                 <ul>
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'articulos' %}">Articulos</a></li>
-                    <li><a href="{% url 'componentes' %}">Componentes</a></li>
-                    <li><a href="{% url 'accesorios' %}">Accessorios</a></li>
-                    <li><a href="{% url 'computacion' %}">Computacion</a></li>
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'perfil' %}">Mi Perfil</a></li>
-                        <li><a href="{% url 'ver_datos_usuario' %}">Datos Personales</a></li>
+                    <li><a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="{% url 'articulos' %}"><i class="fa fa-box"></i> Articulos</a></li>
+                    <li><a href="{% url 'componentes' %}"><i class="fa fa-cogs"></i> Componentes de PC</a></li>
+                    <li><a href="{% url 'accesorios' %}"><i class="fa fa-headphones"></i> Accesorios</a></li>
+                    <li><a href="{% url 'computacion' %}"><i class="fa fa-laptop"></i> Computacion</a></li>
+                    {% if request.user.is_staff %}
+                        <li><p>---</p></li>
+                        <li><a href="{% url 'vista_admin' %}"><i class="fa fa-user-shield"></i> Panel Administrador</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -273,8 +264,9 @@
                                     <a class="dropdown-item" href="{% url 'cambiar_clave' request.user.id %}" style="color: #000;">
                                         <i class="fa fa-key" aria-hidden="true"></i> Cambiar Clave
                                     </a>
-                                    <a class="dropdown-item" href="{% url 'logout' %}" style="color: #000;">
-                                        <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+                                    <a href="{% url 'logout' %}" class="nav-link" style="color: #000; text-decoration: none;">
+                                        <i class="fa fa-sign-out-alt"></i>
+                                        <span class="padding_10" style="margin-left: 5px; color: #000;">Logout</span>
                                     </a>
                                 </div>
                             </div>

@@ -3,6 +3,8 @@ from .models import Articulo, Compra, DatosFacturacion, DatosPersonales, Factura
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 
 from django import forms 
@@ -68,7 +70,7 @@ class DatosPersonalesForm(forms.ModelForm):
 
     class Meta:
         model = DatosPersonales
-        fields = ['telefono', 'numeroDocumento', 'claseFiscalTipo']
+        fields = ['nombre', 'apellido', 'correo', 'telefono', 'claseFiscalTipo', 'numeroDocumento']
 
         labels = {
             'telefono': 'Nro de Teléfono',
@@ -97,9 +99,34 @@ class DatosFacturacionForm(forms.ModelForm):
         }
 
 class CambiarClaveForm(forms.Form):
+    clave_actual = forms.CharField(widget=forms.PasswordInput, label="Contraseña Actual")
     nueva_clave = forms.CharField(widget=forms.PasswordInput, label="Nueva Contraseña")
     confirmar_clave = forms.CharField(widget=forms.PasswordInput, label="Confirmar Contraseña")
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)  # Recupera el usuario del contexto
+        super().__init__(*args, **kwargs)
+
+    def clean_clave_actual(self):
+        if self.user:  # Asegúrate de que el usuario esté presente
+            clave_actual = self.cleaned_data.get('clave_actual')
+            usuario = get_user_model().objects.get(id=self.user.id)
+            if not usuario.check_password(clave_actual):
+                raise ValidationError("La contraseña actual es incorrecta.")
+            return clave_actual
+        else:
+            raise ValidationError("Usuario no encontrado.")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        nueva_clave = cleaned_data.get('nueva_clave')
+        confirmar_clave = cleaned_data.get('confirmar_clave')
+
+        if nueva_clave and confirmar_clave:
+            if nueva_clave != confirmar_clave:
+                raise ValidationError("Las contraseñas no coinciden.")
+        return cleaned_data
+        
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(
         label="Contraseña anterior",
