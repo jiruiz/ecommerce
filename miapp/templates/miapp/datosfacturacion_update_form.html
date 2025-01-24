@@ -90,8 +90,14 @@
                 </div>
                 <!-- Agrega más campos de formulario de la misma manera -->
                 <div class="text-center mt-4">
-                    <input type="submit" href="{% url 'ver_datos_usuario' %}" class="btn btn-primary btn-block" value="Modificar Datos Personales" />
+                    <!-- Botón para modificar -->
+                    <input type="submit" class="btn btn-primary btn-block" value="Modificar Datos Personales" />
                 </div>
+                <div class="text-center mt-4">
+                    <!-- Botón para volver sin enviar el formulario -->
+                    <a href="{% url 'ver_datos_usuario' %}" class="btn btn-secondary btn-block">Volver Sin Cambiar</a>
+                </div>
+                
             </form>
         </div>
     </div>

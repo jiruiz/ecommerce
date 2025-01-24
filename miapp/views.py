@@ -379,7 +379,7 @@ class ArticuloDetailView(DetailView):
     
 
 
-class SearchView(View):
+class SearchView(View):#es del base de ventas
     template_name = 'miapp/articulos.html'
 
     def get(self, request, *args, **kwargs):

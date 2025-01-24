@@ -65,9 +65,9 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
       <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+        {% comment %} <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
-        </a>
+        </a> {% endcomment %}
         <div class="navbar-search-block">
           <form class="form-inline">
             <div class="input-group input-group-sm">
@@ -91,11 +91,56 @@
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
+      <!-- Botón para abrir el panel lateral -->
+<li class="nav-item">
+  <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+      <i class="fas fa-th-large"></i>
+  </a>
+</li>
+
+<!-- Panel lateral de configuración -->
+<aside class="control-sidebar control-sidebar">
+  <div class="p-3">
+      <h5>Configuraciones</h5>
+
+      <!-- Modo Oscuro -->
+      <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="darkModeToggle">
+          <label class="form-check-label" for="darkModeToggle">Modo Oscuro</label>
+      </div>
+
+      <!-- Sidebar Colapsado -->
+      <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="sidebarToggle">
+          <label class="form-check-label" for="sidebarToggle">Sidebar Colapsado</label>
+      </div>
+
+      <!-- Sidebar Fijo -->
+      <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="sidebarFixedToggle">
+          <label class="form-check-label" for="sidebarFixedToggle">Sidebar Fijo</label>
+      </div>
+
+      <!-- Navbar Fija -->
+      <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="navbarFixedToggle">
+          <label class="form-check-label" for="navbarFixedToggle">Navbar Fija</label>
+      </div>
+
+      <!-- Header Fijo -->
+      <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="headerFixedToggle">
+          <label class="form-check-label" for="headerFixedToggle">Header Fijo</label>
+      </div>
+
+      <!-- Footer Fijo -->
+      <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="footerFixedToggle">
+          <label class="form-check-label" for="footerFixedToggle">Footer Fijo</label>
+      </div>
+  </div>
+</aside>
+
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -103,7 +148,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{% url 'home' %}" class="brand-link">
+    <a href="{% url 'vista_admin' %}" class="brand-link">
       <img src="{% static 'miapp/lib/adminlte-master/img/AdminLTELogo.png'%}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">E-House</span>
     </a>
@@ -583,6 +628,126 @@
           
       });
   };
+  
+</script>
+<script>
+  // Función para alternar la visibilidad de la barra lateral
+  function toggleSidebar() {
+    var sidebar = document.querySelector('.control-sidebar');
+    var isOpen = sidebar.classList.contains('control-sidebar-open');
+    
+    if (isOpen) {
+      sidebar.classList.remove('control-sidebar-open');
+    } else {
+      sidebar.classList.add('control-sidebar-open');
+    }
+
+    // Guardar el estado en localStorage
+    localStorage.setItem('sidebarState', isOpen ? 'closed' : 'open');
+  }
+
+  // Cargar el estado al iniciar la página
+  document.addEventListener('DOMContentLoaded', function() {
+    var savedState = localStorage.getItem('sidebarState');
+    if (savedState === 'open') {
+      document.querySelector('.control-sidebar').classList.add('control-sidebar-open');
+    } else {
+      document.querySelector('.control-sidebar').classList.remove('control-sidebar-open');
+    }
+  });
+  $(document).ready(function () {
+    // Aplicar configuraciones guardadas al cargar la página
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        $('body').addClass('dark-mode');
+        $('#darkModeToggle').prop('checked', true);
+    }
+
+    if (localStorage.getItem('sidebarCollapsed') === 'true') {
+        $('body').addClass('sidebar-collapse');
+        $('#sidebarToggle').prop('checked', true);
+    }
+
+    if (localStorage.getItem('sidebarFixed') === 'true') {
+        $('body').addClass('sidebar-fixed');
+        $('#sidebarFixedToggle').prop('checked', true);
+    }
+
+    if (localStorage.getItem('navbarFixed') === 'true') {
+        $('body').addClass('layout-navbar-fixed');
+        $('#navbarFixedToggle').prop('checked', true);
+    }
+
+    if (localStorage.getItem('headerFixed') === 'true') {
+        $('body').addClass('layout-fixed');
+        $('#headerFixedToggle').prop('checked', true);
+    }
+
+    if (localStorage.getItem('footerFixed') === 'true') {
+        $('body').addClass('main-footer-fixed');
+        $('#footerFixedToggle').prop('checked', true);
+    }
+
+    // Cambiar Modo Oscuro
+    $('#darkModeToggle').on('change', function () {
+        $('body').toggleClass('dark-mode');
+        if ($('body').hasClass('dark-mode')) {
+            localStorage.setItem('darkMode', 'enabled');
+        } else {
+            localStorage.setItem('darkMode', 'disabled');
+        }
+    });
+
+    // Cambiar Sidebar Colapsado
+    $('#sidebarToggle').on('change', function () {
+        $('body').toggleClass('sidebar-collapse');
+        if ($('body').hasClass('sidebar-collapse')) {
+            localStorage.setItem('sidebarCollapsed', 'true');
+        } else {
+            localStorage.setItem('sidebarCollapsed', 'false');
+        }
+    });
+
+    // Cambiar Sidebar Fijo
+    $('#sidebarFixedToggle').on('change', function () {
+        $('body').toggleClass('sidebar-fixed');
+        if ($('body').hasClass('sidebar-fixed')) {
+            localStorage.setItem('sidebarFixed', 'true');
+        } else {
+            localStorage.setItem('sidebarFixed', 'false');
+        }
+    });
+
+    // Cambiar Navbar Fijo
+    $('#navbarFixedToggle').on('change', function () {
+        $('body').toggleClass('layout-navbar-fixed');
+        if ($('body').hasClass('layout-navbar-fixed')) {
+            localStorage.setItem('navbarFixed', 'true');
+        } else {
+            localStorage.setItem('navbarFixed', 'false');
+        }
+    });
+
+    // Cambiar Header Fijo
+    $('#headerFixedToggle').on('change', function () {
+        $('body').toggleClass('layout-fixed');
+        if ($('body').hasClass('layout-fixed')) {
+            localStorage.setItem('headerFixed', 'true');
+        } else {
+            localStorage.setItem('headerFixed', 'false');
+        }
+    });
+
+    // Cambiar Footer Fijo
+    $('#footerFixedToggle').on('change', function () {
+        $('body').toggleClass('main-footer-fixed');
+        if ($('body').hasClass('main-footer-fixed')) {
+            localStorage.setItem('footerFixed', 'true');
+        } else {
+            localStorage.setItem('footerFixed', 'false');
+        }
+    });
+});
+
 </script>
 </body>
 </html>
