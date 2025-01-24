@@ -393,6 +393,27 @@
         $('#languageDropdown').dropdown();
       });
     </script>
-
+    <script>
+        // Abre el menú lateral
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+    
+        // Cierra el menú lateral
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    
+        // Cierra el menú cuando se hace clic en cualquier parte fuera del menú
+        document.addEventListener("click", function(event) {
+            var sidenav = document.getElementById("mySidenav");
+            var toggleIcon = document.querySelector(".toggle_icon");
+            // Si el clic no es ni sobre el menú ni sobre el ícono de toggle, lo cierra
+            if (!sidenav.contains(event.target) && !toggleIcon.contains(event.target)) {
+                sidenav.style.width = "0";
+            }
+        });
+    </script>
+    
    
 </html>
