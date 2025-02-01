@@ -583,6 +583,9 @@ class IniciarPagoView(View):
         total_carrito = sum(float(item.precio_total()) if callable(item.precio_total) else float(item.precio_total) for item in carrito)
         print(f"Total del carrito calculado: {total_carrito}")
 
+        # Calcular la cantidad total de productos en el carrito
+        cantidad_en_carrito = carrito.aggregate(total_cantidad=Sum('cantidad'))['total_cantidad'] or 0
+
         # Datos del comprador
         if request.user.is_authenticated:
             comprador_email = request.user.email  # Usamos el email del usuario autenticado
@@ -630,7 +633,9 @@ class IniciarPagoView(View):
         context = {
             'public_key': settings.MERCADOPAGO_PUBLIC_KEY,  # Clave pública
             'preference_id': preference_id,                 # ID de la preferencia
-            'total_carrito': total_carrito,                 # Total del carrito
+            'total_carrito': total_carrito, 
+            'total_carrito': total_carrito,                                 # Total del carrito
+            'cantidad_en_carrito': cantidad_en_carrito      # Agregar la cantidad total del carrito
         }
         print("Datos pasados al contexto de la plantilla")
         return render(request, self.template_name,  context)
