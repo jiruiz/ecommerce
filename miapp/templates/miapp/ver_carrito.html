@@ -6,7 +6,7 @@
     {% load static %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Articulos</title>
+    <title>Carrito</title>
     <!-- Google Pay -->
     <script src="https://pay.google.com/gp/p/js/pay.js"></script>
 
@@ -53,12 +53,41 @@
             border-color: #009EE3;
             background-color: #E0F7FE;
         }
-    
+        
+        .payment-button-mercadopago {
+            display: inline-block;
+            width: 300px;  /* Ancho de los botones */
+            height: 60px;  /* Altura de los botones */
+            line-height: 60px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;  /* Color blanco para el texto */
+            text-decoration: none;
+            background-color: #009EE3;  /* Color de fondo para los botones */
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        
+        .payment-button-mercadopago span {
+            color: white; /* Asegura que el texto sea blanco */
+        }
+        .payment-button-mercadopago:hover {
+            background-color: #007BB5;  /* Color de fondo más oscuro al pasar el ratón */
+        }
+
         .payment-button {
             display: inline-block;
-            width: 200px;
-            height: 50px;
+            width: 300px;  /* Aumentado el ancho a 300px */
+            height: 60px;  /* Aumentado la altura a 60px */
+            line-height: 60px;  /* Alineación vertical del texto */
+            text-align: center;  /* Alineación horizontal del texto */
+            font-size: 18px;  /* Aumentado el tamaño de la fuente */
+            font-weight: bold;  /* Texto en negrita */
+            color: #fff;  /* Color del texto */
         }
+        
         
     </style>
 </head>
@@ -128,25 +157,33 @@
             </tfoot>
         </table>
             <div class="container mt-4">
+
+                 <!-- MercadoPago -->
+                 <div class="payment-method mercadopago p-3 text-center">
+                    <h5 class="mb-3">Pagar con MercadoPago</h5>
+                    <a href="{% url 'iniciar_pago' %}" class="payment-button-mercadopago">
+                        <img src="{% static 'miapp/images/mercadopago.png' %}" alt="Mercado Pago Logo" height="30">
+                        <span>Mercado Pago</span>
+                    </a>
+                    
+                </div>
+                
+
+                <!-- PayPal -->
+                <div class="payment-method paypal p-3 text-center">
+                    <h5 class="mb-3">Pagar con PayPal</h5>
+                    <div id="paypal-button-container" class="payment-button"></div>
+                </div>
+
                 <!-- Google Pay -->
                 <div class="payment-method google-pay p-3 text-center">
                     <h5 class="mb-3">Pagar con Google Pay</h5>
                     <div id="google-pay-button" class="payment-button"></div>
                 </div>
             
-                <!-- PayPal -->
-                <div class="payment-method paypal p-3 text-center">
-                    <h5 class="mb-3">Pagar con PayPal</h5>
-                    <div id="paypal-button-container" class="payment-button"></div>
-                </div>
+                
             
-                <!-- MercadoPago -->
-                <div class="payment-method mercadopago p-3 text-center">
-                    <h5 class="mb-3">Pagar con MercadoPago</h5>
-                    <a href="{% url 'iniciar_pago' %}" class="btn btn-primary payment-button">
-                        <i class="fas fa-credit-card"></i> Proceder al Pago
-                    </a>
-                </div>
+               
             </div>
             
             <form id="checkout-form" method="post" action="{% url 'confirmacion' %}" class="mt-4">

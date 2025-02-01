@@ -555,40 +555,41 @@ import mercadopago
 from django.conf import settings
 from miapp.models import ItemCarrito
 
-from django.views import View
-from django.shortcuts import render
-import mercadopago
-from django.conf import settings
-from miapp.models import ItemCarrito
 
 class IniciarPagoView(View):
     template_name = 'miapp/iniciar_pago.html'
 
     def get(self, request):
+        print("Inicio del método GET")
+
         # Configuración de Mercado Pago
         mp = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
+        print("Configuración de Mercado Pago completada")
 
         # Obtén los artículos del carrito
         if request.user.is_authenticated:
             carrito = ItemCarrito.objects.filter(usuario=request.user)
+            print("Carrito obtenido para el usuario autenticado")
         else:
             carrito = []
+            print("Carrito vacío para usuario no autenticado")
 
         # Si el carrito está vacío, no se puede realizar la compra
         if not carrito:
+            print("El carrito está vacío")
             return render(request, 'miapp/error.html', {'error_message': "El carrito está vacío"})
 
         # Calcula el total del carrito
         total_carrito = sum(float(item.precio_total()) if callable(item.precio_total) else float(item.precio_total) for item in carrito)
+        print(f"Total del carrito calculado: {total_carrito}")
 
         # Datos del comprador
         if request.user.is_authenticated:
             comprador_email = request.user.email  # Usamos el email del usuario autenticado
+            print(f"Email del comprador: {comprador_email}")
         else:
             comprador_email = "comprador_default@dominio.com"  # Correo de prueba si no está autenticado
-
-        # Datos del vendedor (puedes ajustarlo según lo que necesites)
-        vendedor_email = "vendedor@dominio.com"  # Correo del vendedor (ejemplo)
+            print("Email del comprador por defecto")
 
         # Crea la preferencia de pago
         preference_data = {
@@ -605,8 +606,8 @@ class IniciarPagoView(View):
             },
             "back_urls": {
                 "success": "http://127.0.0.1:8000/success",  # Redirigir a la URL de éxito
-                "failure": "http://127.0.0.1:8000/failure",       # Redirigir a la URL de fracaso
-                "pending": "http://127.0.0.1:8000/pending",       # Redirigir a la URL de pendiente
+                "failure": "http://127.0.0.1:8000/failure",  # Redirigir a la URL de fracaso
+                "pending": "http://127.0.0.1:8000/pending",  # Redirigir a la URL de pendiente
             },
             "auto_return": "approved",
             "notification_url": "http://www.tusitio.com/notification",  # URL para recibir notificaciones
@@ -615,10 +616,12 @@ class IniciarPagoView(View):
         }
 
         preference = mp.preference().create(preference_data)
+        print("Preferencia de pago creada")
 
         # Verifica si la clave 'id' está presente
         if 'id' in preference['response']:
             preference_id = preference['response']['id']
+            print(f"ID de preferencia obtenido: {preference_id}")
         else:
             print("Error: 'id' no encontrado en la respuesta")
             return render(request, 'miapp/error.html', {'error_message': "No se pudo obtener el ID de la preferencia."})
@@ -629,8 +632,11 @@ class IniciarPagoView(View):
             'preference_id': preference_id,                 # ID de la preferencia
             'total_carrito': total_carrito,                 # Total del carrito
         }
-        return render(request, self.template_name, context)
+        print("Datos pasados al contexto de la plantilla")
+        return render(request, self.template_name,  context)
+
     
+@method_decorator(login_required(login_url='/login/'), name='dispatch')
 class SuccessView(View):
     template_name = 'miapp/success.html'
 
@@ -639,46 +645,50 @@ class SuccessView(View):
         if request.user.is_authenticated:
             usuario = request.user
             carrito = ItemCarrito.objects.filter(usuario=usuario)
+
+            if not carrito:
+                return render(request, 'miapp/error.html', {'error_message': "El carrito está vacío."})
+
             total_carrito = sum(float(item.precio_total()) if callable(item.precio_total) else float(item.precio_total) for item in carrito)
 
-            with transaction.atomic():
-                try:
-                    compra = Compra.objects.create(monto=total_carrito, monto_total=total_carrito, usuario=usuario)
+            try:
+                # Crear la compra utilizando el usuario autenticado
+                compra = Compra.objects.create(monto=total_carrito, monto_total=total_carrito, usuario=usuario)
 
-                    # Crear registros de ArticuloCompra para cada item del carrito
-                    for item_carrito in carrito:
-                        ArticuloCompra.objects.create(compra=compra, articulo=item_carrito.articulo, cantidad=item_carrito.cantidad)
+                # Crear registros de ArticuloCompra para cada item del carrito
+                for item_carrito in carrito:
+                    ArticuloCompra.objects.create(compra=compra, articulo=item_carrito.articulo, cantidad=item_carrito.cantidad)
 
-                    # Obtener los datos de facturación del usuario
-                    datos_facturacion = DatosFacturacion.objects.filter(user=compra.usuario).first()
+                # Obtener los datos de facturación del usuario
+                datos_facturacion = DatosFacturacion.objects.filter(user=compra.usuario).first()
 
-                    # Crear y guardar la factura con la relación
+                # Crear y guardar la factura con la relación
+                if datos_facturacion:
                     factura_form = FacturaForm({'datosFacturacion': datos_facturacion.idDatosFacturacion, 'compra': compra.idCompra})
                     if factura_form.is_valid():
-                        factura = factura_form.save()
+                        factura_form.save()
 
-                    # Actualizar el stock de los artículos
-                    for item_carrito in carrito:
-                        articulo = item_carrito.articulo
-                        cantidad_vendida = item_carrito.cantidad
-                        articulo.stock -= cantidad_vendida
-                        articulo.save()
+                # Actualizar el stock de los artículos
+                for item_carrito in carrito:
+                    articulo = item_carrito.articulo
+                    articulo.stock -= item_carrito.cantidad
+                    articulo.save()
 
-                    # Eliminar los items del carrito después de la compra
-                    carrito.delete()
+                # Eliminar los items del carrito después de la compra
+                carrito.delete()
 
-                    # Realizar otras operaciones relacionadas con la compra según sea necesario
-
-                except Exception as e:
-                    print(f"Error: {str(e)}")
-                    transaction.set_rollback(True)
-                    return render(request, 'miapp/error.html', {'error_message': "Error al procesar la compra."})
-
+                articulos = ArticuloCompra.objects.filter(compra=compra)
                 return render(request, self.template_name, {
                     'message': 'Compra realizada con éxito.',
-                    'compra': compra,  # Pasar la compra
-                    'articulos': ArticuloCompra.objects.filter(compra=compra)  # Pasar los artículos comprados
+                    'compra': compra,
+                    'articulos': articulos
                 })
+
+            except Exception as e:
+                print(f"Error: {str(e)}")
+                transaction.set_rollback(True)
+                return render(request, 'miapp/error.html', {'error_message': "Error al procesar la compra."})
+
         else:
             return render(request, 'miapp/error.html', {'error_message': "Usuario no autenticado"})
 

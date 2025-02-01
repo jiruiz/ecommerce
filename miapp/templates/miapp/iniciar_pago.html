@@ -7,6 +7,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/fontawesome-free/css/all.min.css' %}">
+    
     <title>Pago con Mercado Pago</title>
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <style>
@@ -52,13 +55,13 @@
 </head>
 <body>
     <div class="mp-container">
-        <h1>Completa tu compra</h1>
-        <p class="mp-description">Estas pagando por: <strong>{{ descripcion_producto }}</strong></p>
-        <p class="mp-total">Total: ${{ total_carrito }}</p>
+        <h1>Completa tu compra por Mercado Pago</h1>
+        <p class="mp-description">Estás a punto de ingresar a Mercado Pago</strong></p>
+        <p class="mp-total">Monto total a pagar en pesos (ARS): ${{ total_carrito }} </p>
 
         <div id="wallet_container"></div>
 
-        <p class="mp-footer">Pago seguro a través de Mercado Pago</p>
+        <p class="mp-footer">Pago seguro y rápido a través de Mercado Pago. Gracias por confiar en nosotros.</p>
     </div>
 
     <script>
