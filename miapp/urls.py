@@ -5,7 +5,7 @@ from django.urls import path, include
 from .views import *
 from miapp import views
 from django.contrib.auth.views import LogoutView
-from .views import ArticuloDetailView, SearchView, ArticuloUpdate, CambiarClaveView, VerCarritoView, NoRegistradoView,RegistroDatosPersonales
+from .views import ArticuloDetailView, SearchView, ArticuloUpdate,IniciarPagoView, CambiarClaveView, VerCarritoView, NoRegistradoView,RegistroDatosPersonales
 from django.contrib.auth import views as auth_views
 from django.urls import path, re_path
 from django.views.decorators.http import require_http_methods
@@ -44,7 +44,7 @@ urlpatterns = [
     path('miapp/datosFacturacion.html', CrearDatosFacturacionView.as_view(), name='datos_facturacion'),
     path('cambiar-clave/<int:usuario_id>/', views.CambiarClaveView.as_view(), name='cambiar_clave'),
     path('no_registrado/', NoRegistradoView.as_view(), name='no_registrado'),
-    path('iniciar_pago/', NoRegistradoView.as_view(), name='iniciar_pago'),
+    path('iniciar_pago/', IniciarPagoView.as_view(), name='iniciar_pago'),
     # path('pago/', PagoMP.as_view(), name='pago'),       
     # path('error/', PaginaError.as_view(), name='error'),
 

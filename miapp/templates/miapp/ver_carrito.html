@@ -27,6 +27,13 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        #wallet_container {
+            display: block !important;
+            min-height: 50px;
+        }
+        
+    </style>
 </head>
 <body>
     
@@ -97,6 +104,9 @@
 
             <!-- Botón de PayPal y formulario de confirmación -->
             <div id="paypal-button-container"></div>
+            <div id="wallet_container"></div>
+            <a href="{% url 'iniciar_pago' %}" class="btn btn-danger btn-sm">Pagar con MercadoPago</a>
+  
             <form id="checkout-form" method="post" action="{% url 'confirmacion' %}" class="mt-4">
                 {% csrf_token %}
                 <input type="hidden" name="usuario_id" value="{{ request.user.id }}">
@@ -112,7 +122,8 @@
     <a href="{% url 'login' %}" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff;">Iniciar Sesión</a>
     {% endif %}
 </div>
- 
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+
 <script src="https://www.paypal.com/sdk/js?client-id=ATlD7DEoG5bCpYXUBFoWHDqlR1pxnJEcT68q-qPSyEVzZef6cgRc5pYuIkhC4dgYlIDM9fyxgtr6hAzF"></script>
 <script>
     paypal.Buttons({
@@ -195,7 +206,36 @@
   
     document.getElementById('google-pay-button').appendChild(button);
   </script>
+
+  <script>
+      const mp = new MercadoPago("{{ MERCADOPAGO_PUBLIC_KEY }}", {
+          locale: "es-AR" // Cambia el idioma según lo necesites
+      });
   
+      mp.checkout({
+          preference: {
+              id: "{{ preference_id }}"  // El ID de la preferencia que pasaste desde el backend
+          },
+          render: {
+              container: "#wallet_container",  // Contenedor donde se renderiza el botón
+              label: "Pagar con MercadoPago"
+          }
+      });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const mp = new MercadoPago("{{ MERCADOPAGO_PUBLIC_KEY }}", {
+            locale: "es-AR"
+        });
+    
+        mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: "{{ preference_id }}"
+            }
+        }).catch(error => console.error("Error al crear el botón de Mercado Pago:", error));
+    });
+    
+</script>
 
 {% endblock %}
 </body>
