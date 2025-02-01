@@ -1,5 +1,6 @@
 {% extends 'miapp/base.html' %}
 {% load static %}
+
 {% block content %}
 <!DOCTYPE html>
 <html lang="es">
@@ -8,12 +9,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pago con Mercado Pago</title>
     <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <style>
+        body {
+            background-color: #f5f7fa;
+            font-family: Arial, sans-serif;
+        }
+        .mp-container {
+            max-width: 450px;
+            margin: 50px auto;
+            padding: 25px;
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid #009EE3;
+        }
+        h1 {
+            font-size: 22px;
+            color: #003087;
+            margin-bottom: 10px;
+        }
+        .mp-total {
+            font-size: 20px;
+            color: #009EE3;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .mp-description {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #wallet_container {
+            margin-top: 15px;
+        }
+        .mp-footer {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Comprar Producto</h1>
-    <h2>Total: ${{ total_carrito }}</h2>
+    <div class="mp-container">
+        <h1>Completa tu compra</h1>
+        <p class="mp-description">Estas pagando por: <strong>{{ descripcion_producto }}</strong></p>
+        <p class="mp-total">Total: ${{ total_carrito }}</p>
 
-    <div id="wallet_container"></div>
+        <div id="wallet_container"></div>
+
+        <p class="mp-footer">Pago seguro a través de Mercado Pago</p>
+    </div>
 
     <script>
         const mp = new MercadoPago("{{ public_key }}");

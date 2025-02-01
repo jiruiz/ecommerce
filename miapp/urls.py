@@ -78,7 +78,12 @@ urlpatterns = [
     path('perfil', PerfilView.as_view(), name='perfil'),
     path('control_stock/', ControlStockView.as_view(), name='control_stock'),
     path('nuevaFactura/', FacturaNuevaView.as_view(), name='nuevaFactura'),
-    
+
+
+    #URLS DE LAS FALLAS DEL MERCADO PAGO
+    path('failure/', FailureView.as_view(), name='failure'),
+    path('pending/', PendingView.as_view(), name='pending'),
+    path('success/', SuccessView.as_view(), name='success'),
     ]
 
 

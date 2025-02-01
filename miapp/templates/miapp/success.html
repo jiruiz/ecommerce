@@ -1,0 +1,55 @@
+
+{% extends 'miapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    {% load static %}
+   
+ 
+</head>
+<div class="container mt-5">
+    <h1 class="text-center mb-4" style="background-color: #FFCC00; color: black; padding: 10px; border-radius: 5px;">
+        Confirmación de Compra
+    </h1>
+
+    <div class="card" style="border: 1px solid #FFCC00; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <div class="card-body">
+            <h5 class="card-title">Detalles de tu compra:</h5>
+
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID de Compra</th>
+                        <th>Fecha</th>
+                        <th>Artículos</th>
+                        <th>Monto Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ compra.idCompra }}</td>
+                        <td>{{ compra.fecha }}</td>
+                        <td>
+                            {% for articulo_compra in articulos %}
+                                {{ articulo_compra.articulo.nombre }} ({{ articulo_compra.cantidad }})<br>
+                            {% empty %}
+                                No hay artículos en esta compra.
+                            {% endfor %}
+                        </td>
+                        <td>${{ compra.monto_total|floatformat:2 }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p class="card-text"><strong>Total de la compra:</strong> ${{ compra.monto_total }}</p>
+
+            <p class="card-text">Gracias por tu compra. Recibirás una confirmación por correo electrónico pronto.</p>
+            <a href="{% url 'factura' pk=compra.pk %}" class="btn btn-default btn-lg btn-flat d-inline-block">
+                <i class="fas fa-eye fa-lg mr-2"></i> Factura
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -469,6 +469,98 @@ from django.views import View
 import mercadopago
 from .models import ItemCarrito
 
+
+
+# #este es el oficial de mercado pago
+# class IniciarPagoView(View):
+#     template_name = 'miapp/iniciar_pago.html'
+
+#     def get(self, request):
+#         # Configuración de Mercado Pago
+#         mp = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
+
+#         # Obtén los artículos del carrito
+#         if request.user.is_authenticated:
+#             carrito = ItemCarrito.objects.filter(usuario=request.user)
+#         else:
+#             carrito = []
+
+#         # Calcula el total del carrito
+#         total_carrito = sum(float(item.precio_total()) if callable(item.precio_total) else float(item.precio_total) for item in carrito)
+
+#         # Datos del comprador
+#         if request.user.is_authenticated:
+#             comprador_email = request.user.email  # Usamos el email del usuario autenticado
+#         else:
+#             comprador_email = "comprador_default@dominio.com"  # Correo de prueba si no está autenticado
+
+#         # Datos del vendedor (puedes ajustarlo según lo que necesites)
+#         vendedor_email = "vendedor@dominio.com"  # Correo del vendedor (ejemplo)
+
+#         # Crea la preferencia de pago
+#         preference_data = {
+#             "items": [
+#                 {
+#                     "title": "Compra de productos",
+#                     "quantity": 1,
+#                     "currency_id": "ARS",  # Moneda en pesos argentinos
+#                     "unit_price": total_carrito  # Usa el total_carrito como precio unitario
+#                 }
+#             ],
+#             "payer": {
+#                 "email": comprador_email  # Correo del comprador
+#             },
+#             "back_urls": {
+#                 "success": "http://127.0.0.1:8000/",  # Redirigir a la URL de éxito
+#                 "failure": "http://www.tusitio.com/failure",  # Redirigir a la URL de fracaso
+#                 "pending": "http://www.tusitio.com/pending",   # Redirigir a la URL de pendiente
+#             },
+#             "auto_return": "approved",
+#             "notification_url": "http://www.tusitio.com/notification",  # URL para recibir notificaciones
+#             "marketplace": "NONE",  # Definir el tipo de mercado
+#             "site_id": "MLA"  # ID de la región (Argentina)
+#         }
+
+#         preference = mp.preference().create(preference_data)
+#         print(json.dumps(preference, indent=4))  # Imprime la respuesta de la API completa
+
+#         # Verifica si la clave 'id' está presente
+#         if 'id' in preference['response']:
+#             preference_id = preference['response']['id']
+#         else:
+#             print("Error: 'id' no encontrado en la respuesta")
+
+
+#         # Pasa los datos necesarios a la plantilla
+#         context = {
+#             'public_key': settings.MERCADOPAGO_PUBLIC_KEY,  # Clave pública
+#             'preference_id': preference_id,                # ID de la preferencia
+#             'total_carrito': total_carrito,                 # Total del carrito
+#         }
+
+#         return render(request, self.template_name, context)
+
+
+from django.conf import settings
+from django.db import transaction
+from django.shortcuts import render
+from django.views import View
+import mercadopago
+import json
+from decimal import Decimal
+
+from django.views import View
+from django.shortcuts import render
+import mercadopago
+from django.conf import settings
+from miapp.models import ItemCarrito
+
+from django.views import View
+from django.shortcuts import render
+import mercadopago
+from django.conf import settings
+from miapp.models import ItemCarrito
+
 class IniciarPagoView(View):
     template_name = 'miapp/iniciar_pago.html'
 
@@ -481,6 +573,10 @@ class IniciarPagoView(View):
             carrito = ItemCarrito.objects.filter(usuario=request.user)
         else:
             carrito = []
+
+        # Si el carrito está vacío, no se puede realizar la compra
+        if not carrito:
+            return render(request, 'miapp/error.html', {'error_message': "El carrito está vacío"})
 
         # Calcula el total del carrito
         total_carrito = sum(float(item.precio_total()) if callable(item.precio_total) else float(item.precio_total) for item in carrito)
@@ -508,9 +604,9 @@ class IniciarPagoView(View):
                 "email": comprador_email  # Correo del comprador
             },
             "back_urls": {
-                "success": "http://127.0.0.1:8000/",  # Redirigir a la URL de éxito
-                "failure": "http://www.tusitio.com/failure",  # Redirigir a la URL de fracaso
-                "pending": "http://www.tusitio.com/pending",   # Redirigir a la URL de pendiente
+                "success": "http://127.0.0.1:8000/success",  # Redirigir a la URL de éxito
+                "failure": "http://127.0.0.1:8000/failure",       # Redirigir a la URL de fracaso
+                "pending": "http://127.0.0.1:8000/pending",       # Redirigir a la URL de pendiente
             },
             "auto_return": "approved",
             "notification_url": "http://www.tusitio.com/notification",  # URL para recibir notificaciones
@@ -519,75 +615,87 @@ class IniciarPagoView(View):
         }
 
         preference = mp.preference().create(preference_data)
-        print(json.dumps(preference, indent=4))  # Imprime la respuesta de la API completa
 
         # Verifica si la clave 'id' está presente
         if 'id' in preference['response']:
             preference_id = preference['response']['id']
         else:
             print("Error: 'id' no encontrado en la respuesta")
-
+            return render(request, 'miapp/error.html', {'error_message': "No se pudo obtener el ID de la preferencia."})
 
         # Pasa los datos necesarios a la plantilla
         context = {
             'public_key': settings.MERCADOPAGO_PUBLIC_KEY,  # Clave pública
-            'preference_id': preference_id,                # ID de la preferencia
+            'preference_id': preference_id,                 # ID de la preferencia
             'total_carrito': total_carrito,                 # Total del carrito
         }
-
         return render(request, self.template_name, context)
-
-
-
-# class PagoMP(View):
-#     template_name = 'miapp/pago.html'
-
-#     def get(self, request, *args, **kwargs):
-#         # Crear una instancia de SDK de Mercado Pago con tu token de acceso
-#         mp = mercadopago.SDK("APP_USR-8792479348348010-092604-2d3d71ac2af04652742bdb46d5feaa97-1490317369")
-
-#         # Crea un ítem en la preferencia
-#         preference_data = {
-#             "items": [
-#                 {
-#                     "title": "Mi producto",
-#                     "quantity": 1,
-#                     "unit_price": 75.76,
-#                 }
-#             ]
-#         }
-
-#         preference_response = mp.preference().create(preference_data)
-#         preference = preference_response["response"]
-#         # Pasa la preferencia como contexto a la plantilla
-#         context = {
-#             "preference_id": preference["id"],
-#             "public_key": settings.MERCADO_PAGO_PUBLIC_KEY,
-#         }
-
-#         return render(request, self.template_name, context)
     
-# class PaginaError(TemplateView):
-#     template_name = 'miapp/error.html'
+class SuccessView(View):
+    template_name = 'miapp/success.html'
 
-#     def get(self, request, *args, **kwargs):
-#         # Código para manejar el método GET si es necesario
-#         # ...
-#         return super().get(request, *args, **kwargs)
+    @transaction.atomic
+    def get(self, request):
+        if request.user.is_authenticated:
+            usuario = request.user
+            carrito = ItemCarrito.objects.filter(usuario=usuario)
+            total_carrito = sum(float(item.precio_total()) if callable(item.precio_total) else float(item.precio_total) for item in carrito)
 
-#     def post(self, request, *args, **kwargs):
-#         # Código para manejar el método POST si es necesario
-#         # ...
-#         return super().get(request, *args, **kwargs)
+            with transaction.atomic():
+                try:
+                    compra = Compra.objects.create(monto=total_carrito, monto_total=total_carrito, usuario=usuario)
 
+                    # Crear registros de ArticuloCompra para cada item del carrito
+                    for item_carrito in carrito:
+                        ArticuloCompra.objects.create(compra=compra, articulo=item_carrito.articulo, cantidad=item_carrito.cantidad)
 
+                    # Obtener los datos de facturación del usuario
+                    datos_facturacion = DatosFacturacion.objects.filter(user=compra.usuario).first()
+
+                    # Crear y guardar la factura con la relación
+                    factura_form = FacturaForm({'datosFacturacion': datos_facturacion.idDatosFacturacion, 'compra': compra.idCompra})
+                    if factura_form.is_valid():
+                        factura = factura_form.save()
+
+                    # Actualizar el stock de los artículos
+                    for item_carrito in carrito:
+                        articulo = item_carrito.articulo
+                        cantidad_vendida = item_carrito.cantidad
+                        articulo.stock -= cantidad_vendida
+                        articulo.save()
+
+                    # Eliminar los items del carrito después de la compra
+                    carrito.delete()
+
+                    # Realizar otras operaciones relacionadas con la compra según sea necesario
+
+                except Exception as e:
+                    print(f"Error: {str(e)}")
+                    transaction.set_rollback(True)
+                    return render(request, 'miapp/error.html', {'error_message': "Error al procesar la compra."})
+
+                return render(request, self.template_name, {
+                    'message': 'Compra realizada con éxito.',
+                    'compra': compra,  # Pasar la compra
+                    'articulos': ArticuloCompra.objects.filter(compra=compra)  # Pasar los artículos comprados
+                })
+        else:
+            return render(request, 'miapp/error.html', {'error_message': "Usuario no autenticado"})
+
+class FailureView(View):
+    def get(self, request):
+        return render(request, 'miapp/error.html', {'error_message': "El pago ha fallado. Por favor, intenta nuevamente."})
+
+class PendingView(View):
+    def get(self, request):
+        return render(request, 'miapp/pending.html', {'message': "Tu pago está pendiente. Te notificaremos una vez que se confirme."})
 # # Integración con PayPal (nuevo código)
 # import paypalrestsdk
 
 
 
 
-#------ESTE ES EL OFICIAL----------------
+#------ESTE ES EL OFICIAL de PAYPAL----------------
 from django.conf import settings
 
 
@@ -692,77 +800,65 @@ class ConfirmacionPago(View):
         print(request.POST)
         print("Total del carrito recibido:", total_carrito_str)
 
+        # Obtener el usuario autenticado
         usuario = request.user
+
+        # Obtener los items del carrito del usuario
         items_carrito = ItemCarrito.objects.filter(usuario=usuario)
 
+        # Verificar si hay artículos en el carrito
         if not items_carrito.exists():
+            # Redirigir a la página de error si no hay artículos
             return render(request, 'miapp/error.html')
 
-        if total_carrito_str:
+        if total_carrito_str is not None:
             total_carrito_str = total_carrito_str.replace(',', '.')
             total_carrito_str = ''.join(c for c in total_carrito_str if c.isdigit() or c == '.')
 
+            # Verificar si total_carrito_str es un número válido
             if total_carrito_str.replace('.', '').isdigit():
+                # Convertir a Decimal
                 total_carrito = Decimal(total_carrito_str)
 
+                # Crear la compra utilizando el usuario autenticado
                 with transaction.atomic():
                     compra = Compra.objects.create(monto=total_carrito, monto_total=total_carrito, usuario=usuario)
 
+                    # Crear registros de ArticuloCompra para cada item del carrito
                     for item_carrito in items_carrito:
                         ArticuloCompra.objects.create(compra=compra, articulo=item_carrito.articulo, cantidad=item_carrito.cantidad)
-
+                    # Obtener los datos de facturación del usuario
+                    # Obtener los datos de facturación del usuario
                     datos_facturacion = DatosFacturacion.objects.filter(user=compra.usuario).first()
+
+                    # # Crear y guardar la factura con la relación
                     factura_form = FacturaForm({'datosFacturacion': datos_facturacion.idDatosFacturacion, 'compra': compra.idCompra})
                     if factura_form.is_valid():
                         factura = factura_form.save()
-
+                    # Actualizar el stock de los artículos
                     for item_carrito in items_carrito:
                         articulo = item_carrito.articulo
-                        articulo.stock -= item_carrito.cantidad
+                        cantidad_vendida = item_carrito.cantidad
+                        articulo.stock -= cantidad_vendida
                         articulo.save()
 
+                    # Eliminar los items del carrito después de la compra
                     items_carrito.delete()
 
-                    # 🔹 **Generar preferencia de pago en MercadoPago**
-                    sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
+                    # Realizar otras operaciones relacionadas con la compra según sea necesario
 
-                    preference_data = {
-                        "items": [
-                            {
-                                "title": "Compra en mi tienda",
-                                "quantity": 1,
-                                "currency_id": "ARS",
-                                "unit_price": float(total_carrito)
-                            }
-                        ],
-                        "back_urls": {
-                            "success": "http://localhost:8000/pago-exitoso/",
-                            "failure": "http://localhost:8000/pago-fallido/",
-                            "pending": "http://localhost:8000/pago-pendiente/"
-                        },
-                        "auto_return": "approved"
-                    }
-
-                    preference_response = sdk.preference().create(preference_data)
-                    preference_id = preference_response["response"]["id"]
-
-                    context = {
-                        'compra': compra,
-                        'preference_id': preference_id
-                    }
+                    # Renderizar la página de confirmación con los datos necesarios
+                    context = {'compra': compra}
                     return render(request, self.template_name, context)
             else:
                 print("Error: total_carrito_str no es un número válido")
+                # Manejar el error de alguna manera, por ejemplo, redirigir a una página de error
                 return render(request, 'miapp/error.html')
         else:
             print("Error: total_carrito_str es None")
+            # Manejar el error de alguna manera, por ejemplo, redirigir a una página de error
             return render(request, 'miapp/error.html')
-
-
-
-
-
-
+        
 
 
 

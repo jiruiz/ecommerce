@@ -32,6 +32,33 @@
             display: block !important;
             min-height: 50px;
         }
+        .payment-method {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .google-pay {
+            border-color: #4285F4;
+            background-color: #E8F0FE;
+        }
+        
+        .paypal {
+            border-color: #003087;
+            background-color: #F7F9FC;
+        }
+        
+        .mercadopago {
+            border-color: #009EE3;
+            background-color: #E0F7FE;
+        }
+    
+        .payment-button {
+            display: inline-block;
+            width: 200px;
+            height: 50px;
+        }
         
     </style>
 </head>
@@ -100,13 +127,28 @@
                 </tr>
             </tfoot>
         </table>
-        <div id="google-pay-button"></div>
-
-            <!-- Botón de PayPal y formulario de confirmación -->
-            <div id="paypal-button-container"></div>
-            <div id="wallet_container"></div>
-            <a href="{% url 'iniciar_pago' %}" class="btn btn-danger btn-sm">Pagar con MercadoPago</a>
-  
+            <div class="container mt-4">
+                <!-- Google Pay -->
+                <div class="payment-method google-pay p-3 text-center">
+                    <h5 class="mb-3">Pagar con Google Pay</h5>
+                    <div id="google-pay-button" class="payment-button"></div>
+                </div>
+            
+                <!-- PayPal -->
+                <div class="payment-method paypal p-3 text-center">
+                    <h5 class="mb-3">Pagar con PayPal</h5>
+                    <div id="paypal-button-container" class="payment-button"></div>
+                </div>
+            
+                <!-- MercadoPago -->
+                <div class="payment-method mercadopago p-3 text-center">
+                    <h5 class="mb-3">Pagar con MercadoPago</h5>
+                    <a href="{% url 'iniciar_pago' %}" class="btn btn-primary payment-button">
+                        <i class="fas fa-credit-card"></i> Proceder al Pago
+                    </a>
+                </div>
+            </div>
+            
             <form id="checkout-form" method="post" action="{% url 'confirmacion' %}" class="mt-4">
                 {% csrf_token %}
                 <input type="hidden" name="usuario_id" value="{{ request.user.id }}">
