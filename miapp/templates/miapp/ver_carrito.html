@@ -12,21 +12,21 @@
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/fontawesome-free/css/all.min.css' %}">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
-    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css'%}">
-    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css'%}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/css/adminlte.min.css'%}">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-    <!-- jQuery and Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+
+    <!-- AdminLTE (incluye Bootstrap) -->
+    <link rel="stylesheet" href="{% static 'miapp/lib/adminlte-master/css/adminlte.min.css' %}">
+
+    <!-- jQuery (versión más reciente) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
         #wallet_container {
             display: block !important;
@@ -88,7 +88,35 @@
             color: #fff;  /* Color del texto */
         }
         
-        
+        /* CSS para tablas responsivas */
+            /* Estilos para filas de tablas */
+            /* Estilos para las celdas con botones */
+            /* Estilos para las celdas con botones */
+            .table-responsive td {
+                display: flex;
+                justify-content: center;  /* Centra los botones en la celda */
+                align-items: center;
+            }
+
+            /* Asegura que los botones no se desborden */
+            .table-responsive .btn {
+                margin: 5px;  /* Añade margen entre los botones */
+                padding: 6px 12px; /* Tamaño de los botones */
+                font-size: 14px;  /* Ajusta el tamaño del texto de los botones */
+            }
+
+            /* Hacer que los botones se apilen en pantallas pequeñas */
+            @media (max-width: 767px) {
+                .table-responsive td {
+                    flex-direction: column; /* Los botones se apilan uno debajo del otro */
+                    text-align: center;  /* Centra los botones en pantallas pequeñas */
+                }
+
+                .table-responsive .btn {
+                    width: 100%; /* Los botones ocuparán todo el ancho disponible */
+                    margin: 5px 0;  /* Espaciado entre los botones */
+                }
+            }
     </style>
 </head>
 <body>

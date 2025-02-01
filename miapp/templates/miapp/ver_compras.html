@@ -41,6 +41,35 @@
             background-color: #ffffff !important;  /* Cabecera blanca */
             color: #000000 !important;  /* Texto en negro */
         }
+        /* CSS para tablas responsivas */
+            /* Estilos para filas de tablas */
+            /* Estilos para las celdas con botones */
+            /* Estilos para las celdas con botones */
+            .table-responsive td th{
+              display: flex;
+              justify-content: center;  /* Centra los botones en la celda */
+              align-items: center;
+          }
+
+          /* Asegura que los botones no se desborden */
+          .table-responsive .btn {
+              margin: 5px;  /* Añade margen entre los botones */
+              padding: 6px 12px; /* Tamaño de los botones */
+              font-size: 14px;  /* Ajusta el tamaño del texto de los botones */
+          }
+
+          /* Hacer que los botones se apilen en pantallas pequeñas */
+          @media (max-width: 767px) {
+              .table-responsive td {
+                  flex-direction: column; /* Los botones se apilan uno debajo del otro */
+                  text-align: center;  /* Centra los botones en pantallas pequeñas */
+              }
+
+              .table-responsive .btn {
+                  width: 100%; /* Los botones ocuparán todo el ancho disponible */
+                  margin: 5px 0;  /* Espaciado entre los botones */
+              }
+          }
     </style>
 </head>
 
@@ -94,14 +123,10 @@
                           <td>$ {{ compra.monto_total }}</td>
                           <td>
                             <a href="{% url 'compra_detail' pk=compra.pk %}" class="btn btn-default btn-lg btn-flat d-inline-block">
-                              <i class="fas fa-eye fa-lg mr-2"></i> Ver Compra
+                              <i class="fas fa-eye fa-lg mr-2"></i> Ver
                             </a>
                           </td>
-                          <td>
-                            <a href="{% url 'factura' pk=compra.pk %}" class="btn btn-default btn-lg btn-flat d-inline-block">
-                              <i class="fas fa-eye fa-lg mr-2"></i> Factura
-                            </a>
-                          </td>
+                          
                         </tr>
                       {% empty %}
                         <tr>
